@@ -1,0 +1,65 @@
+.navigation-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.navigation-toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
+
+.sidenav-container {
+    /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+     /* flex: 1 0 auto; */
+     flex: 1 ;
+}
+
+/* Seperates the menu and 'FLRS' from the login button on the left<-->right */
+.spacer {
+    flex: 1 1 auto;
+  }
+  
+  #side-nav-toolbar {
+    background: #9D2235;
+    color:white;
+  }
+  
+
+
+  /* #main-nav-toolbar {
+    background: #9D2235;
+    color: white;
+  } */
+  
+  button {
+    font-size-adjust: 5px;
+  }
+  
+  .mat-toolbar{
+    /* position: sticky;
+    top: 0;
+    z-index: 1; */
+    background: #9D2235;
+  }
+  
+  mat-sidenav {
+    width: 200px;
+    flex: 0 1 auto;
+  }
+
+  mat-sidenav-content {
+    /* margin-top: 10vh; */
+    margin-top: 65px;
+    flex: 1 1 auto;
+  }
+  
+  .sidenav .mat-toolbar {
+    background: inherit;
+  }

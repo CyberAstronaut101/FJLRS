@@ -1,0 +1,104 @@
+// .mat-table {
+
+//   .mat-header-row {
+//       height: 48px;
+//   }
+
+//   .mat-header-cell {
+//       padding-left: 16px;
+//       padding-right: 16px;
+
+//       &:first-of-type {
+//           padding-left: 16px;
+//       }
+
+//       &:last-of-type {
+//           padding-right: 16px;
+
+//           &[mat-sort-header]:not([arrowposition="before"]) {
+//               padding-right: 16px;
+//           }
+//       }
+
+//       &[mat-sort-header] {
+
+//           &[arrowposition="before"] {
+//               padding-left: 0px;
+//           }
+
+//           &:not([arrowposition="before"]) {
+//               padding-right: 22px;
+//           }
+
+//       }
+
+//       &>.mat-sort-header-container {
+//           display: inline-flex;
+//       }
+//   }
+
+//   .mat-cell {
+//       padding-left: 16px;
+//       padding-right: 16;
+//       white-space: nowrap;
+
+//       &:first-of-type {
+//           padding-left: 16px;
+//       }
+
+//       &:last-of-type {
+//           padding-right: 16px;
+//       }
+//   }
+
+//   .mat-footer-cell {
+//       padding-left: 16px;
+//       padding-right: 16;
+
+//       &:first-of-type {
+//           padding-left: 16px;
+//       }
+
+//       &:last-of-type {
+//           padding-right: 16px;
+//       }
+
+//       .mat-paginator {
+//           margin-left: -16px;
+//           margin-right: -16px;
+//       }
+//   }
+// }
+
+// .mat-column-col1 {
+// // width: 100%;
+// }
+
+// .mat-column-select {
+//   width: 16px;
+
+//   &.mat-cell, &.mat-header-cell, &.mat-footer-cell {
+//       padding-right: 16px !important; // fix z-index issue when using sticky header / footer
+//       padding-left: 20px;
+//   }
+
+//   &.mat-cell:first-of-type, &.mat-header-cell:first-of-type, &.mat-footer-cell:first-of-type {
+//       padding-left: 20px;
+//   }
+
+//   +.mat-cell, +.mat-header-cell, +.mat-footer-cell {
+//       padding-left: 0; // fix z-index issue when using sticky header / footer
+//   }
+// }
+
+// .mat-column-actions {
+//   &.mat-cell {
+//       padding-left: 8px !important;
+//       padding-right: 32px !important;
+
+//       &:last-of-type {
+//           padding-left: 8px !important;
+//           padding-right: 8px !important;
+//       }
+//   }
+// }

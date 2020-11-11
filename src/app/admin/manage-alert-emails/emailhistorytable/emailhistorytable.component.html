@@ -1,0 +1,19 @@
+
+<div class="ui-g">
+  <div class="ui-g-11 centered">
+    <ag-grid-angular
+        #agGrid
+        id="myGrid"
+        style="width: 100%; height: 500px;"
+        class="ag-theme-balham"
+        [columnDefs]="columnDefs"
+        [rowData]="historyDataInput"
+        (gridReady)="onGridReady($event)"
+        (firstDataRendered)="onFirstDataRendered($event)"
+        rowSelection="multiple"
+        pagination=true
+        paginationAutoPageSize=true
+        >
+    </ag-grid-angular>
+  </div>
+</div>

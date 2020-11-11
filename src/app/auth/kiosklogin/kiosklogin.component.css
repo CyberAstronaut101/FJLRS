@@ -1,0 +1,11 @@
+.centered {
+    margin: 0 auto;
+}
+
+#kiosk_login_background {
+    padding-top:50px;
+    height: 100vh;
+    background-image: url('../../../assets/img/Compressed/fayjones_dusk.jpg');
+    background-size: cover;
+}
+

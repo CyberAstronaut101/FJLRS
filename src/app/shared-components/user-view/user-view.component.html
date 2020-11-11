@@ -1,0 +1,26 @@
+<mat-card *ngIf="this.user != null">
+  <mat-card-title>
+      Current User
+  </mat-card-title>
+
+  <!-- <mat-spinner></mat-spinner> -->
+  <ul>
+      <li><em>Name: {{ this.user.firstname }} {{ this.user.lastname }}</em></li>
+      <li><em>Student ID: {{ this.user.studentID }}</em></li>
+      <li><em>Level: {{ this.user.userLevel }}</em></li>
+  </ul>
+  <hr>
+
+  TODO show any upcoming events that need to be alerted on
+
+</mat-card>
+
+<mat-card *ngIf="this.user == null">
+  <mat-card-title>
+      Beta - Guest User
+  </mat-card-title>
+
+  In order to have more functionality you must login to your Fay Jones Lab Request System Account. If
+  you do not have an account yet, send an email to ejmason@uark.edu and I will get you setup!
+
+</mat-card>

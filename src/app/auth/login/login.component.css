@@ -1,0 +1,32 @@
+.loginCard {
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    /* margin-top: 120px; */
+    /* padding-top: 120px; */
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+/* 
+    this is acting as the background photo for the login component
+*/
+#loginFullDiv {
+    /* height: 90vh; */
+    padding-top: 120px;
+    height: 100vh;
+    background-image: url('../../../assets/img/fayjoenes_3.jpg');
+    background-size: cover;
+}
+
+.centered {
+    margin: 0 auto;
+}
+
+.centeredButton {
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}

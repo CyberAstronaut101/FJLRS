@@ -1,0 +1,19 @@
+h2 {
+    text-align: center;
+}
+
+mat-tab-group {
+    background-color: white;
+}
+
+.centered {
+    margin: 0 auto;
+}
+
+.admin-panel-wrapper {
+    /* This will Allow scrolling if the expansion-panels push components out of view */
+    min-height: 100vh;
+    padding-bottom: 150px;
+    background-image: url('../../../assets/img/Compressed/shop_hallway.jpg');
+    background-size:cover;
+}

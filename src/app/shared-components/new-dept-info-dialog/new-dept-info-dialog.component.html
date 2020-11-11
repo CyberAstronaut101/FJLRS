@@ -1,0 +1,284 @@
+<div mat-dialog-content class="ui-g">
+  {{ message }}
+
+  <div class="ui-g-12">
+    <form #newEmailForm="ngForm" class="ui-g">
+      <mat-form-field class="ui-g-12">
+        <mat-label>BuildLab Dept Name</mat-label>
+        <input
+          matInput
+          type="text"
+          name="newDeptName"
+          [ngModel]="newDeptName"
+          required
+          #deptName="ngModel"
+        />
+        <mat-error *ngIf="deptName.invalid">Enter Valid Email</mat-error>
+      </mat-form-field>
+
+      <div class="ui-g-12">
+        <div class="ui-g-4 ui-sm-12">
+          <mat-checkbox
+            matInput
+            type="checkbox"
+            name="mondayStatus"
+            [ngModel]="mondayOpenStatus"
+            #mondayStatus="ngModel"
+            >Monday</mat-checkbox
+          >
+        </div>
+        <div class="ui-g-8 ui-sm-12">
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Open Time"
+              enforceSaneTime
+              name="mondayOpenTime"
+              #mondayOpen="ngModel"
+              [ngModel]="mondayOpenTime"
+            ></p-calendar>
+          </div>
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Close Time"
+
+              name="mondayCloseTime"
+              #mondayClose="ngModel"
+              [ngModel]="mondayCloseTime"
+            ></p-calendar>
+          </div>
+        </div>
+
+        <p>The [deptName] is open at [openTime] and closes at [closeTime]</p>
+        <p>Hours of operation: [hoursHere]</p>
+
+
+      </div>
+
+      <!-- Tuesday Row -->
+      <div class="ui-g-12">
+        <div class="ui-g-4 ui-sm-12">
+          <mat-checkbox
+            type="checkbox"
+            name="tuesdayStatus"
+            [ngModel]="tuesdayOpenStatus"
+            #tuesdayStatus="ngModel"
+            >Tuesday</mat-checkbox
+          >
+        </div>
+        <div class="ui-g-8 ui-sm-12">
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Open Time"
+              name="tuesdayOpenTime"
+              #tuesdayOpen="ngModel"
+              [ngModel]="tuesdayOpenTime"
+            ></p-calendar>
+          </div>
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Close Time"
+              name="tuesdayCloseTime"
+              #tuesdayClose="ngModel"
+              [ngModel]="tuesdayCloseTime"
+            ></p-calendar>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wednesday Row -->
+      <div class="ui-g-12">
+        <div class="ui-g-4 ui-sm-12">
+          <mat-checkbox
+            type="checkbox"
+            name="wednesdayStatus"
+            [ngModel]="wednesdayOpenStatus"
+            #wednesdayStatus="ngModel"
+            >Wednesday</mat-checkbox
+          >
+        </div>
+        <div class="ui-g-8 ui-sm-12">
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Open Time"
+              name="wednesdayOpenTime"
+              #wednesdayOpen="ngModel"
+              [ngModel]="wednesdayOpenTime"
+            ></p-calendar>
+          </div>
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Close Time"
+              name="wednesdayCloseTime"
+              #wednesdayClose="ngModel"
+              [ngModel]="wednesdayCloseTime"
+            ></p-calendar>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thursday Row -->
+      <div class="ui-g-12">
+        <div class="ui-g-4 ui-sm-12">
+          <mat-checkbox
+            type="checkbox"
+            name="thursdayStaus"
+            [ngModel]="thursdayOpenStatus"
+            #thursdayStaus="ngModel"
+            >Thursday</mat-checkbox
+          >
+        </div>
+        <div class="ui-g-8 ui-sm-12">
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Open Time"
+              name="thursdayOpenTime"
+              #thursdayOpen="ngModel"
+              [ngModel]="thursdayOpenTime"
+            ></p-calendar>
+          </div>
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Close Time"
+              name="thursdayCloseTime"
+              #thursdayClose="ngModel"
+              [ngModel]="thursdayCloseTime"
+            ></p-calendar>
+          </div>
+        </div>
+      </div>
+
+      <!-- Friday Row -->
+      <div class="ui-g-12">
+        <div class="ui-g-4 ui-sm-12">
+          <mat-checkbox
+            type="checkbox"
+            name="fridayStatus"
+            [ngModel]="fridayOpenStatus"
+            #fridayStatus="ngModel"
+            >Friday</mat-checkbox
+          >
+        </div>
+        <div class="ui-g-8 ui-sm-12">
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Open Time"
+              name="fridayOpenTime"
+              #fridayOpen="ngModel"
+              [ngModel]="fridayOpenTime"
+            ></p-calendar>
+          </div>
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Close Time"
+              name="fridayCloseTime"
+              #fridayClose="ngModel"
+              [ngModel]="fridayCloseTime"
+            ></p-calendar>
+          </div>
+        </div>
+      </div>
+
+      <!-- Saturday Row -->
+      <div class="ui-g-12">
+        <div class="ui-g-4 ui-sm-12">
+          <mat-checkbox
+            type="checkbox"
+            name="saturdayStatus"
+            [ngModel]="saturdayOpenStatus"
+            #saturdayStatus="ngModel"
+            >Saturday</mat-checkbox
+          >
+        </div>
+        <div class="ui-g-8 ui-sm-12">
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Open Time"
+            ></p-calendar>
+          </div>
+          <div class="ui-g-6 ui-sm-12">
+            <p-calendar
+              showTime="true"
+              [timeOnly]="true"
+              hourFormat="12"
+              placeholder="Close Time"
+            ></p-calendar>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui-g-12">
+          <div class="ui-g-4 ui-sm-12">
+            <mat-checkbox
+              type="checkbox"
+              name="mondayStatus"
+              [ngModel]="mondayOpenStatus"
+              #mondayStatus="ngModel"
+            >Sunday</mat-checkbox>
+          </div>
+          <div class="ui-g-8 ui-sm-12">
+            <div class="ui-g-6 ui-sm-12">
+              <p-calendar
+                showTime="true"
+                [timeOnly]="true"
+                hourFormat="12"
+                placeholder="Open Time"></p-calendar>
+            </div>
+            <div class="ui-g-6 ui-sm-12">
+              <p-calendar
+                showTime="true"
+                [timeOnly]="true"
+                hourFormat="12"
+                placeholder="Close Time"></p-calendar>
+            </div>
+          </div>
+        </div>
+
+      <!-- TODO add tuesday here -->
+    </form>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="onNoClick()">Nevermind</button>
+  <button
+    mat-button
+    color="primary"
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+    (click)="onSaveEmail(newEmailForm)"
+  >
+    Save New Dept
+  </button>
+</div>

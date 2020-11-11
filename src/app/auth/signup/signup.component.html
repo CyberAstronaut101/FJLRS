@@ -1,0 +1,96 @@
+<div layout-fill layout="column" layout-align="center none">
+    <div layout="row" layout-align="center none">
+
+<mat-card class="signupCard">
+
+        <mat-card-title>
+            Manually Create New User
+        </mat-card-title>
+
+        <mat-card-subtitle>
+            Modified for the standalone studio implementation
+        </mat-card-subtitle>
+
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
+    
+        <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
+            <mat-form-field>
+                <input matInput type="email" placeholder="Email" name="email" ngModel #emailInput="ngModel" required email>
+                <mat-error *ngIf="emailInput.invalid">Please Enter Valid Email</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field>
+                    <input 
+                        type="password"
+                        name="password"
+                        ngModel 
+                        matInput
+                        placeholder="Password"
+                        #passwordInput="ngModel"
+                        required
+                        password>
+                    <mat-error *ngIf="passwordInput.invalid">Enter valid password!</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input 
+                        type="text"
+                        name="firstName"
+                        ngModel 
+                        matInput
+                        placeholder="First Name"
+                        required>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input 
+                        type="text"
+                        name="lastName"
+                        ngModel 
+                        matInput
+                        placeholder="Last Name"
+                        required>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input 
+                        type="text"
+                        name="studentID"
+                        ngModel 
+                        matInput
+                        placeholder="Student ID"
+                        required>
+            </mat-form-field>
+
+            <mat-form-field>
+                    <input 
+                        type="text"
+                        name="phone"
+                        ngModel 
+                        matInput
+                        placeholder="Phone Number"
+                        >
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-select 
+                    placeholder="User Level"
+                    name="userLevel"
+                    matInput
+                    ngModel
+                    required>
+                    <mat-option *ngFor="let level of levels" [value]=level>
+                        {{ level }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            
+    
+            <button mat-raised-button type="submit" *ngIf="!isLoading">Signup</button>
+            
+        </form>
+    </mat-card>
+
+    </div>
+
+    </div>

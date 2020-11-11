@@ -1,0 +1,27 @@
+<div class="ui-g">
+
+    
+    
+    <div class="ui-g-12">
+
+        <h1 *ngIf="userLevel == 'admin'" style="text-align: center">Admin Home Component Render</h1>
+        <h1 *ngIf="userLevel == 'staff'" style="text-align: center">Staff Home component</h1>
+        <h1 *ngIf="userLevel == 'student'" style="text-align: center">Student Home Component</h1>
+        <h1 *ngIf="userLevel == 'default'" style="text-align: center">Non Auth Home</h1>
+        
+        <!-- Show the News View For the WHOLE LAB HERE -->
+        <app-news-view class="ui-g-8 ui-sm-12"></app-news-view>
+
+        <!-- Show the current user info and upcoming events -->
+        <app-user-view class="ui-g-4 ui-sm-12"></app-user-view>
+
+    </div>
+
+    <div class="ui-g-12">
+
+        <!-- Row to render the calendar views for the current departments -->
+        
+
+    </div>
+
+</div>

@@ -1,0 +1,25 @@
+.centered {
+    margin: 0 auto;
+}
+
+.centerButton {
+    margin: 0 auto;
+}
+
+/* mat-card {
+    margin-bottom: 10px;
+    background-color: #E6E6E6;
+} */
+
+#overrideHoursAccordion {
+    background-color: blue;
+}
+
+
+.mat-expansion-panel {
+    /* background-color: #E1E9F2; */
+}
+
+/* #modifyPanelBackground {
+    background-color: #E6E6E6;
+} */

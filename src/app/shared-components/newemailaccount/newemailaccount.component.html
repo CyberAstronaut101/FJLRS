@@ -1,0 +1,26 @@
+<div mat-dialog-content class="ui-g">
+  {{ message }}
+
+  <div class="ui-g-12">
+      <form #newEmailForm="ngForm">
+          <mat-form-field class="ui-g-12">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              name="newEmailAcct"
+              [ngModel]="newEmailAcct?.email"
+              required
+              #email="ngModel"
+            />
+            <mat-error *ngIf="email.invalid">Enter Valid Email</mat-error>
+          </mat-form-field>
+        </form>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <!-- TODO center these buttons -->
+  <button mat-button color="warn" (click)="onNoClick()">Nevermind</button>
+  <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial (click)="onSaveEmail(newEmailForm)">Submit Email</button>
+</div>

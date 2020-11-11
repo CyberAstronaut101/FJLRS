@@ -1,0 +1,233 @@
+<!-- <p-toast [style]="{marginTop: '80px'}"></p-toast> -->
+
+<div class="ui-g">
+    <div class="ui-g-11 centered">
+        <mat-card>
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Users">
+            </mat-form-field>
+
+            <table mat-table [dataSource]="userDataSource" class="mat-elevation-z8">
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="onItemSelected(row)" (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+
+                <!-- StudentID Column -->
+                <ng-container matColumnDef="Student ID">
+                    <th mat-header-cell *matHeaderCellDef> Student ID </th>
+                    <td mat-cell *matCellDef="let element"> {{element.studentID}} </td>
+                </ng-container>
+
+                <!-- FirstName Column -->
+                <ng-container matColumnDef="First Name">
+                    <th mat-header-cell *matHeaderCellDef> First Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.firstname}} </td>
+                </ng-container>
+
+                <!-- LastName Column -->
+                <ng-container matColumnDef="Last Name">
+                    <th mat-header-cell *matHeaderCellDef> Last Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.lastname}} </td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="Email">
+                    <th mat-header-cell *matHeaderCellDef> User Email </th>
+                    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                </ng-container>
+
+                <!-- User Level -->
+                <ng-container matColumnDef="User Level">
+                    <th mat-header-cell *matHeaderCellDef> User Level </th>
+                    <td mat-cell *matCellDef="let element"> {{element.userLevel}} </td>
+                </ng-container>
+
+                <!-- <ng-container matColumnDef="Edit Button">
+                            <th mat-header-cell *matHeaderCellDef> Load User</th>
+                            <td mat-cell *matCellDef="let element">
+
+                            </td>
+                        </ng-container> -->
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+            <!-- <button
+                        mat-raised-button
+                        color="accent"
+                        (click)="loadUserForEdit()"
+                    >Load User</button>  -->
+
+            <button mat-raised-button color="accent" style="margin-top: 7px;" [routerLink]="['/auth/signup']">Create New
+                User</button>
+
+            <mat-paginator [length]="resultsLength" [pageSize]="5"></mat-paginator>
+        </mat-card>
+    </div>
+
+    <div class="ui-g centered" *ngFor="let user of selection.selected">
+        <div class="ui-g-12"><p-messages [(value)]="msgs"></p-messages></div>
+
+        
+        <div class="ui-g-6 ui-sm-12 ">
+            <mat-card style="margin-top: 7px">
+                Name: {{ user.firstname}} {{ user.lastname}}
+
+                <form class="userInfo">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="First Name" value="{{user.firstname}}">
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Last Name" value="{{user.lastname}}">
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Uark Email" value="{{user.email}}">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-select placeholder="Current: {{ user.userLevel }}" name="userLevel" matInput>
+                            <mat-option *ngFor="let level of levels" [value]="level">
+                                {{ level }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+
+                    <!-- <mat-form-field class="example-full-width">
+                                        <textarea matInput placeholder="Leave a comment"></textarea>
+                                    </mat-form-field> -->
+                </form>
+
+                <button mat-raised-button color="accent" (click)="requestUserPasswordReset(user.email)">Reset Password</button>
+
+            </mat-card>
+        </div>
+
+        <div class="ui-g-6 ui-sm-12">
+            <mat-card>
+                Training Levels
+
+                <ul style="list-style-type: none;">
+                    <li>
+                        <mat-checkbox [(ngModel)]="user.laserLab01">Laser Lab Level 1</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox [(ngModel)]="user.laserLab02">Laser Lab Level 2</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox [(ngModel)]="user.woodShop01">WoodShop Level 1</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox [(ngModel)]="user.woodShop02">WoodShop Level 2</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox [(ngModel)]="user.woodShop03">WoodShop Level 3</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox [(ngModel)]="user.plotters">Plotters</mat-checkbox>
+                    </li>
+                    <li>
+                        <mat-checkbox [(ngModel)]="user.projectors">Projectors</mat-checkbox>
+                    </li>
+                </ul>
+
+                <!-- TODO only show when there has been a change to the states of the training levels -->
+                <button mat-raised-button color="accent" (click)="updateTrainingLevels(user)">Update Training
+                    Levels</button>
+
+
+            </mat-card>
+        </div>
+
+        <div class="ui-g-12">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    {{ user.firstname}}'s History
+                </mat-expansion-panel-header>
+
+                Render a ngFor for all the history items after making a call
+            </mat-expansion-panel>
+        </div>
+        <div class="ui-g-12">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    {{ user.firstname}}'s Notes
+                </mat-expansion-panel-header>
+
+                <!-- <div class="p-grid">
+                    <div class="p-col-12 p-lg-8">
+                        Show list of notes here
+                    </div>
+
+                    <div class="p-col-12 p-lg-4">
+                        Show the create/edit/delete panel here
+                    </div>
+                </div> -->
+
+            </mat-expansion-panel>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+<div class="p-grid">
+    <!-- Search Box -->
+    <div class="p-col-12">
+
+    </div>
+
+    <!-- Render Users  -->
+    <div class="p-col-12" *ngFor="let user of selection.selected">
+
+        <div class="p-grid">
+            <!-- User Info Rendered -->
+            <div class="p-col-12 p-md-6">
+
+            </div>
+
+
+            <!-- Training Levels User Render -->
+            <div class="p-col-12 p-md-6" style="margin-top: 7px">
+
+            </div>
+
+            <!-- Users History -->
+            <div class="p-col-12">
+
+            </div>
+
+            <!-- User Notes -->
+            <div class="p-col-12">
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+</div>

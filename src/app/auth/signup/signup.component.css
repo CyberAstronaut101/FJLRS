@@ -1,0 +1,10 @@
+.signupCard {
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 70px;
+}
+
+mat-form-field {
+    width: 100%;
+}

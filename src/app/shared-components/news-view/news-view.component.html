@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-title>
+      Lab News
+  </mat-card-title>
+
+  <mat-card-subtitle *ngIf="newsList?.length < 1"> No News Articles Loaded! To get started create one
+      to the left!</mat-card-subtitle>
+
+  <mat-accordion multi="false">
+
+      <mat-expansion-panel *ngFor="let newsPost of newsList">
+          <mat-expansion-panel-header>
+              <mat-panel-title>
+                  {{ newsPost.title }}
+              </mat-panel-title>
+
+              <!-- <mat-panel-description>
+          {{ newsPost.postedDate }}
+      </mat-panel-description> -->
+          </mat-expansion-panel-header>
+          <h3>Posted: {{ newsPost.postedDate.toString() }} </h3>
+
+          <p>
+              {{ newsPost.content }}
+          </p>
+          <!-- <a mat-button color="primary" (click)="loadNewsForEdit(newsPost.id)">Edit Post</a> -->
+      </mat-expansion-panel>
+
+  </mat-accordion>
+
+</mat-card>

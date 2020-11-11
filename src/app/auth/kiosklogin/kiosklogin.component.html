@@ -1,0 +1,44 @@
+<div class="ui-g" id="kiosk_login_background">
+  <div class="ui-g-7 ui-sm-12 centered">
+    <mat-card style="text-align: center">
+
+      <!-- TODO need to setup a activatedRoute subscription to update these on route change -->
+      <mat-card-title *ngIf="kioskRole == 'wood'">
+        Wood Shop Kiosk Login
+      </mat-card-title>
+
+      <mat-card-title *ngIf="kioskRole == 'digital'">
+          Digital Lab Kiosk Login
+        </mat-card-title>
+
+      <mat-card-subtitle>
+        Swipe your University of Arkansas ID to login!
+      </mat-card-subtitle>
+
+      <p-messages></p-messages>
+
+      <mat-card-content style="text-align: center">
+          <form class="ui-g" (submit)="onSubmitID(loginForm)" #loginForm="ngForm" *ngIf="!isLoading">
+
+              <mat-form-field class="ui-g-12">
+                  <input matInput type="search" placeholder="Student ID" name="formId" ngModel #idInput="ngModel"
+                      required appAutofocus>
+                  <mat-error *ngIf="idInput.invalid">Please Enter Valid Student ID</mat-error>
+              </mat-form-field>
+
+              <!-- <mat-form-field>
+                  <input type="password" name="password" ngModel matInput placeholder="Password"
+                      #passwordInput="ngModel" required password>
+                  <mat-error *ngIf="passwordInput.invalid">Enter valid password!</mat-error>
+              </mat-form-field> -->
+
+              <mat-card-actions >
+                  <button class="ui-g-6" mat-raised-button type="submit" color="primary" *ngIf="!isLoading">Login</button>
+              </mat-card-actions>
+
+          </form>
+      </mat-card-content>
+
+    </mat-card>
+  </div>
+</div>

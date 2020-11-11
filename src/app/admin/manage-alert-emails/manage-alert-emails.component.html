@@ -1,0 +1,236 @@
+<h2 style="text-align: center;">Manage System Email Accounts</h2>
+
+<div class="ui-g">
+  <div class="ui-g-12">
+    <!-- <h1>Test pMessage alert bar</h1>-->
+    <p-messages [(value)]="msgs"></p-messages>
+  </div>
+
+  <div class="ui-g-4 ui-sm-12 centered">
+    <mat-card>
+      <mat-card-title>System Email Account</mat-card-title>
+      <mat-card-subtitle
+        >Email Account that FJLRS will use to send emails</mat-card-subtitle
+      >
+
+      <mat-card-content>
+        <form #alertAdminEmailAccountForm="ngForm">
+          <mat-form-field class="ui-g-12">
+            <mat-label>System Alert Email Address</mat-label>
+            <input
+              matInput
+              type="email"
+              name="sysAlertEmail"
+              [ngModel]="sysalertEmail?.email"
+              required
+              #email="ngModel"
+            />
+            <mat-error *ngIf="email.invalid">Enter Valid Email</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="ui-g-12">
+            <mat-label>System Alert Email Password</mat-label>
+            <input
+              matInput
+              type="password"
+              name="sysAlertPassword"
+              [ngModel]="sysalertEmail?.password"
+              required
+              #password="ngModel"
+            />
+          </mat-form-field>
+
+          <!-- <button *ngIf="!sysalertEmail" mat-raised-button color="accent" label="Save System Email"
+            (click)="onSaveNewAlertAdmin(alertAdminEmailAccountForm)">Save System Email</button> -->
+        </form>
+      </mat-card-content>
+
+      <button
+        *ngIf="!sysalertEmail"
+        mat-raised-button
+        color="primary"
+        label="Save System Email"
+        (click)="onSaveNewAlertAdmin(alertAdminEmailAccountForm)"
+      >
+        Save System Email
+      </button>
+
+      <!-- TODO add a send test email button here? -->
+
+      <button
+        *ngIf="sysalertEmail"
+        mat-raised-button
+        color="accent"
+        label="Update Email Account"
+        (click)="
+        onConfirmUpdateSystemAccountPasswd(alertAdminEmailAccountForm, sysalertEmail.id)
+        "
+      >
+        Update Email Password
+      </button>
+
+      <button
+      mat-raised-button
+      style="color: green"
+      color=""
+      label="Test Auth Status"
+      *ngIf="sysalertEmail"
+        (click)="onCheckAppEmailAuthStatus()">
+        Test Auth
+      </button>
+
+      <button
+        *ngIf="sysalertEmail"
+        mat-raised-button
+        color="warn"
+        label="Delete Email Account"
+        (click)="onConfirmDeleteSystemAccount(sysalertEmail.id)"
+      >
+        Delete Email Account
+      </button>
+      <!-- (click)="openDialog()">Delete Email Account</button> -->
+    </mat-card>
+  </div>
+
+  <div class="ui-g-8 ui-sm-12">
+    <mat-card>
+      <mat-card-title>Admin Email Accounts</mat-card-title>
+      <mat-card-subtitle
+        >Emails to alert on application processes</mat-card-subtitle
+      >
+
+      <mat-accordion>
+
+        <mat-expansion-panel *ngFor="let adminEmailAccount of sysadminEmail">
+          <mat-expansion-panel-header>{{ adminEmailAccount?.email }}</mat-expansion-panel-header>
+          EmailAccount DB id: {{ adminEmailAccount?.id }}
+
+          <form #sysAdminEmailAccountForm="ngForm">
+            <mat-form-field class="ui-g-12">
+              <mat-label>Admin Email Address</mat-label>
+              <input
+                matInput
+                type="email"
+                name="adminEmailAddress"
+                [ngModel]="adminEmailAccount?.email"
+                required
+                #email="ngModel"
+              />
+              <mat-error *ngIf="email.invalid">Enter Valid Email</mat-error>
+            </mat-form-field>
+          </form>
+
+
+          <!-- <mat-action-row> -->
+            <!-- <button
+              mat-raised-button
+              color="accent"
+              label="Save Admin Email"
+              *ngIf="!sysadminEmail"
+              (click)="onSaveNewSysAdmin(sysAdminEmailAccountForm)"
+            >
+              Save New Admin Email
+            </button> -->
+            <div class="ui-g-12">
+              <div class="ui-g-4 ui-sm-12">
+                  <button
+                  mat-raised-button
+                  color="warn"
+                  label="Delete Admin Email"
+                  *ngIf="sysadminEmail"
+                  (click)="onDeleteSysAdminAccount(adminEmailAccount.id)"
+                >
+                  Delete Email
+                </button>
+              </div>
+
+              <div class="ui-g-4 ui-sm-12">
+                  <button
+                  mat-raised-button
+                  style="color: green"
+                  color=""
+                  label="Save Admin Email"
+                  (click)="onSendTestAdminEmail(adminEmailAccount)"
+                >
+                  Test
+                </button>
+                </div>
+
+                <div class="ui-g-4 ui-sm-12">
+                    <button
+                    mat-raised-button
+                    color="accent"
+                    label="Save Admin Email"
+                    (click)="onUpdateSysAdmin(sysAdminEmailAccountForm, adminEmailAccount?.id)"
+                  >
+                    Update
+                  </button>
+                  </div>
+
+            </div>
+
+
+
+
+
+
+
+
+          <!-- </mat-action-row> -->
+
+          <!-- <div class="ui-g-3 ui-sm-12">
+                <button
+                  mat-raised-button
+                  color="accent"
+                  label="Save Admin Email"
+                  *ngIf="!sysadminEmail"
+                  (click)="onSaveNewSysAdmin(sysAdminEmailAccountForm)"
+                ></button>
+              </div>
+              <div class="ui-g-3 ui-sm-12">
+                <button
+                  class="ui-button-danger"
+                  pButton
+                  type="button"
+                  icon="pi pi-check"
+                  label="Delete Admin Account"
+                  (click)="onDeleteSysAdminAccount(sysadminEmail.id)"
+                  *ngIf="sysadminEmail"
+                ></button>
+              </div>
+              <div class="ui-g-3 ui-sm-12">
+                <button
+                  pButton
+                  type="button"
+                  icon="pi pi-check"
+                  label="Update Admin Email"
+                  (click)="
+                    onUpdateSysAdmin(sysAdminEmailAccountForm, sysadminEmail.id)
+                  "
+                  *ngIf="sysadminEmail"
+                ></button>
+              </div>
+
+              <div class="ui-g-3 ui-sm-12">
+                <button
+                  class="ui-button-warning"
+                  pButton
+                  type="button"
+                  icon="pi pi-check"
+                  (click)="onSendTestAdminEmail()"
+                  label="Send Test Email"
+                ></button>
+              </div> -->
+          <!-- Buttons here -->
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <button mat-raised-button color="primary" label="Add New Admin Email" (click)="onConfirmAddAdminAccount()">
+        Add New Admin Email
+      </button>
+    </mat-card>
+  </div>
+</div>
+
+
+<app-emailhistorytable [historyDataInput]="emailSentHistory"></app-emailhistorytable>

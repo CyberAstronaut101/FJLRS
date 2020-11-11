@@ -1,0 +1,1198 @@
+<div class="ui-g">
+
+  <!--  Main Div holding the list of depts and the edit panel -->
+  <div class="ui-g-11 ui-sm-12 centered">
+
+    <div class="ui-g">
+
+      <div class="ui-g-12">
+        <p-messages [(value)]="msgs"></p-messages>
+      </div>
+
+
+      <!--  Left Panel Showing List of Departments -->
+      <mat-card class="ui-g-3 ui-sm-12 centered">
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
+
+        <mat-card-title>
+          Build Lab Departments
+        </mat-card-title>
+
+        <mat-card-subtitle>
+          Wiki Link TODO
+        </mat-card-subtitle>
+
+        <mat-accordion multi="false">
+          <mat-expansion-panel *ngFor="let dept of deptInfo">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h3>{{ dept.deptName }}</h3>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <a mat-button (click)="onShowModifyPanel(dept.id)" color="secondary">Edit Department</a>
+
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <button
+          class="ui-g-12"
+          mat-raised-button
+          color="primary"
+          (click)="onShowCreateNewDepartment()">+ New
+        </button>
+      </mat-card>
+
+      <!-- <mat-card *ngIf="!showModifyPanel" class="ui-g-9 centered">
+        <mat-card-title>
+          Department Management Panel
+        </mat-card-title>
+
+        In order to manage Departments, either edit one in the panel to the left,
+        or create a new department
+      </mat-card> -->
+
+      <mat-card *ngIf="showModifyPanel" class="ui-g-9 ui-sm-12 centered" id="modifyPanelBackground">
+        <h1>Manage {{ deptModifyItem.deptName }} Department</h1>
+
+        <mat-accordion multi="true" #accordion="matAccordion">
+
+          <!-- Accordion Panel For Manage Department -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Manage Buisness Hours</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="ui-g-12">
+            <!-- Manage Department Form  -->
+            <mat-card class="ui-g">
+              <mat-card-title>
+                Manage Operation Hours Schedule
+              </mat-card-title>
+
+
+              <mat-card class="ui-g-4 ui-sm-12">
+                <mat-card-title>Weekly Schedules</mat-card-title>
+
+                Current Schedule: {{ currentOperatingScheduleName }}
+
+                <!-- PrimeNg Component that will hold all of the schedules for the current loaded Dept -->
+                <p-tree [value]="departmentSchedulesTree" selectionMode="single" [(selection)]="departmentScheduleSelectedItem"
+                    (onNodeSelect)="onScheduleNodeSelect($event)" (onNodeUnselect)="onScheduleNodeUnselect($event)"></p-tree>
+
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    type="button"
+                    (click)="onRenderNewWeeklySchedule()">
+                    Create New Schedule
+                  </button>
+
+                  <button
+                    *ngIf="showWeeklySchedulePanel"
+                    mat-raised-button
+                    color="warn"
+                    type="button"
+                    (click)="onDeleteWeeklySchedule()">
+                    Delete Schedule
+                  </button>
+
+
+                  
+
+              </mat-card>
+
+
+
+              <!-- Panel for Creating a new Weekly Schedule IN CREATE MODE -->
+              <p-panel *ngIf="showWeeklySchedulePanel && weeklyScheduleSubmitMode == 'create'" class="ui-g-8 ui-sm-12" header="Create New Weekly Schedule" [toggleable]="true">
+
+                  <form #modifyPanelForm="ngForm" (ngSubmit)="onSubmitWeeklySchedulePanel(modifyPanelForm)" class="ui-g">
+                      <!-- Top Row For Deparptment Name -->
+                      <mat-form-field class="ui-g-12">
+                        <mat-label>Schedule Name</mat-label>
+                        <input matInput type="text" required ngModel name="scheduleFormName" #deptName="ngModel" [(ngModel)]="scheduleFormName" />
+                        <mat-error *ngIf="deptName.invalid">Enter Valid Name</mat-error>
+                      </mat-form-field>
+      
+                      <mat-card-subtitle>Manage Operation Hours</mat-card-subtitle>
+                      <mat-card class="ui-g-12">
+                        <!-- ! START OF MONDAY -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="mondayStatus" [checked]="mondayOpenStatus"
+                              [(ngModel)]="mondayOpenStatus" #mondayStatus="ngModel">Monday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="mondayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p style="color: red" *ngIf="
+                              mondayOpenTime.getHours() > mondayCloseTime.getHours()
+                            ">
+                              ! Check Hours !
+                            </p>
+      
+                            <p>
+                              OPEN MONDAY @ {{ mondayOpenTime.getHours() }}:{{
+                                ("0"+mondayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES MONDAY @ {{ mondayCloseTime.getHours() }}:{{
+                                ("0"+mondayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!mondayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY MONDAY</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="mondayOpenTime" #mondayOpen="ngModel" [defaultDate]="mondayOpenTime"
+                              [(ngModel)]="mondayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="mondayCloseTime" #mondayClose="ngModel" [defaultDate]="mondayOpenTime"
+                              [(ngModel)]="mondayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+                        <!-- ! End of Monday -->
+      
+                        <hr />
+      
+                        <!-- ! START OF TUESDAY -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="tuesdayStatus" [checked]="tuesdayOpenStatus"
+                              [(ngModel)]="tuesdayOpenStatus" #tuesdayStatus="ngModel">Tuesday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="tuesdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p style="color: red" *ngIf="
+                            tuesdayOpenTime.getHours() > tuesdayCloseTime.getHours()
+                          ">
+                              ! Check Hours !
+                            </p>
+                            <p>
+                              OPEN tuesday @ {{ tuesdayOpenTime.getHours() }}:{{
+                                ("0"+tuesdayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES tuesday @ {{ tuesdayCloseTime.getHours() }}:{{
+                                ("0"+tuesdayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!tuesdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY tuesday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="tuesdayOpenTime" #tuesdayOpen="ngModel" [defaultDate]="tuesdayOpenTime"
+                              [(ngModel)]="tuesdayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="tuesdayCloseTime" #tuesdayClose="ngModel" [defaultDate]="tuesdayOpenTime"
+                              [(ngModel)]="tuesdayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF TUESDAY -->
+                        <hr />
+      
+                        <!-- ! START OF wednesday -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="wednesdayStatus" [checked]="wednesdayOpenStatus"
+                              [(ngModel)]="wednesdayOpenStatus" #wednesdayStatus="ngModel">Wednesday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="wednesdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p style="color: red" *ngIf="
+                              wednesdayOpenTime.getHours() > wednesdayCloseTime.getHours()
+                            ">
+                              ! Check Hours !
+                            </p>
+      
+                            <p>
+                              OPEN wednesday @ {{ wednesdayOpenTime.getHours() }}:{{
+                                ("0"+wednesdayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES wednesday @ {{ wednesdayCloseTime.getHours() }}:{{
+                                ("0"+wednesdayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!wednesdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY wednesday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="wednesdayOpenTime" #wednesdayOpen="ngModel"
+                              [defaultDate]="wednesdayOpenTime" [(ngModel)]="wednesdayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="wednesdayCloseTime" #wednesdayClose="ngModel" [defaultDate]="wednesdayOpenTime"
+                              [(ngModel)]="wednesdayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF wednesday -->
+                        <hr />
+      
+                        <!-- ! START OF thursday -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="thursdayStatus" [checked]="thursdayOpenStatus"
+                              [(ngModel)]="thursdayOpenStatus" #thursdayStatus="ngModel">Thursday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="thursdayOpenStatus" class="ui-g-8 ui-sm-12">
+      
+                            <p style="color: red" *ngIf="
+                            thursdayOpenTime.getHours() > thursdayCloseTime.getHours()
+                          ">
+                              ! Check Hours !
+                            </p>
+                            <p>
+                              OPEN thursday @ {{ thursdayOpenTime.getHours() }}:{{
+                                ("0"+thursdayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES thursday @ {{ thursdayCloseTime.getHours() }}:{{
+                                ("0"+thursdayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!thursdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY thursday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="thursdayOpenTime" #thursdayOpen="ngModel" [defaultDate]="thursdayOpenTime"
+                              [(ngModel)]="thursdayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="thursdayCloseTime" #thursdayClose="ngModel" [defaultDate]="thursdayOpenTime"
+                              [(ngModel)]="thursdayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF thursday -->
+                        <hr />
+      
+                        <!-- ! START OF friday -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="fridayStatus" [checked]="fridayOpenStatus"
+                              [(ngModel)]="fridayOpenStatus" #fridayStatus="ngModel">Friday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="fridayOpenStatus" class="ui-g-8 ui-sm-12">
+      
+                            <p style="color: red" *ngIf="
+                              fridayOpenTime.getHours() > fridayCloseTime.getHours()
+                            ">
+                              ! Check Hours !
+                            </p>
+      
+                            <p>
+                              OPEN friday @ {{ fridayOpenTime.getHours() }}:{{
+                                ("0"+fridayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES friday @ {{ fridayCloseTime.getHours() }}:{{
+                                ("0"+fridayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!fridayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY friday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="fridayOpenTime" #fridayOpen="ngModel" [defaultDate]="fridayOpenTime"
+                              [(ngModel)]="fridayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="fridayCloseTime" #fridayClose="ngModel" [defaultDate]="fridayOpenTime"
+                              [(ngModel)]="fridayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF friday -->
+                        <hr />
+      
+                        <!-- ! START OF saturday -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="saturdayStatus" [checked]="saturdayOpenStatus"
+                              [(ngModel)]="saturdayOpenStatus" #saturdayStatus="ngModel">Saturday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="saturdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p style="color: red" *ngIf="
+                              saturdayOpenTime.getHours() > saturdayCloseTime.getHours()
+                            ">
+                              ! Check Hours !
+                            </p>
+      
+                            <p>
+                              OPEN saturday @ {{ saturdayOpenTime.getHours() }}:{{
+                                ("0"+saturdayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES saturday @ {{ saturdayCloseTime.getHours() }}:{{
+                                ("0"+saturdayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!saturdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY saturday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="saturdayOpenTime" #saturdayOpen="ngModel" [defaultDate]="saturdayOpenTime"
+                              [(ngModel)]="saturdayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="saturdayCloseTime" #saturdayClose="ngModel" [defaultDate]="saturdayOpenTime"
+                              [(ngModel)]="saturdayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF saturday -->
+                        <hr />
+      
+                        <!-- ! START OF sunday -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="sundayStatus" [checked]="sundayOpenStatus"
+                              [(ngModel)]="sundayOpenStatus" #sundayStatus="ngModel">Sunday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="sundayOpenStatus" class="ui-g-8 ui-sm-12">
+      
+                            <p style="color: red" *ngIf="
+                              sundayOpenTime.getHours() > sundayCloseTime.getHours()
+                            ">
+                              ! Check Hours !
+                            </p>
+                            <p>
+                              OPEN sunday @ {{ sundayOpenTime.getHours() }}:{{
+                                ("0"+sundayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES sunday @ {{ sundayCloseTime.getHours() }}:{{
+                                ("0"+sundayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!sundayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY sunday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="sundayOpenTime" #sundayOpen="ngModel" [defaultDate]="sundayOpenTime"
+                              [(ngModel)]="sundayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="sundayCloseTime" #sundayClose="ngModel" [defaultDate]="sundayOpenTime"
+                              [(ngModel)]="sundayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF sunday -->
+                        <hr />
+
+
+                        <button *ngIf="weeklyScheduleSubmitMode == 'create'" mat-raised-button color="primary" type="submit">
+                          Save New Schedule
+                        </button>
+      
+                        <button *ngIf="weeklyScheduleSubmitMode == 'update'" mat-raised-button color="primary" type="submit">
+                          Update Existing Schedule
+                        </button>
+      
+                        <button mat-raised-button color="warn" type="button" (click)="onHideWeeklySchedulePanel(modifyPanelForm)">
+                          Nevermind
+                        </button>
+
+
+                      </mat-card>
+                    </form>
+                  </p-panel>
+
+              <!-- Panel for Creating a new Weekly Schedule IN EDIT MODE -->
+              <p-panel *ngIf="showWeeklySchedulePanel && weeklyScheduleSubmitMode == 'edit'" class="ui-g-8 ui-sm-12" header="Edit Weekly Schedule" [toggleable]="true">
+
+                  <form #modifyPanelForm="ngForm" (ngSubmit)="onSubmitWeeklySchedulePanel(modifyPanelForm)" class="ui-g">
+                      <!-- Top Row For Deparptment Name -->
+                      <mat-form-field class="ui-g-12">
+                        <mat-label>Schedule Name</mat-label>
+                        <input matInput type="text" required ngModel name="scheduleFormName" #deptName="ngModel" [(ngModel)]="scheduleFormName" />
+                        <mat-error *ngIf="deptName.invalid">Enter Valid Name</mat-error>
+                      </mat-form-field>
+      
+                      <mat-card-subtitle>Manage Operation Hours</mat-card-subtitle>
+                      <mat-card class="ui-g-12">
+                        <!-- ! START OF MONDAY -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="mondayStatus" [checked]="mondayOpenStatus"
+                              [(ngModel)]="mondayOpenStatus" #mondayStatus="ngModel">Monday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="mondayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p style="color: red" *ngIf="
+                              mondayOpenTime.getHours() > mondayCloseTime.getHours()
+                            ">
+                              ! Check Hours !
+                            </p>
+      
+                            <p>
+                              OPEN MONDAY @ {{ mondayOpenTime.getHours() }}:{{
+                                ("0"+mondayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES MONDAY @ {{ mondayCloseTime.getHours() }}:{{
+                                ("0"+mondayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!mondayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY MONDAY</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="mondayOpenTime" #mondayOpen="ngModel" [defaultDate]="mondayOpenTime"
+                              [(ngModel)]="mondayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="mondayCloseTime" #mondayClose="ngModel" [defaultDate]="mondayOpenTime"
+                              [(ngModel)]="mondayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+                        <!-- ! End of Monday -->
+      
+                        <hr />
+      
+                        <!-- ! START OF TUESDAY -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="tuesdayStatus" [checked]="tuesdayOpenStatus"
+                              [(ngModel)]="tuesdayOpenStatus" #tuesdayStatus="ngModel">Tuesday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="tuesdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p style="color: red" *ngIf="
+                            tuesdayOpenTime.getHours() > tuesdayCloseTime.getHours()
+                          ">
+                              ! Check Hours !
+                            </p>
+                            <p>
+                              OPEN tuesday @ {{ tuesdayOpenTime.getHours() }}:{{
+                                ("0"+tuesdayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES tuesday @ {{ tuesdayCloseTime.getHours() }}:{{
+                                ("0"+tuesdayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!tuesdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY tuesday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="tuesdayOpenTime" #tuesdayOpen="ngModel" [defaultDate]="tuesdayOpenTime"
+                              [(ngModel)]="tuesdayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="tuesdayCloseTime" #tuesdayClose="ngModel" [defaultDate]="tuesdayOpenTime"
+                              [(ngModel)]="tuesdayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF TUESDAY -->
+                        <hr />
+      
+                        <!-- ! START OF wednesday -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="wednesdayStatus" [checked]="wednesdayOpenStatus"
+                              [(ngModel)]="wednesdayOpenStatus" #wednesdayStatus="ngModel">Wednesday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="wednesdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p style="color: red" *ngIf="
+                              wednesdayOpenTime.getHours() > wednesdayCloseTime.getHours()
+                            ">
+                              ! Check Hours !
+                            </p>
+      
+                            <p>
+                              OPEN wednesday @ {{ wednesdayOpenTime.getHours() }}:{{
+                                ("0"+wednesdayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES wednesday @ {{ wednesdayCloseTime.getHours() }}:{{
+                                ("0"+wednesdayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!wednesdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY wednesday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="wednesdayOpenTime" #wednesdayOpen="ngModel"
+                              [defaultDate]="wednesdayOpenTime" [(ngModel)]="wednesdayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="wednesdayCloseTime" #wednesdayClose="ngModel" [defaultDate]="wednesdayOpenTime"
+                              [(ngModel)]="wednesdayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF wednesday -->
+                        <hr />
+      
+                        <!-- ! START OF thursday -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="thursdayStatus" [checked]="thursdayOpenStatus"
+                              [(ngModel)]="thursdayOpenStatus" #thursdayStatus="ngModel">Thursday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="thursdayOpenStatus" class="ui-g-8 ui-sm-12">
+      
+                            <p style="color: red" *ngIf="
+                            thursdayOpenTime.getHours() > thursdayCloseTime.getHours()
+                          ">
+                              ! Check Hours !
+                            </p>
+                            <p>
+                              OPEN thursday @ {{ thursdayOpenTime.getHours() }}:{{
+                                ("0"+thursdayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES thursday @ {{ thursdayCloseTime.getHours() }}:{{
+                                ("0"+thursdayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!thursdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY thursday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="thursdayOpenTime" #thursdayOpen="ngModel" [defaultDate]="thursdayOpenTime"
+                              [(ngModel)]="thursdayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="thursdayCloseTime" #thursdayClose="ngModel" [defaultDate]="thursdayOpenTime"
+                              [(ngModel)]="thursdayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF thursday -->
+                        <hr />
+      
+                        <!-- ! START OF friday -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="fridayStatus" [checked]="fridayOpenStatus"
+                              [(ngModel)]="fridayOpenStatus" #fridayStatus="ngModel">Friday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="fridayOpenStatus" class="ui-g-8 ui-sm-12">
+      
+                            <p style="color: red" *ngIf="
+                              fridayOpenTime.getHours() > fridayCloseTime.getHours()
+                            ">
+                              ! Check Hours !
+                            </p>
+      
+                            <p>
+                              OPEN friday @ {{ fridayOpenTime.getHours() }}:{{
+                                ("0"+fridayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES friday @ {{ fridayCloseTime.getHours() }}:{{
+                                ("0"+fridayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!fridayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY friday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="fridayOpenTime" #fridayOpen="ngModel" [defaultDate]="fridayOpenTime"
+                              [(ngModel)]="fridayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="fridayCloseTime" #fridayClose="ngModel" [defaultDate]="fridayOpenTime"
+                              [(ngModel)]="fridayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF friday -->
+                        <hr />
+      
+                        <!-- ! START OF saturday -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="saturdayStatus" [checked]="saturdayOpenStatus"
+                              [(ngModel)]="saturdayOpenStatus" #saturdayStatus="ngModel">Saturday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="saturdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p style="color: red" *ngIf="
+                              saturdayOpenTime.getHours() > saturdayCloseTime.getHours()
+                            ">
+                              ! Check Hours !
+                            </p>
+      
+                            <p>
+                              OPEN saturday @ {{ saturdayOpenTime.getHours() }}:{{
+                                ("0"+saturdayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES saturday @ {{ saturdayCloseTime.getHours() }}:{{
+                                ("0"+saturdayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!saturdayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY saturday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="saturdayOpenTime" #saturdayOpen="ngModel" [defaultDate]="saturdayOpenTime"
+                              [(ngModel)]="saturdayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="saturdayCloseTime" #saturdayClose="ngModel" [defaultDate]="saturdayOpenTime"
+                              [(ngModel)]="saturdayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF saturday -->
+                        <hr />
+      
+                        <!-- ! START OF sunday -->
+                        <!-- Sub Row for the open/close status and readout -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <div class="ui-g-4 ui-sm-12">
+                            <mat-checkbox matInput type="checkbox" name="sundayStatus" [checked]="sundayOpenStatus"
+                              [(ngModel)]="sundayOpenStatus" #sundayStatus="ngModel">Sunday</mat-checkbox>
+                          </div>
+      
+                          <div *ngIf="sundayOpenStatus" class="ui-g-8 ui-sm-12">
+      
+                            <p style="color: red" *ngIf="
+                              sundayOpenTime.getHours() > sundayCloseTime.getHours()
+                            ">
+                              ! Check Hours !
+                            </p>
+                            <p>
+                              OPEN sunday @ {{ sundayOpenTime.getHours() }}:{{
+                                ("0"+sundayOpenTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                            <p>
+                              CLOSES sunday @ {{ sundayCloseTime.getHours() }}:{{
+                                ("0"+sundayCloseTime.getMinutes()).slice(-2)
+                            }}
+                            </p>
+                          </div>
+      
+                          <div *ngIf="!sundayOpenStatus" class="ui-g-8 ui-sm-12">
+                            <p>CLOSED EVERY sunday</p>
+                          </div>
+                        </div>
+      
+                        <!-- Sub Row for the open/close times -->
+                        <div class="ui-g" style="text-align:center; vertical-align:middle;">
+                          <!-- Open Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                              enforceSaneTime name="sundayOpenTime" #sundayOpen="ngModel" [defaultDate]="sundayOpenTime"
+                              [(ngModel)]="sundayOpenTime"></p-calendar>
+                          </div>
+      
+                          <!-- CLose Time -->
+                          <div class="ui-g-6 ui-sm-12">
+                            <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                              name="sundayCloseTime" #sundayClose="ngModel" [defaultDate]="sundayOpenTime"
+                              [(ngModel)]="sundayCloseTime"></p-calendar>
+                          </div>
+                        </div>
+      
+                        <!-- ! END OF sunday -->
+                        <hr />
+
+                        <button *ngIf="weeklyScheduleSubmitMode == 'edit'" mat-raised-button color="primary" type="submit">
+                          Update Existing Schedule
+                        </button>
+
+                        <button mat-raised-button color="secondary" type="button" (click)="applyScheduleAsCurrent()">
+                          Apply Current Schedule
+                        </button>
+      
+                        <button mat-raised-button color="warn" type="button" (click)="onHideWeeklySchedulePanel(modifyPanelForm)">
+                          Nevermind
+                        </button>
+
+
+                      </mat-card>
+                    </form>
+                  </p-panel>
+
+
+
+
+              <!-- <mat-card-subtitle>Manage Department Name</mat-card-subtitle> -->
+
+              
+            </mat-card>
+          </div>
+          </mat-expansion-panel>
+
+          <!-- Expansion Panel for Buisness Hours Overrides -->
+          <mat-expansion-panel style="overflow: visible">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Manage Buisness Hour Overrides</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="ui-g">
+            <!-- Card Holds accordion tabs for the BuisnessHoursOverrides for current editing departments -->
+            <mat-card class="ui-g-4 ui-sm-12">
+
+              <mat-card-title>
+                Buisness Hour Overrides
+              </mat-card-title>
+
+              <!-- PrimeNg Element for rendering nodes that are the buisnessHours Override Items for the currently loaded department -->
+              <p-tree [value]="departmentOverridesTree" selectionMode="single" [(selection)]="departmentOverridesSelectionItem"
+                    (onNodeSelect)="onOverrideNodeSelect($event)" (onNodeUnselect)="onOverrideNodeUnselect($event)"></p-tree>
+
+
+              <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="onShowCreateNewOverrideCard()">Create New Override
+                  Rule</button>
+              </mat-card-actions>
+
+
+
+            </mat-card>
+
+            <mat-card *ngIf="showEditOverrides" class="ui-g-8 ui-sm-12">
+
+                <h2 *ngIf="editOverrideMode"> Modify Override Hours Rule </h2>
+                <h2 *ngIf="!editOverrideMode"> Create Override Hours Rule </h2>
+  
+  
+                <!-- Form that holds Override Fields -->
+                <form #modifyOverridesForm="ngForm"
+                      (ngSubmit)="onSaveOverrideRule(modifyOverridesForm)"
+                      class="ui-g">
+  
+  
+  
+                  <!-- ROW for Reason and dayOfWeek -->
+                  <div class="ui-g-12">
+                    <mat-form-field class="ui-g-8 ui-sm-12">
+                      <mat-label>Buisness Hours Override Reason</mat-label>
+                      <input matInput type="text" required ngModel name="buisnessHoursOverrideReason"
+                        [(ngModel)]="buisnessHoursOverrideReason" #overrideReason="ngModel" />
+                      <mat-error *ngIf="overrideReason.invalid">Enter Valid Reason</mat-error>
+                    </mat-form-field>
+  
+                    <mat-form-field class="ui-g-4 ui-sm-12">
+                      <mat-label>Day of the week</mat-label>
+                      <mat-select [(ngModel)]="dayOfWeek" name="dayOfWeek" required>
+                        <mat-option value="7">Every Day</mat-option>
+                        <mat-option value="0">Monday</mat-option>
+                        <mat-option value="1">Tuesday</mat-option>
+                        <mat-option value="2">Wednesday</mat-option>
+                        <mat-option value="3">Thursday</mat-option>
+                        <mat-option value="4">Friday</mat-option>
+                        <mat-option value="5">Saturday</mat-option>
+                        <mat-option value="6">Sunday</mat-option>
+                      </mat-select>
+
+                    </mat-form-field>
+                  </div>
+  
+                  <!-- ROW for the isOpen and Override start/end dates -->
+                  <div class="ui-g-12">
+                    <div class="ui-g-2 ui-sm-12">
+                      <mat-checkbox matInput type="checkbox" name="isOpen" [checked]="isOpen" [(ngModel)]="isOpen"
+                        #overrideIsOpen="ngModel">isOpen</mat-checkbox>
+                    </div>
+  
+                    <div class="ui-g-5 ui-sm-12">
+                      Override Rule Start Date:
+                      <p-calendar [(ngModel)]="overrideStartDate" name="overrideStartDate"></p-calendar>
+                    </div>
+                    <div class="ui-g-5 ui-sm-12">
+                      Override Rule End Date:
+                      <p-calendar [(ngModel)]="overrideEndDate" name="overrideEndDate"></p-calendar>
+                    </div>
+  
+  
+                  </div>
+  
+                  <!-- Row for Alternate Open/Close Times -->
+  
+                  <div class="ui-g-12" *ngIf="isOpen">
+                    <!-- Open Time -->
+                    <div class="ui-g-6 ui-sm-12">
+                      Alternate Open Time
+                      <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Open Time"
+                        enforceSaneTime name="altOpenTime" #mondayOpen="ngModel" [defaultDate]="altOpenTime"
+                        [(ngModel)]="altOpenTime">
+                      </p-calendar>
+                    </div>
+  
+                    <!-- CLose Time -->
+                    <div class="ui-g-6 ui-sm-12">
+                      Alternate Close Time
+                      <p-calendar showTime="true" [timeOnly]="true" hourFormat="12" placeholder="Close Time"
+                        name="altCloseTime" #mondayClose="ngModel" [defaultDate]="altCloseTime"
+                        [(ngModel)]="altCloseTime">
+                      </p-calendar>
+                    </div>
+                  </div>
+  
+                  <!-- ROW for what the rule would sound like -->
+                  <div class="ui-g-12">
+  
+                    <p *ngIf="isOpen">
+                        OPEN
+                        <span *ngIf="dayOfWeek == 7"> Every Day</span>
+    
+                        <span *ngIf="dayOfWeek != 7">
+                          <span *ngIf="dayOfWeek == 0"> on Mondays</span>
+                          <span *ngIf="dayOfWeek == 1"> on Tuesdays</span>
+                          <span *ngIf="dayOfWeek == 2"> on Wednesdays</span>
+                          <span *ngIf="dayOfWeek == 3"> on Thursdays</span>
+                          <span *ngIf="dayOfWeek == 4"> on Fridays</span>
+                          <span *ngIf="dayOfWeek == 5"> on Saturdays</span>
+                          <span *ngIf="dayOfWeek == 6"> on Sundays</span>
+                        </span>
+    
+                        starting 
+  
+                      {{ overrideStartDate.getMonth() + 1 }}/{{ overrideStartDate.getDate() }}/{{overrideStartDate.getFullYear()}}
+                      through
+                      {{ overrideEndDate.getMonth() + 1 }}/{{ overrideEndDate.getDate() }}/{{overrideEndDate.getFullYear()}}
+                      -- OPEN TIME: {{ altOpenTime.getHours()}}:{{ ("0"+altOpenTime.getMinutes()).slice(-2) }}
+                      --> CLOSE TIME: {{ altCloseTime.getHours()}}:{{ ("0"+altCloseTime.getMinutes()).slice(-2) }}
+                    </p>
+    
+                    <p *ngIf="!isOpen">
+                      CLOSED
+                      <span *ngIf="dayOfWeek == 7"> Every Day</span>
+  
+                      <span *ngIf="dayOfWeek != 7">
+                        <span *ngIf="dayOfWeek == 0"> on Mondays</span>
+                        <span *ngIf="dayOfWeek == 1"> on Tuesdays</span>
+                        <span *ngIf="dayOfWeek == 2"> on Wednesdays</span>
+                        <span *ngIf="dayOfWeek == 3"> on Thursdays</span>
+                        <span *ngIf="dayOfWeek == 4"> on Fridays</span>
+                        <span *ngIf="dayOfWeek == 5"> on Saturdays</span>
+                        <span *ngIf="dayOfWeek == 6"> on Sundays</span>
+                      </span>
+  
+                      starting 
+  
+                      {{ overrideStartDate.getMonth() + 1 }}/{{ overrideStartDate.getDate() }}/{{overrideStartDate.getFullYear()}}
+                      through
+                      {{ overrideEndDate.getMonth() + 1 }}/{{ overrideEndDate.getDate() }}/{{overrideEndDate.getFullYear()}}
+  
+  
+                    </p>
+  
+                  </div>
+
+                  <!-- ROW for the form buttons -->
+                  <div class="ui-g-12">
+                    <div class="ui-g-6">
+                      <button *ngIf="editOverrideMode" mat-raised-button color="primary" type="submit">Update Rule</button>
+                      <button *ngIf="!editOverrideMode" mat-raised-button color="primary" type="submit">Create Rule</button>
+                    </div>
+  
+                    <div class="ui-g-6">
+                      <button mat-raised-button color="warn" type="button"
+                        (click)="onCloseEditOverrideCard()">Nevermind</button>
+                    </div>
+                  </div>
+  
+                </form>
+  
+              </mat-card>
+
+            </div>
+
+
+            <!-- Card Renders if showEditOverrides is   -->
+            
+
+
+
+
+          </mat-expansion-panel>
+
+
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Advanced Options</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            
+            <div class="ui-g">
+              <mat-card class="ui-g-12">
+
+                <mat-card-title>
+                  Advanced Options
+                </mat-card-title>
+
+                <form #updateDeptNameForm="ngForm" (ngSubmit)="onUpdateDepartmentName(updateDeptNameForm)" class="ui-g">
+                    <!-- Top Row For Deparptment Name -->
+                    <mat-form-field class="ui-g-12">
+                      <mat-label>Update Department Name</mat-label>
+                      <input matInput type="text" required ngModel name="scheduleFormName" #deptName="ngModel" placeholder="{{deptModifyItem.deptName}}" />
+                      <mat-error *ngIf="deptName.invalid">Enter Valid Name</mat-error>
+                    </mat-form-field>
+
+                    <button style="margin-top: 10px;" mat-raised-button color="primary" type="submit">
+                        Update Department Name
+                    </button>
+                </form>
+
+
+                <hr />
+
+
+                <button style="margin-top: 10px;" mat-raised-button color="warn" (click)="onDeleteDepartment()">
+                  *WARNING* Delete Department
+                </button>
+              </mat-card>
+            </div>
+          </mat-expansion-panel>
+
+
+          <button style="margin-top: 10px;" mat-raised-button color="warn" (click)="clearModifyPanel()">
+            Close Without saving changes
+          </button>
+
+        </mat-accordion>
+      </mat-card>
+
+
+
+
+
+
+
+
+
+
+
+      <!--  Display The Simple form to create a new department  -->
+      <mat-card *ngIf="showCreateNewDepartmentForm" class="ui-g-9 ui-sm-12 centered">
+        <mat-card-title>Create New Department</mat-card-title>
+
+        <form
+          #createNewDeptForm="ngForm"
+          (ngSubmit)="onCreateNewDepartment(createNewDeptForm)" class="ui-g">
+
+          <mat-form-field class="ui-g-12">
+            <mat-label>New Department Name</mat-label>
+
+            <input 
+              matInput
+              type="text"
+              required
+              name="newDeptName"
+              ngModel
+              #newDeptName="ngModel"/>
+
+            <mat-error *ngIf="newDeptName.invalid"></mat-error>
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit">
+            Save New Department
+          </button>
+
+        </form>
+
+
+
+      </mat-card>
+
+    </div>
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+    <!-- Closing of the ui-g -->
+</div>
