@@ -28,8 +28,8 @@
           <fa-icon [icon]="faHome" size="lg"></fa-icon>&ensp;Home
         </a>
 
-        <a *ngIf="userIsAuthenticated && userLevel == 'admin'" [routerLink]="['/auth/signup']" mat-list-item>
-          <fa-icon [icon]="addUser" size="lg"></fa-icon>&ensp;Admin - Create User
+        <a *ngIf="userIsAuthenticated && userLevel == 'admin'" [routerLink]="['/auth/signup']" (click)="sidenavRef.close()" mat-list-item>
+          <fa-icon [icon]="addUser" size="lg"></fa-icon>&ensp;Dev Create User
         </a>
 
         <!-- If User is an admin -->
@@ -50,22 +50,22 @@
         </a> -->
 
         <!-- 3D Print Job Submission Module -->
-        <a *ngIf="userIsAuthenticated" [routerLink]="['/account']" mat-list-item>
+        <a *ngIf="userIsAuthenticated" [routerLink]="['/account']" (click)="sidenavRef.close()" mat-list-item>
           <fa-icon [icon]="cube" size="lg"></fa-icon>&ensp;3D Print Jobs
         </a>
 
 
         <!-- STUDENT/USER LEVEL NAV ITEMS -->
-        <a *ngIf="userIsAuthenticated" [routerLink]="['/account']" mat-list-item>
+        <a *ngIf="userIsAuthenticated" [routerLink]="['/account']" (click)="sidenavRef.close()" mat-list-item>
           <fa-icon [icon]="userAccount" size="lg"></fa-icon>&ensp;User Account
         </a>
 
         <!-- LOGIN / LOGOUT Buttons, Contact Admin, Close Navigation Manually -->
-        <a *ngIf="!userIsAuthenticated" [routerLink]="['/auth/login']" mat-list-item>
+        <a *ngIf="!userIsAuthenticated" [routerLink]="['/auth/login']" (click)="sidenavRef.close()" mat-list-item>
           <fa-icon [icon]="faSignIn" size="lg"></fa-icon>&ensp;Login
         </a>
 
-        <a *ngIf="userIsAuthenticated" (click)="onLogout()" mat-list-item>
+        <a *ngIf="userIsAuthenticated" (click)="onLogout()" (click)="sidenavRef.close()" mat-list-item>
           <fa-icon [icon]="faSignOut" size="lg"></fa-icon>&ensp;Logout
         </a>
 
