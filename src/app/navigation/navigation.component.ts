@@ -15,7 +15,8 @@ import { faBars,
         faUserCircle,
         faArchway,
         faToriiGate,
-        faDungeon
+        faDungeon,
+        faCube
 
 
        } from '@fortawesome/free-solid-svg-icons';
@@ -42,6 +43,7 @@ export class NavigationComponent implements OnInit, OnDestroy{
   employeeGate = faToriiGate;
   userAccount = faUserCircle;
   studentGate = faArchway;
+  cube = faCube;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(

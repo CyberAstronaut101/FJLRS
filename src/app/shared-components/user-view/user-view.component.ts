@@ -18,23 +18,18 @@ export class UserViewComponent implements OnInit {
       | NewsView Component -- Shows the lab news
       | UserView Component -- Shows user info && and upcoming or important alerts
 
-      
+      Potential New components or expanding on this one could include 
+      listing the current open job tickets, listing upcoming appointments, 
+      etc.
   ======================================================================== */
 
-  
-
-
-  public user: User;
+  public user: User;  // Typescript 'object' to make sure that the user data is uniform throughout the application
 
   constructor(private authService:AuthService) { }
 
   ngOnInit() {
-    
-    // Get the current logged in user info
+    // Get the current logged in user info from the authService
     this.user = this.authService.getLocalUserVar();
-
-    // TODO GET THE FUTURE APPTS THAT THE USER MIGHT HAVE
-
   }
 
 }

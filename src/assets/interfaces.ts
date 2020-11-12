@@ -1,3 +1,33 @@
+/*==================================================================================
+====================================================================================
+
+    MASTER INTERFACES FILE
+
+    Unlike the wild west of JS, TypeScript has the ability to enforce TYPES in variables.
+
+    This file specifically holds interfaces that can be imported in .ts files and 
+    should be used to ensure that the data that is being recieved from the API
+    is full and correct.
+
+    For instance, if we get something back from the API that should have the structure
+    of the  User interface, but is missing a few files, the type checking will fail 
+    and setting the incoming data to a variable will throw errors because the incoming
+    data does not look like it is expecting.
+
+    IN general, if there exists a DB schema, there should be an interface that matches
+    the fields exactly (unless before returning data to the client the API sanatizes the fields)
+
+
+    NOTE FOR CAPSTONE PROJECT
+
+    Most of these interfaces can be nuked, but we should have a process in place to 
+    first refactor the code before removing references here because the angular 
+    app will start throwing a fit curing compiling.
+
+====================================================================================
+====================================================================================*/
+
+
 export interface Socket {
     on(event: string, callback: (data: any) => void );
     emit(event: string, data: any);
