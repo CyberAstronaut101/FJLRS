@@ -1,16 +1,26 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+/*===========================================================================
+  app-routing.module.ts
 
-// AuthGuard Ensures that the user Is Logged In
+  This module contains all the routes and the data that should be loaded if 
+  the route is called within the angular application.
+
+  Examples of how to call routes within Angular Typescript or creating buttons
+  that navigate to pages
+
+
+  HTML Buttons using [routerLink] 
+  ---------------------------------
+  <a [routerLink]="['/account']"> FOOBAR </a> 
+
+===========================================================================*/
 import { AuthGuard } from './auth/auth.guard';
-// import { PrintingStudioComponent } from './printing-studio/printing-studio.component';
+
+// This error component could be used but bad paths just route to the root of the app -- localhost:4200/
 // import { ErrorComponent } from './error/error.component';
 
-
-/*
-path '' -- localhost:3000/
-*/
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full'},
     { path: 'home', loadChildren: './home/home.module#HomeModule'},
@@ -19,15 +29,6 @@ const routes: Routes = [
     { path: 'employee', canActivate: [AuthGuard], loadChildren: './employee/employee.module#EmployeeModule'},
     { path: 'student', canActivate: [AuthGuard], loadChildren: './student/student.module#StudentModule'},
     { path: 'woodshop', canActivate: [AuthGuard], loadChildren: './woodshop/woodshop.module#WoodshopModule'},
-    
-
-
-  // { path: '', loadChildren: './app.module#AppModule'},
-//   { path: 'home', loadChildren: './home/home.module#HomeModule'},
-//   // { path: '', redirectTo: 'printing-studio', pathMatch: 'full'}, // was redirecting for less clicks
-//   { path: 'printing-studio', loadChildren: './printing-studio/printing-studio.module#PrintingStudioModule' },      // Main Page For Now
-//   { path: 'admin', loadChildren: './admin-panel/admin-panel.module#AdminPanelModule' },
-  // { path: '**', component: ErrorComponent }
 ];
 
 @NgModule({
@@ -36,15 +37,3 @@ const routes: Routes = [
   providers: [AuthGuard]
 })
 export class AppRoutingModule { }
-
-/*
-  {
-    path: 'create', // localhost:4200/create
-    component: TodoCreateComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'edit/:todoId',
-    component: TodoCreateComponent,
-    canActivate: [AuthGuard]
-  },*/

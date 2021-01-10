@@ -18,8 +18,6 @@ export class NewsViewComponent implements OnInit {
   /*
     TODO
       Add Pagenation and limit to the first 3 articles?
-
-
   */
 
   ngOnInit() {

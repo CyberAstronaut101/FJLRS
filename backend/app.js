@@ -110,15 +110,14 @@ mongoose.set('useFindAndModify', false); // https://mongoosejs.com/docs/deprecat
 
 // So we also have a password reset link that is set as a process env value
 
+// Old config from running docker images on OpenShift platform
 // if(mongoURL){
 //     console.log('mongoURL from openshift is: ' + mongoURL);
-    
 //     // Set reset password link to point to the okc cluster
 //     process.env.resetPasswordLink = "http://fjlrs.origin.uark.edu/auth/resetpassword/";
 // } else {
 //     console.log('mongoURL was empty, setting to local development')
 //     mongoURL = 'mongodb://localhost:27017/fj_lrs_db'
-
 //     // Set the reset password link to point to localhost development in this case
 //     process.env.resetPasswordLink = "http://localhost:4200/auth/resetpassword/";
 // }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -15,10 +15,12 @@ import { faBars,
         faUserCircle,
         faArchway,
         faToriiGate,
-        faDungeon
+        faDungeon,
+        faCube
 
 
        } from '@fortawesome/free-solid-svg-icons';
+import { MatSidenavModule } from '@angular/material';
 
 
 @Component({
@@ -27,6 +29,9 @@ import { faBars,
   styleUrls: ['./navigation.component.css'],
 })
 export class NavigationComponent implements OnInit, OnDestroy{
+
+  @ViewChild('sidenav', {static: false}) sidenavRef: MatSidenavModule;
+
   private authListenerSubs: Subscription;
   userIsAuthenticated = false;
   userLevel = 'default';
@@ -42,6 +47,7 @@ export class NavigationComponent implements OnInit, OnDestroy{
   employeeGate = faToriiGate;
   userAccount = faUserCircle;
   studentGate = faArchway;
+  cube = faCube;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
