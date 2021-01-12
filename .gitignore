@@ -1,6 +1,9 @@
 node_modules
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+/backend/config/config.development.json
+/backend/config/config.production.json
+
 # compiled output
 /dist
 /backend/angular

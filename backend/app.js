@@ -8,6 +8,12 @@ const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const  swaggerJSDoc = require('swagger-jsdoc');
 
+// IMPORTANT !!!!!! IMPORTANT
+// This is where you define which config file that is normally hidden to pull the DB credentials from
+// config_data = require('./config/config.example.json');
+// config_data = require('./config/config.development.json');
+const config_data = require('./config/config.production.json');
+
 /*=================================================================================
 Express.js Setup
 
@@ -84,12 +90,8 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
 // Setup port, ip, monogoURL
 var port = process.env.PORT || 8080,
     ip   =  '0.0.0.0' || process.env.IP,
-    mongoURL =  process.env.MONGO_URL,
+    mongoURL =  process.env.MONGO_URL || config_data.mongoURL,
     mongoURLLabel = "";
-
-// This is bad, but its fine for now. This is a mongoDB isntance hosted on atlas
-// You can use this string with MongoDB Compass to access the database with a GUI client <-- !! REALLY NICE !!
-mongoURL = 'mongodb+srv://fjlrs_db_user:NmSWE5Pua2ETYmM@fjlrsddb01.6s7cw.gcp.mongodb.net/fjlrsddb01?retryWrites=true&w=majority';
 
 // Create the mongoose connection -- MON
 var db = mongoose.connection;
