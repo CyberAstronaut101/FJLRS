@@ -11,13 +11,13 @@ var userSchema = mongoose.Schema({
         email: { type: String, require: true, unique: true},
         password: String,
         userLevel: String,
-        woodshopHistory: [
+        woodshopHistory: [//changing individual log to list of logins
             {
                 checkInDate: Date,
                 checkOutDate: Date
             }
         ],
-        laserHistory: [
+        laserHistory: [//changing individual log to list of logins
             {
                 machineID: String,
                 apptStartDate: Date,
@@ -27,7 +27,7 @@ var userSchema = mongoose.Schema({
                 created_at: Date
             }
         ],
-        printerHistory: [
+        printerHistory: [//changing individual log to list of logins
             {
                 submitDate: Date,
                 price: Number
