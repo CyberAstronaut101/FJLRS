@@ -24,7 +24,8 @@ import { AuthGuard } from './auth/auth.guard';
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full'},
     { path: 'home', loadChildren: './home/home.module#HomeModule'},
-    { path: 'auth', loadChildren: './auth/auth.module#AuthModule' },
+    { path: 'auth', loadChildren: './auth/auth.module#AuthModule'},
+    { path: 'account', loadChildren: './account/account.module#AccountModule'},
     { path: 'admin', canActivate: [AuthGuard], loadChildren: './admin/admin.module#AdminModule'},
     { path: 'employee', canActivate: [AuthGuard], loadChildren: './employee/employee.module#EmployeeModule'},
     { path: 'student', canActivate: [AuthGuard], loadChildren: './student/student.module#StudentModule'},
