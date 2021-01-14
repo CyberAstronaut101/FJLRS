@@ -26,6 +26,7 @@ const routes: Routes = [
     { path: 'home', loadChildren: './home/home.module#HomeModule'},
     { path: 'auth', loadChildren: './auth/auth.module#AuthModule'},
     { path: 'account', loadChildren: './account/account.module#AccountModule'},
+    { path: 'printerlab', loadChildren: './printerlab/printerlab.module#PrinterlabModule'},
     { path: 'admin', canActivate: [AuthGuard], loadChildren: './admin/admin.module#AdminModule'},
     { path: 'employee', canActivate: [AuthGuard], loadChildren: './employee/employee.module#EmployeeModule'},
     { path: 'student', canActivate: [AuthGuard], loadChildren: './student/student.module#StudentModule'},
