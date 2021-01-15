@@ -12,8 +12,7 @@ import { EmailAccount, EmailHistory } from '../../../assets/interfaces';
 
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatDialogConfig, MatDialog, MatTableDataSource } from '@angular/material';
 import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { NewemailaccountComponent } from 'src/app/shared-components/newemailaccount/newemailaccount.component';
 import { SelectionModel } from '@angular/cdk/collections';

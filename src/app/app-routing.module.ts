@@ -34,7 +34,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })], // , { enableTracing: true }
+  imports: [RouterModule.forRoot(routes)], // , { enableTracing: true }
   exports: [RouterModule],   // so app.module.ts can use outside
   providers: [AuthGuard]
 })

@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChange, ViewChild } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatDialogConfig, MatDialog, MatTableDataSource } from '@angular/material';
 
 import { EmailService } from '../email.service';
 import { EmailHistory } from 'src/assets/interfaces';

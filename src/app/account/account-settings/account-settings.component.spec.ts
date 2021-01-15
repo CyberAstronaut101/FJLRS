@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountSettingsComponent } from './account-settings.component';
 
@@ -6,7 +6,7 @@ describe('AccountSettingsComponent', () => {
   let component: AccountSettingsComponent;
   let fixture: ComponentFixture<AccountSettingsComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AccountSettingsComponent ]
     })

@@ -20,7 +20,7 @@ import { faBars,
 
 
        } from '@fortawesome/free-solid-svg-icons';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material';
 
 
 @Component({
@@ -30,7 +30,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 })
 export class NavigationComponent implements OnInit, OnDestroy{
 
-  @ViewChild('sidenav') sidenavRef: MatSidenavModule;
+  @ViewChild('sidenav', {static: false}) sidenavRef: MatSidenavModule;
 
   private authListenerSubs: Subscription;
   userIsAuthenticated = false;
