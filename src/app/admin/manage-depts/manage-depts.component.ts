@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 // For shared confirmation-dialog component
-import { MatDialogConfig, MatDialog, MatTableDataSource } from '@angular/material';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { NewDeptInfoDialogComponent } from 'src/app/shared-components/new-dept-info-dialog/new-dept-info-dialog.component';
 import { MessageService, Message, TreeNode } from 'primeng/api';
 import { ManageDeptService } from './manage-depts.service';

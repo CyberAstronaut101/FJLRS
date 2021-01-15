@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ManageAlertEmailsComponent } from './manage-alert-emails.component';
 
@@ -6,7 +6,7 @@ describe('ManageAlertEmailsComponent', () => {
   let component: ManageAlertEmailsComponent;
   let fixture: ComponentFixture<ManageAlertEmailsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ManageAlertEmailsComponent ]
     })

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AccountRoutingModule } from './account-routing.module';
 import { AccountHomeComponent } from './account-home/account-home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
-import { MatTabsModule } from '@angular/material';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [AccountHomeComponent, AccountSettingsComponent],

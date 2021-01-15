@@ -6,7 +6,7 @@ import { NewsService } from './news.service';
 import { News } from 'src/assets/interfaces';
 import { AuthService } from 'src/app/auth/auth.service';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'admin-manage-news',

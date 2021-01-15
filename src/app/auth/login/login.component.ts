@@ -4,7 +4,7 @@ import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
 
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { NewemailaccountComponent } from 'src/app/shared-components/newemailaccount/newemailaccount.component';
 import { UserService } from 'src/app/admin/manage-users/user.service';
 
