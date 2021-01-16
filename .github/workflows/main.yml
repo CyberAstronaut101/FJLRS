@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Test Angular Prod Build
 
 # Controls when the action will run. 
 on:
@@ -24,6 +24,14 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        
+      # setup the node environment
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - run: npm install
+      # Try to build Angular with production flag
+      - run: ng build --prod
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
