@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const checkAuth = require("../middleware/check-auth");
@@ -113,7 +113,7 @@ router.post("/login", (req, res, next) => {
 
                 // Send response to client, error code 401
                 return res.status(401).json({
-                    message: "Auth Failed! Error 0x001"    // Error 0x001 - User Email / Username does not exist
+                    message: "No account exists."
                 })
             }
             
@@ -134,7 +134,7 @@ router.post("/login", (req, res, next) => {
                 // Password Mismatch
                 console.log('Password mismatch');
                 return res.status(401).json({
-                    message: "Auth Failed! Error 0x002"   // Error 0x002 - User Password Wrong
+                    message: "Account authentication failed"
                 });
             }
 
@@ -166,7 +166,7 @@ router.post("/login", (req, res, next) => {
             console.log(err);
             console.log('final catch');
             return res.status(401).json({
-                message: "Auth Failed! Error 0x003"     // Error 0x003 - general catch all for any errors in DB queries
+                message: "Unknown DB Error"     // Error 0x003 - general catch all for any errors in DB queries
             });
         });
 });

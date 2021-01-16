@@ -16,9 +16,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         // .handle returns obervable stream
         return next.handle(req).pipe(
             catchError((error: HttpErrorResponse) => {
-                let errorMessage = "default error message, something is actually fucked";
+                let errorMessage = "default error message, something is actually really messed up...";
 
-                console.log('!@#!@#!@# error from return data stream -->');
+                console.log('##### ERROR MESSAGE RETURNED FROM API SERVER #####');
                 console.log(error);
 
 
@@ -41,7 +41,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 } else {
                     // there is an Error, but no error Message Returned from server
 
-                    errorMessage = "*** ADMIN FIX *** API server not responding. Sending Alert to Admin...";
+                    errorMessage = "Excuse me! I had trouble reaching out the the API.. Please let the system administrators know about this error!";
 
                     // TODO send emails to the admins saying that the API server is finsihed
                 }

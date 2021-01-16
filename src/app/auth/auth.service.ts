@@ -114,7 +114,7 @@ export class AuthService {
                 // If there was an error returned from the login API call
                 console.log('Error from http login post call: ');
                 console.log(error)
-                this.authStatusListener.next(false);
+                this.authStatusListener.next(false);                // User is not authenticated
 
                 this.pMessageUpdateListener.next({
                     severity: 'error',

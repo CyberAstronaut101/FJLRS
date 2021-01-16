@@ -38,16 +38,18 @@ export class LoginComponent implements OnInit, OnDestroy {
     constructor(public authService: AuthService,
                 public userService: UserService,
                 private messageService: MessageService,
-                private confirmationService: ConfirmationService,
+                private confirmationService: ConfirmationService,       // ? Figure out why we needed this, not referenced
                 private dialog: MatDialog){}
 
     ngOnInit() {
+        // When the login page loads, check to see if the user is authenticated by setting up listener on the auth service
         this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
             authStatus => {
                 this.isLoading = false;
             }
         ); 
 
+        // This setups a listener from the authService for messages coming back from the API - pMessages
         this.pMessageSub = this.authService.getPMessageUpdateListener().subscribe(
             newMsg => {
                 console.log('PMessages updated from authService call!');
@@ -87,6 +89,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     onLogin(form: NgForm) {
+
+        // Clear any of the pMessages from previous attempts on a new login attempt.
+        this.messageService.clear();
+
         console.log("Login Button pressed with form values: ");
         console.log(form.value);
         if(form.invalid) {
