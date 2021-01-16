@@ -1,4 +1,5 @@
 # This is a basic workflow to help you get started with Actions
+# Referenced: https://coryrylan.com/blog/building-angular-cli-projects-with-github-actions
 
 name: Test Angular Prod Build
 
@@ -24,24 +25,23 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+    
+      - name: Cache node modules
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
         
       # setup the node environment
+      - name: Node v12 setup
       - uses: actions/setup-node@v2
         with:
           node-version: '12'
+          
+      # Install npm packages and run the angular production build
+      - name: npm ci and npm run build
       - run: npm install
       # Try to build Angular with production flag
-      - run: pwd
-      - run: ls
-      - run: npm run-script build
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-    
+      - run: npm run-script build  
