@@ -12,7 +12,18 @@ const  swaggerJSDoc = require('swagger-jsdoc');
 // This is where you define which config file that is normally hidden to pull the DB credentials from
 // config_data = require('./config/config.example.json');
 // config_data = require('./config/config.development.json');
-const config_data = require('./config/config.production.json');
+
+try {
+    config_data = require('./config/config.production.json');
+} catch (e) {
+    console.log("===================================================");
+    console.log("Looks like app.js has an error trying to import the");
+    console.log("Config file at /backend/config/");
+    console.log("Make sure that the file it is trying to require()");
+    console.log("Exists and has a matching name.");
+    console.log("===================================================");
+    process.exit(1);
+}
 
 /*=================================================================================
 Express.js Setup
@@ -97,9 +108,20 @@ var port = process.env.PORT || 8080,
 var db = mongoose.connection;
 db.on('error', function callback() {
     console.error.bind(console, 'connection error:');
-    console.error("TODO ALERT ADMIN THAT THE DB IS OFFLINE");
-    // Wait like 20 seconds and then try again
-    // wait(10);
+    /*
+        If this section executes, it means that the connection to the MongoDB instance failed
+        This could be because there is no config file under /backend/config/ that has a valid mongoURL
+        or that the MongoDB atlas instance is down - but this reason is highly unlikely.
+        For now, I am just going to add a nice message to the console that will address the config issue
+    */
+    console.log();
+    console.log("=================================================");
+    console.log("woooah, looks like the API cannot successfully");
+    console.log("connect to the MongoDB instance. Make sure that ");
+    console.log("the mongoURL in the config file is correct");
+    console.log("=================================================");
+    // Killing API process b/c the db is down. 
+    process.exit(1);
 
 });
 db.once('open', function callback () {
