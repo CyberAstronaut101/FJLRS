@@ -1,5 +1,7 @@
 # FayjonesLabApp
 
+[![build status](https://github.com/ejmason101/FJLRS/workflows/Build/badge.svg)](https://github.com/ejmason101/FJLRS/actions)
+
 ## Preparing Development Environment
 
 Node Version Manager [Windows Downloads](https://github.com/coreybutler/nvm-windows/releases) running node v12.18.3 currently. Please ensure that your node is the correct version by running `node -v`
