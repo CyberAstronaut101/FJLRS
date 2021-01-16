@@ -39,9 +39,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '12'
-          
-      # Install npm packages and run the angular production build
-      - name: NPM install and Production Build
-        run: |
+      - run: |
           npm install
           npm run-script build
