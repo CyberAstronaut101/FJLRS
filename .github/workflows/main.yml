@@ -33,7 +33,7 @@ jobs:
       # Try to build Angular with production flag
       - run: pwd
       - run: ls
-      - run: npm build
+      - run: npm run-script build
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
