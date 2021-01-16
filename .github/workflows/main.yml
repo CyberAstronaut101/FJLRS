@@ -41,7 +41,8 @@ jobs:
           node-version: '12'
           
       # Install npm packages and run the angular production build
-      - name: npm ci and npm run build
+      - name: Install NPM packages
       - run: npm install
       # Try to build Angular with production flag
+      - name: Run Angular Production Build
       - run: npm run-script build  
