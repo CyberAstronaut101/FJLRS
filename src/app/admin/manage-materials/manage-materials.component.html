@@ -1,3 +1,121 @@
-<p>
-  manage-materials works!
-</p>
+<div class="ui-g">
+
+  <mat-card class="ui-g-11 centered">
+
+          <h1 style="text-align: center"> Manage Build Labs News </h1>
+
+          <mat-form-field>
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search News Articles">
+              </mat-form-field>
+  
+              
+              <table mat-table [dataSource]="newsDataSource" class="mat-elevation-z8">
+                  
+                  <mat-spinner *ngIf="isLoading"></mat-spinner>
+                  <!-- Checkbox Column -->
+                  <ng-container matColumnDef="select">
+                      <th mat-header-cell *matHeaderCellDef>
+                          <mat-checkbox (change)="$event ? masterToggle() : null"
+                              [checked]="selection.hasValue() && isAllSelected()"
+                              [indeterminate]="selection.hasValue() && !isAllSelected()">
+                          </mat-checkbox>
+                      </th>
+                      <td mat-cell *matCellDef="let row">
+                          <mat-checkbox (click)="onItemSelected(row)" (change)="$event ? selection.toggle(row) : null"
+                              [checked]="selection.isSelected(row)">
+                          </mat-checkbox>
+                      </td>
+                  </ng-container>
+  
+  
+                  <!-- Headline Column -->
+                  <ng-container matColumnDef="Article Headline">
+                      <th mat-header-cell *matHeaderCellDef> Article Headline </th>
+                      <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                  </ng-container>
+  
+                  <!-- Posted Date Column -->
+                  <ng-container matColumnDef="Posted Date">
+                      <th mat-header-cell *matHeaderCellDef> Posted Date </th>
+                      <td mat-cell *matCellDef="let element"> {{element.postedDate}} </td>
+                  </ng-container>   
+                  
+                  <!-- Content Column -->
+                  <ng-container matColumnDef="Content">
+                          <th mat-header-cell *matHeaderCellDef> Content </th>
+                          <td mat-cell *matCellDef="let element"> {{element.content}} </td>
+                      </ng-container>    
+  
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+              </table>
+
+              <mat-paginator [length]="resultsLength" [pageSize]="5"></mat-paginator>
+
+              <button (click)="onCreateNewsPrep()"
+                  mat-raised-button
+                  color="primary">
+                  Create News Article</button>
+  </mat-card>
+
+  <mat-card class="ui-g-11 centered" *ngIf="showEdit" style="margin-top:10px;">
+      
+          <mat-spinner *ngIf="isLoading"></mat-spinner>
+
+          <mat-card-title *ngIf="mode == 'create'">
+              Create News Post
+          </mat-card-title>
+
+          <mat-card-title *ngIf="mode == 'edit'">
+              Edit News Post
+          </mat-card-title>
+
+          <form #newsForm="ngForm" *ngIf="!isLoading">
+
+              <mat-form-field>
+                  <mat-label>News Title</mat-label>
+                  <input matInput type="text" name="title" [ngModel]="news?.title" required #title="ngModel">
+                  <mat-error *ngIf="title.invalid">Enter Valid Title</mat-error>
+              </mat-form-field>
+
+              <mat-form-field>
+                  <mat-label>Body of News Article</mat-label>
+                  <textarea matInput rows="6" name="content" [ngModel]="news?.content" required
+                      #content="ngModel"></textarea>
+
+                  <!-- <p-editor name="content" [style]="{'height':'320px'}"></p-editor> -->
+
+                  <mat-error *ngIf="content.invalid">Enter Valid Content</mat-error>
+
+              </mat-form-field>
+
+              <button *ngIf="mode == 'edit'"
+                      mat-raised-button color="accent"
+                      (click)="onSaveNews(newsForm)">Update News Article
+              </button>
+
+              <button *ngIf="mode == 'create'" mat-raised-button color="primary" (click)="onSaveNews(newsForm)">Save
+                  News Article
+              </button>
+
+              
+  
+              <button *ngIf="mode == 'edit'" mat-raised-button color="warn" (click)="onDeleteNews(newsForm)">Delete
+                  News Article
+              </button>
+
+              <button *ngIf="mode == 'edit'" mat-raised-button color="primary"
+                  (click)="onCreateNewsPrep(newsForm)">New
+                  News Article
+              </button>
+
+              <button mat-raised-button color="warn" (click)="clearEditPanel()">Cancel
+                  </button>
+
+          </form>
+
+
+  </mat-card>
+
+</div>
