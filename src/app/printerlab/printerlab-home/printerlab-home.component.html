@@ -1,6 +1,31 @@
-<p>
-  printerlab-home works!
-</p>
+<div class="ui-g centered admin-panel-wrapper">
+  <div class="ui-g-12">
+    <h2 style="text-align: center">3D Print Lab</h2>
+
+    <mat-tab-group mat-align-tabs="center" dynamicHeight>
+      <mat-tab label="Current Print Queue">
+
+        This will give users a quick view at the current queue for print jobs
+
+      </mat-tab>
+
+      <mat-tab label="Request Print Job">
+
+        <print-job-form></print-job-form>
+
+      </mat-tab>
+
+      <mat-tab label="Account Settings">
+        <!-- <app-account-settings></app-account-settings> -->
+      </mat-tab>
 
 
-This is where we will make components for the forms to submit new jobs/etc
+      <!-- <mat-tab label="Alert System"><admin-manage-alert-emails></admin-manage-alert-emails></mat-tab> -->
+      <!-- <mat-tab label="Operation Hours"><app-manage-hours></app-manage-hours></mat-tab> -->
+
+      <!-- <mat-tab label="Manage Departments"><app-manage-depts></app-manage-depts></mat-tab> -->
+
+
+    </mat-tab-group>
+  </div>
+</div>

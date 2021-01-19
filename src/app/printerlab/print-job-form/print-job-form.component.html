@@ -1,0 +1,74 @@
+<div class="ui-g">
+
+  <mat-card class="ui-g-11 centered" style="margin-top:10px;">
+        
+    <!-- <mat-spinner *ngIf="isLoading"></mat-spinner> -->
+  
+    <mat-card-title>
+        Submit new 3D print request
+    </mat-card-title>
+  
+    <!-- <mat-card-title >
+        Edit 3D print request
+    </mat-card-title> -->
+
+    
+  
+  
+    <form #newsForm="ngForm" *ngIf="!isLoading">
+  
+        <mat-form-field>
+            <mat-label>Upload .STL files</mat-label>
+            <!-- <input matInput type="text" name="title" [ngModel]="news?.title" required #title="ngModel">
+            <mat-error *ngIf="title.invalid">Enter Valid Title</mat-error> -->
+        </mat-form-field>
+
+        <p-fileUpload name="myfile[]" url="./upload.php"></p-fileUpload>
+
+        <p></p>
+        <mat-divider [inset]="true"></mat-divider>
+        <p></p>
+
+
+  
+        <mat-form-field>
+            <mat-label>Body of News Article</mat-label>
+            <textarea matInput rows="6" name="content" [ngModel]="news?.content" required
+                #content="ngModel"></textarea>
+  
+            <!-- <p-editor name="content" [style]="{'height':'320px'}"></p-editor> -->
+  
+            <mat-error *ngIf="content.invalid">Enter Valid Content</mat-error>
+  
+        </mat-form-field>
+  
+        <button *ngIf="mode == 'edit'"
+                mat-raised-button color="accent"
+                (click)="onSaveNews(newsForm)">Update News Article
+        </button>
+  
+        <button *ngIf="mode == 'create'" mat-raised-button color="primary" (click)="onSaveNews(newsForm)">Save
+            News Article
+        </button>
+  
+        
+  
+        <button *ngIf="mode == 'edit'" mat-raised-button color="warn" (click)="onDeleteNews(newsForm)">Delete
+            News Article
+        </button>
+  
+        <button *ngIf="mode == 'edit'" mat-raised-button color="primary"
+            (click)="onCreateNewsPrep(newsForm)">New
+            News Article
+        </button>
+  
+        <button mat-raised-button color="warn" (click)="clearEditPanel()">Cancel
+            </button>
+  
+    </form>
+  
+  
+  </mat-card> 
+
+
+</div>

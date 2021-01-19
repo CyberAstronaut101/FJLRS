@@ -1,0 +1,8 @@
+.centered {
+    margin: 0 auto;
+}
+
+mat-form-field,
+textarea {
+    width: 100%;
+}
