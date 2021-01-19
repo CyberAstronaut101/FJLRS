@@ -186,6 +186,7 @@ const buisnessHoursRoutes = require("./routes/buisnessHours");
 const printerQueueRoutes = require("./routes/printerQueue");
 const homeRoutes = require("./routes/home");
 const deptRoutes = require("./routes/depts.js");
+const materialRoutes = require("./routes/material.js");
 // The files above are then used here to define which request paths they should handle
 app.use("/api/todos", todosRoutes);
 app.use("/api/user", userRoutes);
@@ -194,7 +195,7 @@ app.use("/api/laser", laserRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/buisnessHours", buisnessHoursRoutes);
-
+app.use("/api/material", materialRoutes);
 // var swaggerFrontEndOptions = {explorer: true}
 // This serves the swagger docs @ :/api-docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
