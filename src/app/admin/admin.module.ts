@@ -35,6 +35,7 @@ import { FullCalendarComponent } from '@fullcalendar/angular';
 import { PanelModule } from 'primeng/panel';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { TreeModule } from 'primeng/tree';
+import { ManageMaterialsComponent } from './manage-materials/manage-materials.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { TreeModule } from 'primeng/tree';
     NewemailaccountComponent,
     EmailhistorytableComponent,
     ManageDeptsComponent,
-    EnforceSaneTimeDirective
+    EnforceSaneTimeDirective,
+    ManageMaterialsComponent
   ],
   imports: [
     CommonModule,
