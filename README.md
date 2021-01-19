@@ -1,127 +1,37 @@
 # FayjonesLabApp
 
+[![build status](https://github.com/ejmason101/FJLRS/workflows/Build/badge.svg)](https://github.com/ejmason101/FJLRS/actions)
+
 ## Preparing Development Environment
 
-Node Version Manager [Windows Downloads](https://github.com/coreybutler/nvm-windows/releases) running node v12.18.3 currently
+Node Version Manager [Windows Downloads](https://github.com/coreybutler/nvm-windows/releases) running node v12.18.3 currently. Please ensure that your node is the correct version by running `node -v`
 
-Using Angular 8 currently: `npm install -g @angular/cli`
+Using Angular 8 currently, you do not need to install angular globally, just pull down this project and run `npm install` with node v12.18.3
 
-Download MongoDB Compass - will give MongoDB connection creds in discord
+Download MongoDB Compass. This application is used to interface with the MongoDB Atlas instance. The connect string is shared in the developement discord under `#config-files`
 
-Using Visual Studio Code w/ plugins:
+## Running the project
+
+When developing locally, two servers need to be running locally on your computer. One is the Angular development server, started via `ng serve`, and the other is the Node API, started with `npm start` OR `node ./backend/server.js`.
+
+The Angular development server will compile and serve the website on `localhost:4200`. The API will run on `localhost:8080`.
+
+Make sure that when you first clone, you make a copy of `./backend/config/config.example.json`, rename the copy to `config.production.json`, and replace the mongoURL with the secret shared in the discord. If you do not update the config file, the Node API will error out because a connection to the database was not successful. If you are running into any problems ping me on discord.
+
+In the production version, the Angular project is first compiled via `ng build prod` and the output is saved to `./backend/angular`. The Node API is the main service running on the production server. If a request comes in that is not prefixed with `/api` OR does not match any of the API routes, then the Node API will serve the static production files located in `./backend/angular`.
 
 ## Technology Stack
 
 MEAN (MongoDB, Express.js, Angular, Node.js) used to build this application.
 
-#### Accessing MongoDB shell
+## Libraries used within this project
 
-First Navigate to Resources->Secrets->nodejs-mongo-persistent
+There are a variety of different libraries imported to this project. See the below list for a name, description, and the link to documentation.
 
-This Secret should have 3 entries, the `database-admin-password`, `database-password`, and `database-user`
+Material and PrimeNG are the two main component libraries that are being used in this project:
 
-If you then naviagate to the MongoDB Pod -> Terminal
-
-To open the MongoDB shell: `mongo` 
-
-To Authenticate as admin user: `db.auth("admin", "database-admin-password-from-secret-here")`
-
-### Workflow Descriptions
-
-#### Requesting a user account password reset
-
-There will be no interface that an admin user can directly create a new password on a user account. Instead, the user will be given the means to reset the password. The workflow to accomplish this is as follows:
-
-1. Create Reset Password Token
-   
-   The ResetPassword token is simply an entry in mongoDB, in which the uid entry holds which user account to reset the password on
-   ```
-   {
-      _id: resetEmailDBEntry,
-      uid: userToResetPassword
-   }
-   ```
-
-2. Send Email to User
-
-   The system will then send an email with a URL in the form of 
-   ```
-   http://ip-of-fjlrs-app-server:/auth/resetPassword/:id
-   ```
-   Where :id is the _id of the ResetPassword entry saved in MongoDB
-
-3. User will click on link
-   
-   Webapp opens with a no checkAuth route to the resetPassword component.
-
-   This component will only have data if the :id corresponds to a ResetPassword entry, and then the user is able to be indexed with the `uid` field
-
-   The User will then enter a new password twice, and the form will salt then update the password for the User db entry
-
-   
-
-### Module Layout
-* Admin Module
-   * Manage Alert Email Component
-   * Manage Hours Component
-   * Manage News Component
-   * Manage Users Component
-* Student Module
-   * Student Component
-* Auth Module
-   * Login Component
-   * Signup Component
-* Home Module
-   * Homeview Component
-* Woodshop Module
-* DigitalShop Module
-* Navigation Component
-
-* Error Component
-
-## Conversion From Angular7 to Angular8
-
-This repo is the rebuild of the FayJones LRS app built in Angular7 to Angular 8
-
-This implementation will be more lightweight and less of a testing ground as the previous version. 
-
-### RoadMap
-
-
-
-### Digital Lab
-
-
-### Wood Lab
-
-
-### 3D Printers
-
-
-### User Management
-
-
-### Stats
-
-
-### Admin Panel
-
-
-
-### Good Links
-
-https://coderwall.com/p/mk18zq/automatic-git-version-tagging-for-npm-modules
-
-https://www.angularjswiki.com/angular/how-to-use-font-awesome-icons-in-angular-applications/
-
-https://www.ag-grid.com/angular-getting-started/
-
-
-
-
-
-
-
+Angular Material; component library for angular projects by Google: https://material.angular.io/
+PrimeNG; component library for angular projects: https://www.primefaces.org/primeng/showcase/#/
 
 
 # Default Readme from Angular Below
@@ -132,11 +42,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Uark Cluster
-
-https://console.origin.uark.edu:8443/
-
-fjlrs.origin.uark.edu
 
 ## Code scaffolding
 
