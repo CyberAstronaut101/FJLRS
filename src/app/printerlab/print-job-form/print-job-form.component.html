@@ -19,11 +19,15 @@
   
         <mat-form-field>
             <mat-label>Upload .STL files</mat-label>
-            <!-- <input matInput type="text" name="title" [ngModel]="news?.title" required #title="ngModel">
-            <mat-error *ngIf="title.invalid">Enter Valid Title</mat-error> -->
+            <input matInput type="text" name="title" [ngModel]="news?.title" #title="ngModel">
+            <mat-error *ngIf="title.invalid">Enter Valid Title</mat-error>
         </mat-form-field>
 
-        <p-fileUpload name="myfile[]" url="./upload.php"></p-fileUpload>
+        <p-fileUpload #fileInput name="jobFiles" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload>
+
+        <!-- <p-fileUpload name="myfile[]" multiple="multiple" customUpload="true"  (uploadHandler)="onUpload($event)" [showUploadButton]="false" [showCancelButton]="false"></p-fileUpload> -->
+        <!-- <p-fileUpload name="myfile[]" customUpload="true" url="/api/printerlab/upload"></p-fileUpload> -->
+
 
         <p></p>
         <mat-divider [inset]="true"></mat-divider>
@@ -33,7 +37,7 @@
   
         <mat-form-field>
             <mat-label>Body of News Article</mat-label>
-            <textarea matInput rows="6" name="content" [ngModel]="news?.content" required
+            <textarea matInput rows="6" name="content" [ngModel]="news?.content"
                 #content="ngModel"></textarea>
   
             <!-- <p-editor name="content" [style]="{'height':'320px'}"></p-editor> -->
@@ -47,8 +51,8 @@
                 (click)="onSaveNews(newsForm)">Update News Article
         </button>
   
-        <button *ngIf="mode == 'create'" mat-raised-button color="primary" (click)="onSaveNews(newsForm)">Save
-            News Article
+        <button *ngIf="mode == 'create'" mat-raised-button color="primary" (click)="onSubmitJobRequest(newsForm)">
+          Submit Job Request
         </button>
   
         

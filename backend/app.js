@@ -57,6 +57,11 @@ const app = express();
                 ( or fjlrs.com or whatever domain is used for the application )
     See TODO ADD SWAGGER DOCS + CODE SNIPPIT WORDLIST
 */
+
+
+/**================================================== *
+ * ==========  Swagger API Documentation Setup  ========== *
+ * ================================================== */
 var swaggerDefinition = {
     swagger: '2.0',
     info: {
@@ -98,13 +103,24 @@ var swaggerOptions = {
 // If if throws errors here, error lies within the routes/*.js file @swagger definition
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
+
+/* =======  End of Swagger API Documentation Setup  ======= */
+
+
+
+
 // Setup port, ip, monogoURL
 var port = process.env.PORT || 8080,
     ip   =  '0.0.0.0' || process.env.IP,
     mongoURL =  process.env.MONGO_URL || config_data.mongoURL,
     mongoURLLabel = "";
 
-// Create the mongoose connection -- MON
+
+
+
+/**================================================== *
+ * ==========  MongoDB Connection Setup  ========== *
+ * ================================================== */
 var db = mongoose.connection;
 db.on('error', function callback() {
     console.error.bind(console, 'connection error:');
@@ -127,26 +143,29 @@ db.on('error', function callback() {
 db.once('open', function callback () {
     console.log("Connected to Mongodb Instance");
     console.log("Accepting connections to webapp @ port " + port)
+
 });
 
 mongoose.connect(mongoURL, {useNewUrlParser : true});
 mongoose.set('useFindAndModify', false); // https://mongoosejs.com/docs/deprecations.html#-findandmodify-
 
-// So we also have a password reset link that is set as a process env value
+/* =======  End of MongoDB Connection Setup  ======= */
 
-// Old config from running docker images on OpenShift platform
-// if(mongoURL){
-//     console.log('mongoURL from openshift is: ' + mongoURL);
-//     // Set reset password link to point to the okc cluster
-//     process.env.resetPasswordLink = "http://fjlrs.origin.uark.edu/auth/resetpassword/";
-// } else {
-//     console.log('mongoURL was empty, setting to local development')
-//     mongoURL = 'mongodb://localhost:27017/fj_lrs_db'
-//     // Set the reset password link to point to localhost development in this case
-//     process.env.resetPasswordLink = "http://localhost:4200/auth/resetpassword/";
-// }
 
-// parsing requests
+/**================================================== *
+ * ==========  GridFS MongoDB File Storage Setup  ========== *
+ * ================================================== */
+// https://www.npmjs.com/package/multer-gridfs-storage
+// https://www.freecodecamp.org/news/gridfs-making-file-uploading-to-mongodb/
+// This block initializes the gridfs storage engine
+
+/* =======  End of GridFS MongoDB File Storage Setup  ======= */
+
+
+
+/**================================================== *
+ * ==========  ExpressJS Request Parsing Setup  ========== *
+ * ================================================== */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -168,14 +187,14 @@ app.use((req, res, next) => {
 // Heartbeat Request Route. This is so GCP wont throw non-stop healthcheck alerts for the app
 app.get('/healthcheck', (req, res) => res.send('OK'));
 
-/*
-    Defined Routes Files
+/* =======  End of ExpressJS Request Parsing Setup  ======= */
 
-    Each of these files contain the route logic for each of the topics
-    More on this below..
 
-    *** A lot of these are from other development modules, will keep for now but remove as needed ***
-*/
+
+/**================================================== *
+ * ==========  Configure API Route Files  ========== *
+ * ================================================== */
+
 const todosRoutes = require("./routes/todos");
 const userRoutes = require("./routes/user");
 const newsRoutes = require("./routes/news");
@@ -186,6 +205,7 @@ const buisnessHoursRoutes = require("./routes/buisnessHours");
 const printerQueueRoutes = require("./routes/printerQueue");
 const homeRoutes = require("./routes/home");
 const deptRoutes = require("./routes/depts.js");
+
 // The files above are then used here to define which request paths they should handle
 app.use("/api/todos", todosRoutes);
 app.use("/api/user", userRoutes);
@@ -216,6 +236,10 @@ app.use("/api/printerQueue", printerQueueRoutes);
 app.use("/api/home", homeRoutes);
 // Added Deparptment Management Routes
 app.use("/api/department", deptRoutes);
+
+
+/* =======  End of Configure API Route Files  ======= */
+
 
 /* =======================================================================
   Here is where the magic happens...

@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FileUpload } from 'primeng/fileupload';
+import { forkJoin } from 'rxjs';
+import { PrinterlabService } from '../printerlab.service';
 
 @Component({
   selector: 'print-job-form',
@@ -7,16 +10,46 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrintJobFormComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild('fileInput', { static: false}) fileInput: FileUpload;
 
+  constructor(private printerLabService:PrinterlabService) { }
+
+  mode = "create";
   uploadedFiles: any[] = []
+
+  uplo: File;
 
   ngOnInit() {
 
-   
+  
+  }
 
 
+  // Saving whole job request
+  onSubmitJobRequest() {
+
+    console.log("Job Submit Request...");
+
+    const promiseList = [];
+    const ObservableList = [];
+    
+    console.log(this.fileInput.files);
+    
+    this.fileInput.files.forEach(file => {
+      promiseList.push(this.printerLabService.uploadFile(file));
+    })
+
+    // Or delete here if needed..
+
+    // if(promiseList.length) {
+    //   forkJoin(promiseList).subscribe(
+    //     files => {
+    //       const Date
+    //     }
+    //   )
+    // }
 
   }
+
 
 }
