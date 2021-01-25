@@ -111,54 +111,24 @@ router.get("/", (req, res, next) => {
 router.post("/upload", upload.single('file'), (req, res, next) => {
     console.log("POST @ /api/printerlab/upload");
 
-    console.log(req.body);
+    // Middleware upload runs before getting here
+    // That middleware uploads the file to MongoDB, and then appends the id to the file object
+    // Then we can create an entry in the PrinterFiles DB with the pointer to the file id
 
-    // upload.single('file');
+    console.log("Uploaded file _id: " + req.file.id);
 
-    // Check for existing files with same name.
-
-
-
-
-
-
-    // // Saving the file upload to MongoDB
-    // var file = fs.readFileSync(req.file.path);
-    // var encode_file = file.toString('base64');
-
-    // const finalImg = new PrinterFiles({
-    //     contentType: req.file.mimetype,
-    //     file: new Buffer(encode_file, 'base64')
-    // });
-
-    // finalImg.save().then(savedFile => {
-    //     console.log("Saved uploaded file to DB:");
-    //     console.log(savedFile);
-    // })
-
-    // const file = req.file;
-    // if(!file) {
-    //     // Is error
-    //     return res.send(500);
-    // }
-
-    // // Was successful upload
-    // return res.send(file);
-
-
+    // Now create the printerFiles stubs, will then add the ID of this one to 
+    // a PrinterJob entry that will encapsulate the entire job request submission.
 
 })
 
-router.get("/file/:id", (req, res) => {
+router.get("/file/:fileName", (req, res) => {
     console.log("GET @ /api/printerlab/file/:id");
-    var fileID = req.params.id;
+    var fileName = req.params.fileName;
 
-    PrinterFiles.findOne({ '_id' : fileID}, (err, result) => {
-        if (err) return console.log(err);
+    gfs.find( { filename: fileName})
 
-        res.contentType(result.contentType);
-        res.send(result.file.buffer);
-    })
+    
 })
 
 

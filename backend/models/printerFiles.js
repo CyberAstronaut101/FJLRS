@@ -7,9 +7,22 @@ var ObjectId = Schema.Types.ObjectId;
 
 
 const PrinterFiles = mongoose.Schema({
-    contentType: String,
-    fileName: String,
-    file: Buffer
+    description: {
+        required: true,
+        type: String,
+    },
+    filename: {
+        required: true,
+        type: String,
+    },
+    fileId: {
+        required: true,
+        type: String,
+    },
+    createdAt: {
+        default: Date.now(),
+        type: Date,
+    },
 });
 
 PrinterFiles.plugin(uniqueValidator);

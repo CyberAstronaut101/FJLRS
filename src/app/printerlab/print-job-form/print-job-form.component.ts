@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MenuItem } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { forkJoin } from 'rxjs';
 import { PrinterlabService } from '../printerlab.service';
@@ -17,10 +18,16 @@ export class PrintJobFormComponent implements OnInit {
   mode = "create";
   uploadedFiles: any[] = []
 
+  items: MenuItem[];
   uplo: File;
 
   ngOnInit() {
-
+    // Setup the steps for submitting a job request
+    this.items = [
+      {label: 'Step 1'},
+      {label: 'Step 2'},
+      {label: 'Step 3'}
+  ];
   
   }
 

@@ -16,12 +16,15 @@
   
   
     <form #newsForm="ngForm" *ngIf="!isLoading">
+
+
+        <p-steps [model]="items"></p-steps>
   
-        <mat-form-field>
+        <!-- <mat-form-field>
             <mat-label>Upload .STL files</mat-label>
             <input matInput type="text" name="title" [ngModel]="news?.title" #title="ngModel">
             <mat-error *ngIf="title.invalid">Enter Valid Title</mat-error>
-        </mat-form-field>
+        </mat-form-field> -->
 
         <p-fileUpload #fileInput name="jobFiles" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload>
 
