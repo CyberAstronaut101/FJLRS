@@ -179,21 +179,14 @@ app.get('/healthcheck', (req, res) => res.send('OK'));
 const todosRoutes = require("./routes/todos");
 const userRoutes = require("./routes/user");
 const newsRoutes = require("./routes/news");
-const laserRoutes = require("./routes/laser");
 const emailRoutes = require("./routes/email");
 const calendarRoutes = require("./routes/calendar");
-const buisnessHoursRoutes = require("./routes/buisnessHours");
-const printerQueueRoutes = require("./routes/printerQueue");
-const homeRoutes = require("./routes/home");
-const deptRoutes = require("./routes/depts.js");
 // The files above are then used here to define which request paths they should handle
 app.use("/api/todos", todosRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/news", newsRoutes);
-app.use("/api/laser", laserRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/calendar", calendarRoutes);
-app.use("/api/buisnessHours", buisnessHoursRoutes);
 
 // var swaggerFrontEndOptions = {explorer: true}
 // This serves the swagger docs @ :/api-docs
@@ -204,18 +197,6 @@ app.get('/swagger.json', function(req, res) {
     res.send(swaggerSpec);
   })
 
-// !TODO add woodshop, laserlab, and 3dprinter routes here
-// All Twilio Files for TextEverything here
-// app.use("/api/textmessage", textEverythingIndex);
-// For Departments
-const printerLabRoutes = require("./routes/printerLab.js");
-app.use("/api/printerLab", printerLabRoutes);
-// Added Routes for the Singular Machine and printer queue implementation
-app.use("/api/printerQueue", printerQueueRoutes);
-// Added Routes
-app.use("/api/home", homeRoutes);
-// Added Deparptment Management Routes
-app.use("/api/department", deptRoutes);
 
 /* =======================================================================
   Here is where the magic happens...
