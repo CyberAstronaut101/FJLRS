@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { JobRequestService } from '../job-request.service';
 
 @Component({
   selector: 'app-uploadfiles',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UploadfilesComponent implements OnInit {
 
-  constructor() { }
+  personalInformation: any;
+
+  submitted: boolean = false;
+
+  constructor(public jobRequestService: JobRequestService, private router: Router) { }
+
+
 
   ngOnInit() {
+  }
+
+  nextPage() {
+    // Validate info and then move to next page..
+
+    return;
   }
 
 }

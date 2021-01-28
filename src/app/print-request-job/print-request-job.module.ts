@@ -14,6 +14,10 @@ import { ExtraOptionsComponent } from './extra-options/extra-options.component';
 import { QuoteGenerateComponent } from './quote-generate/quote-generate.component';
 import { SubmitJobRequestComponent } from './submit-job-request/submit-job-request.component';
 
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { FileUploadModule } from 'primeng/fileupload';
+
 @NgModule({
   declarations: [RequestFormComponent, UploadfilesComponent, SelectMaterialsComponent, ExtraOptionsComponent, QuoteGenerateComponent, SubmitJobRequestComponent],
   imports: [
@@ -22,7 +26,11 @@ import { SubmitJobRequestComponent } from './submit-job-request/submit-job-reque
     StepsModule,
     ToastModule,
     FormsModule,
-    MatCardModule
+    MatCardModule,
+    ButtonModule,
+    CardModule,
+    FileUploadModule
+    
 
   ],
   providers: [

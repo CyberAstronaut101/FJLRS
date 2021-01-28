@@ -1,3 +1,18 @@
-<p>
-  uploadfiles works!
-</p>
+<div class="stepsdemo-content">
+  <p-card>
+      <ng-template pTemplate="title">
+          Upload Files
+      </ng-template>
+      
+      <ng-template pTemplate="subtitle">
+          Upload single (multiple files still under construction) STL file for the job request.
+      </ng-template>
+
+      <p-fileUpload #fileInput name="jobFiles" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload>
+
+      <div style="align-content: right">
+          <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+      </div>
+
+  </p-card>
+</div>
