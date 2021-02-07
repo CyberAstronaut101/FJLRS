@@ -23,8 +23,9 @@ export class UploadfilesComponent implements OnInit {
   ngOnInit() {
   }
 
-  onUpload() {
-    
+  onUpload($event) {
+    console.log("Files have been selected for upload...");
+    console.log($event);
   }
 
   nextPage() {

@@ -1,18 +1,23 @@
+
+
 <div class="stepsdemo-content">
-  <p-card>
-      <ng-template pTemplate="title">
-          Upload Files
-      </ng-template>
-      
-      <ng-template pTemplate="subtitle">
-          Upload single (multiple files still under construction) STL file for the job request.
-      </ng-template>
+
+    <mat-card>
+      <mat-card-title>
+        Upload File
+      </mat-card-title>
+    
+      <mat-card-subtitle>
+        Currently we have a system that requires one Job Request PER file that needs to be printed.
+      </mat-card-subtitle>
 
       <p-fileUpload #fileInput name="jobFiles" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload>
 
+    
       <div style="align-content: right">
-          <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
-      </div>
-
-  </p-card>
-</div>
+        <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+    </div>
+  
+    </mat-card>
+  
+  </div>
