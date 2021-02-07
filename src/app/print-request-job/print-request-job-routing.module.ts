@@ -7,6 +7,7 @@ import { SelectMaterialsComponent } from './select-materials/select-materials.co
 import { SubmitJobRequestComponent } from './submit-job-request/submit-job-request.component';
 import { UploadfilesComponent } from './uploadfiles/uploadfiles.component';
 
+// Base route is /jobrequest
 const routes: Routes = [
    { path: '', component: RequestFormComponent, children: [
       { path: '', redirectTo: 'uploadFiles', pathMatch: 'full'},

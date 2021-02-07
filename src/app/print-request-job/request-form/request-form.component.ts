@@ -16,29 +16,40 @@ export class RequestFormComponent implements OnInit {
 
   constructor() { }
 
+  public activeIndex: number = 0;
+
+  increaseIndex() {
+    this.activeIndex++;
+  }
+
+  decreaseIndex() {
+    this.activeIndex--;
+  }
+
+  setIndex(index: number) {
+    if(index >= 0 && index <=4){
+      this.activeIndex = index;
+    }
+  }
+
   ngOnInit() {
 
     this.items = [{
-      label: 'Upload Files',
-      routerLink: 'uploadFiles'
-  },
-  {
-      label: 'Select Material and Color',
-      routerLink: 'materials'
-  },
-  {
-      label: 'Additional Options',
-      routerLink: 'extraOptions'
-  },
-  {
-      label: 'Job Quote',
-      routerLink: 'quote'
-  },
-  {
-    label: 'Submit Request',
-    routerLink: 'submitRequest'
-  }
-];
+          label: 'Upload Files'
+      },
+      {
+          label: 'Select Material and Color'
+      },
+      {
+          label: 'Additional Options'
+      },
+      {
+          label: 'Job Quote'
+      },
+      {
+        label: 'Submit Request'
+      }
+    ];
   }
 
 }
