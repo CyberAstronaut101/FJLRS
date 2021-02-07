@@ -26,10 +26,10 @@
             <mat-error *ngIf="title.invalid">Enter Valid Title</mat-error>
         </mat-form-field> -->
 
-        <p-fileUpload #fileInput name="jobFiles" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload>
+        <!-- <p-fileUpload #fileInput name="jobFiles" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload> -->
 
         <!-- <p-fileUpload name="myfile[]" multiple="multiple" customUpload="true"  (uploadHandler)="onUpload($event)" [showUploadButton]="false" [showCancelButton]="false"></p-fileUpload> -->
-        <!-- <p-fileUpload name="myfile[]" customUpload="true" url="/api/printerlab/upload"></p-fileUpload> -->
+        <p-fileUpload name="myfile[]" customUpload="true" url="/api/printerlab/upload"></p-fileUpload>
 
 
         <p></p>

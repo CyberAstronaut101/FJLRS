@@ -23,6 +23,10 @@ export class UploadfilesComponent implements OnInit {
   ngOnInit() {
   }
 
+  onUpload() {
+    
+  }
+
   nextPage() {
     // Validate info and then move to next page..
 

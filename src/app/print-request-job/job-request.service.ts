@@ -5,5 +5,12 @@ import { Injectable } from '@angular/core';
 })
 export class JobRequestService {
 
+  //Object that holds all the data from the different forms
+
+
+
+
+
+
   constructor() { }
 }

@@ -1,3 +1,20 @@
-<p>
-  submit-job-request works!
-</p>
+<div class="stepsdemo-content">
+
+  <mat-card>
+    <mat-card-title>
+      Submit Request
+    </mat-card-title>
+  
+    <mat-card-subtitle>
+      Show overview of request here, Present with submit button to add this job to the DB
+    </mat-card-subtitle>
+  
+    <div style="align-content: right">
+      <p-button label="Back" (onClick)="lastPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+
+      <p-button label="Submit" (onClick)="submit()" icon="pi pi-check" class="p-button-success" iconPos="right"></p-button>
+    </div>
+
+  </mat-card>
+
+</div>
