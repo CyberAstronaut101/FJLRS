@@ -42,11 +42,12 @@ export class PrinterService {
 
        
 
-  addPrinter(Name: string, Type: string) {
+  addPrinter(Name: string, Type: string, URL: string) {
 
     const newPrinter: Printer = {
         name: Name,
-        type: Type
+        type: Type,
+        octopiUrl: URL
     }
     
     console.log('addPrinter() --> submitting single printer to api');

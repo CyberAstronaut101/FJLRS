@@ -4,7 +4,8 @@ const uniqueValidator = require("mongoose-unique-validator");
 
 const printerSchema = mongoose.Schema({
     name: { type: String, required: true, unique: true},
-    type: { type: String, required: true, unique: false}
+    type: { type: String, required: true, unique: false},
+    octopiUrl: { type: String, required: true, unique: true}
 });
 
 printerSchema.plugin(uniqueValidator);

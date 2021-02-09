@@ -218,5 +218,6 @@ export interface EmailHistory {
 //BIG BOY PRINTER TIME
 export interface Printer {
     name: string,
-    type: string
+    type: string,
+    octopiUrl: string
 }

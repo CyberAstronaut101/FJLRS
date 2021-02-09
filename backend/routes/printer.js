@@ -38,7 +38,8 @@ router.post("/add", (req, res, next) => {
 
     const printer = new Printer({
         name: req.body.name,
-        type: req.body.type
+        type: req.body.type,
+        octopiUrl: req.body.octopiUrl
     });
     console.log("printer being saved to db");
     console.log(printer);
