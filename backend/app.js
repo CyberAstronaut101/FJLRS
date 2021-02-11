@@ -14,7 +14,7 @@ const  swaggerJSDoc = require('swagger-jsdoc');
 // config_data = require('./config/config.development.json');
 
 try {
-    config_data = require('./config/config.production.json');
+    config_data = require('./config/config.development.json');
 } catch (e) {
     console.log("===================================================");
     console.log("Looks like app.js has an error trying to import the");
@@ -181,12 +181,15 @@ const userRoutes = require("./routes/user");
 const newsRoutes = require("./routes/news");
 const emailRoutes = require("./routes/email");
 const calendarRoutes = require("./routes/calendar");
+const printerRoutes = require("./routes/printer");
+
 // The files above are then used here to define which request paths they should handle
 app.use("/api/todos", todosRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/calendar", calendarRoutes);
+app.use("/api/printer", printerRoutes);
 
 // var swaggerFrontEndOptions = {explorer: true}
 // This serves the swagger docs @ :/api-docs
