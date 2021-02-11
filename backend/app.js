@@ -200,14 +200,6 @@ const userRoutes = require("./routes/user");
 const newsRoutes = require("./routes/news");
 const emailRoutes = require("./routes/email");
 const calendarRoutes = require("./routes/calendar");
-<<<<<<< HEAD
-const buisnessHoursRoutes = require("./routes/buisnessHours");
-const printerQueueRoutes = require("./routes/printerQueue");
-const homeRoutes = require("./routes/home");
-const deptRoutes = require("./routes/depts.js");
-
-=======
->>>>>>> origin/master
 // The files above are then used here to define which request paths they should handle
 app.use("/api/todos", todosRoutes);
 app.use("/api/user", userRoutes);
