@@ -17,6 +17,8 @@ import { SubmitJobRequestComponent } from './submit-job-request/submit-job-reque
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FileUploadModule } from 'primeng/fileupload';
+import {DropdownModule} from 'primeng/dropdown';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [RequestFormComponent, UploadfilesComponent, SelectMaterialsComponent, ExtraOptionsComponent, QuoteGenerateComponent, SubmitJobRequestComponent],
@@ -29,7 +31,9 @@ import { FileUploadModule } from 'primeng/fileupload';
     MatCardModule,
     ButtonModule,
     CardModule,
-    FileUploadModule
+    FileUploadModule,
+    DropdownModule,
+    InputTextareaModule
     
 
   ],

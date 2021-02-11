@@ -8,6 +8,10 @@
     <mat-card-subtitle>
       Get list of available materials and present user with dropdown menu to select
     </mat-card-subtitle>
+
+
+    <p-dropdown [options]="materials" [(ngModel)]="selectedMaterial" optionLabel="name" optionValue="name"></p-dropdown>
+
   
     <div style="align-content: right">
       <p-button label="Back" (onClick)="lastPage()" icon="pi pi-angle-left" iconPos="left"></p-button>

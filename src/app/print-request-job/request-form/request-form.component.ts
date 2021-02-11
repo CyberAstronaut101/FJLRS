@@ -41,7 +41,7 @@ export class RequestFormComponent implements OnInit {
           label: 'Select Material and Color'
       },
       {
-          label: 'Additional Options'
+          label: 'Additional Comments'
       },
       {
           label: 'Job Quote'

@@ -10,6 +10,8 @@ import { RequestFormComponent } from '../request-form/request-form.component';
 })
 export class ExtraOptionsComponent implements OnInit {
 
+  extraComments: string;    // textbox variable binding
+
   constructor(private requestComponent: RequestFormComponent, public jobRequestService: JobRequestService, private router: Router) { }
 
   ngOnInit() {
