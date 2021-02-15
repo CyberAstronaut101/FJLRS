@@ -1,16 +1,42 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobRequestService {
-
   //Object that holds all the data from the different forms
 
-  
+  // Temporary hold for the file as it will be uploaded once 'submit' is clicked
+
+  hasFile: boolean;
+  hasMaterial: boolean;
+  hasComment: boolean;
+  hasQuote: boolean;
+
+  jobSubmissionInformation = {
+    file: {}, 
+    material: {},
+    comment: '',
+    quote: ''
+  }
+
+  private jobSubmissionComplete = new Subject<any>();
+
+  jobSubmissionComplete$ = this.jobSubmissionComplete.asObservable();
 
 
+  uploadFileSelected(uploadFile) {
+    this.jobSubmissionInformation.file = uploadFile;
+    this.hasFile = true;
+  }
 
+  doesFileToUploadExist() {
+    return this.hasFile;
+  }
 
-  constructor() { }
+  getJobSubmissionInformation() {
+    return this.jobSubmissionInformation;
+  }
+
 }

@@ -6,14 +6,23 @@
       <mat-card-title>
         Upload File
       </mat-card-title>
+
+      <p-messages></p-messages>
     
       <mat-card-subtitle>
         Currently we have a system that requires one Job Request PER file that needs to be printed.
       </mat-card-subtitle>
 
-      <p-fileUpload #fileInput name="jobFiles" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload>
+      <!-- <p-fileUpload #fileInput name="jobFile" [showUploadButton]="true" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload> -->
+      <p-fileUpload #fileInput name="jobFile" [files]="uploadFiles" [showUploadButton]="false" customUpload="true" (onSelect)="onSelect($event)"></p-fileUpload>
 
-    
+      <div *ngIf="fileSelected === true">
+        <h3>Current Selected File For Job</h3>
+        <h5>If you would like to change the file for this job, select 'choose' and select another file.</h5>
+        <p>FileName: {{ fileToUpload.name }}</p>
+        <p>Size: {{ fileToUpload.size }}B</p>
+      </div>
+
       <div style="align-content: right">
         <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
     </div>
