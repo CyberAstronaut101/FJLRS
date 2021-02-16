@@ -31,9 +31,23 @@ export class JobRequestService {
     this.hasFile = true;
   }
 
-  doesFileToUploadExist() {
-    return this.hasFile;
+  materialSelected(material) {
+    this.jobSubmissionInformation.material = material;
+    this.hasMaterial = true;
   }
+
+  submitJobRequest() {
+
+    // Right now only file and material are required items
+    if(this.hasFile && this.hasMaterial) {
+      // Make fileupload request
+      
+      \// Then on the callback upload the queue item with the fileupload ._id
+    }
+
+  }
+
+
 
   getJobSubmissionInformation() {
     return this.jobSubmissionInformation;
