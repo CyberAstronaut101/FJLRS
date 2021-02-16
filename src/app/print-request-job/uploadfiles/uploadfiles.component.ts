@@ -26,7 +26,7 @@ export class UploadfilesComponent implements OnInit {
   ngOnInit() {
     console.log("3D Print Job UploadFiles OnInit()..");
 
-    if(this.jobRequestService.doesFileToUploadExist()) {
+    if(this.jobRequestService.hasFile) {
       console.log("FILE TO UPLOAD ALREADY EXISTS!");
 
       // Update Variables
@@ -40,13 +40,14 @@ export class UploadfilesComponent implements OnInit {
   }
 
   onSelect($event) {
-    this.fileToUpload = $event.files[0];
-    this.jobRequestService.uploadFileSelected(this.fileToUpload);
+    // this.fileToUpload = $event.files[0];
+    this.jobRequestService.uploadFileSelected($event.files[0]);
   }
 
   nextPage() {
+    this.messageService.clear();
     // Validate info and then move to next page..
-    if(this.jobRequestService.doesFileToUploadExist()) {
+    if(this.jobRequestService.hasFile) {
       // File was selected, go ahead and add to the service and move to next pane
       // Move to next step
       this.requestComponent.increaseIndex();

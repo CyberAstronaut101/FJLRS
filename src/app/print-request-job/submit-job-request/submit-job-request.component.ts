@@ -10,13 +10,19 @@ import { RequestFormComponent } from '../request-form/request-form.component';
 })
 export class SubmitJobRequestComponent implements OnInit {
 
+  componentStepIndex = 4;
+
   constructor(private requestComponent: RequestFormComponent, public jobRequestService: JobRequestService, private router: Router) { }
 
   ngOnInit() {
+
+    this.requestComponent.setIndex(this.componentStepIndex);
   }
 
   submit() {
     // TODO validate info within the job request service and then submit the request
+    console.log("SUBMITTING JOB REQUEST");
+    console.log(this.jobRequestService.jobSubmissionInformation);
   }
 
   lastPage() {

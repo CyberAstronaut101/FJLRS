@@ -4,13 +4,15 @@
     <mat-card-title>
       Select Material
     </mat-card-title>
+
+    <p-messages></p-messages>
   
     <mat-card-subtitle>
       Get list of available materials and present user with dropdown menu to select
     </mat-card-subtitle>
 
 
-    <p-dropdown [options]="materials" [(ngModel)]="selectedMaterial" optionLabel="name" optionValue="name"></p-dropdown>
+    <p-dropdown placeholder="Select a Material" [options]="materials" [(ngModel)]="selectedMaterial" optionLabel="name" optionValue="matId" required></p-dropdown>
 
   
     <div style="align-content: right">
