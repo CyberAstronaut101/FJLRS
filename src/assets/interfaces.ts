@@ -34,6 +34,11 @@ export interface Socket {
 }
 
 
+export interface Material {
+    matId: string,
+    name: string
+}
+
 /*==================================================================================
 
     Interfaces for 3D Printer Print queues

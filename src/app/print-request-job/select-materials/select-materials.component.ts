@@ -51,7 +51,7 @@ export class SelectMaterialsComponent implements OnInit {
 
   lastPage() {
     if(this.selectedMaterial) {
-      this.jobRequestService.materialSelected(this.selectedMaterial);
+      // this.jobRequestService.materialSelected(this.selectedMaterial);
 
       this.requestComponent.increaseIndex();
       this.router.navigate(['/jobrequest/uploadFiles']);
@@ -70,7 +70,7 @@ export class SelectMaterialsComponent implements OnInit {
 
     // Validate info
     if(this.selectedMaterial) {
-      this.jobRequestService.materialSelected(this.selectedMaterial);
+      // this.jobRequestService.materialSelected(this.selectedMaterial);
 
       this.requestComponent.increaseIndex();
       this.router.navigate(['/jobrequest/extraOptions']);

@@ -3,14 +3,14 @@ const express = require("express");
 const News = require("../models/news");
 const checkAuth = require("../middleware/check-auth");
 
-const PrinterDepartment = require("../models/dept_3dprinters");
-const DeptInfo = require("../models/deptInfo");
-
 const router = express.Router();
 
-const PrinterFiles = require('../models/printerFiles');
+// const PrinterFiles = require('../models/printerFiles');
+const PrintQueueItem = require('../models/printQueueItem');
 
 const mongoose = require('mongoose');
+
+// BASE API ROUTE = /api/printlab/
 
 /**================================================== *
  * ==========  Multer Fileupload Storage Setup  ========== *
@@ -41,6 +41,7 @@ const storage = new GridFsStorage({
                 };
 
                 resolve(fileInfo);
+                console.log("file uploaded...");
             });
         });
     }
@@ -106,10 +107,30 @@ router.get("/", (req, res, next) => {
 
 })
 
-//https://www.woolha.com/tutorials/node-js-upload-file-to-google-cloud-storage
-// Upload STL File
-router.post("/upload", upload.single('file'), (req, res, next) => {
+
+// Create print queue item request
+router.post("/", (req, res, next) => {
     console.log("POST @ /api/printerlab/upload");
+
+    console.log(req.body);
+
+    // Middleware upload runs before getting here
+    // That middleware uploads the file to MongoDB, and then appends the id to the file object
+    // Then we can create an entry in the PrinterFiles DB with the pointer to the file id
+
+    console.log("Uploaded file _id: " + req.file.id);
+
+    // Now create the printerFiles stubs, will then add the ID of this one to 
+    // a PrinterJob entry that will encapsulate the entire job request submission.
+
+})
+
+router.post("/file", upload.single('file'), (req, res, next) => {
+    console.log("POST @ /api/printerlab/file");
+    console.log(req.params);
+    console.log(req.body);
+    console.log(req.files);
+    console.log(req.file);
 
     // Middleware upload runs before getting here
     // That middleware uploads the file to MongoDB, and then appends the id to the file object

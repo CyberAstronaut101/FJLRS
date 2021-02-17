@@ -23,6 +23,8 @@ export class SubmitJobRequestComponent implements OnInit {
     // TODO validate info within the job request service and then submit the request
     console.log("SUBMITTING JOB REQUEST");
     console.log(this.jobRequestService.jobSubmissionInformation);
+
+    // this.jobRequestService.submitJobRequest();
   }
 
   lastPage() {

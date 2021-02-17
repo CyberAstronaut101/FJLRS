@@ -41,7 +41,7 @@ export class UploadfilesComponent implements OnInit {
 
   onSelect($event) {
     // this.fileToUpload = $event.files[0];
-    this.jobRequestService.uploadFileSelected($event.files[0]);
+    // this.jobRequestService.uploadFileSelected($event.files[0]);
   }
 
   nextPage() {

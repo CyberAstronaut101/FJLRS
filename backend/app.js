@@ -200,12 +200,14 @@ const userRoutes = require("./routes/user");
 const newsRoutes = require("./routes/news");
 const emailRoutes = require("./routes/email");
 const calendarRoutes = require("./routes/calendar");
+const printQueueRoutes = require("./routes/printerLab");
 // The files above are then used here to define which request paths they should handle
 app.use("/api/todos", todosRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/calendar", calendarRoutes);
+app.use("/api/printlab", printQueueRoutes);
 
 // var swaggerFrontEndOptions = {explorer: true}
 // This serves the swagger docs @ :/api-docs
