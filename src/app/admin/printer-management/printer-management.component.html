@@ -1,0 +1,78 @@
+<div class="ui-g">
+  <div class="ui-g-11 centered">
+      <mat-card>
+        <!-- search -->
+          <mat-form-field>
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Printers">
+          </mat-form-field>
+
+          <table mat-table [dataSource]="printerDataSource" class="mat-elevation-z8">
+
+              <!-- Printer Name Column -->
+              <ng-container matColumnDef="Printer Name">
+                  <th mat-header-cell *matHeaderCellDef> Printer Name </th>
+                  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+              </ng-container>
+
+              <!-- Printer Type Column -->
+              <ng-container matColumnDef="Printer Type">
+                  <th mat-header-cell *matHeaderCellDef> Printer Type </th>
+                  <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+              </ng-container>
+
+              <!-- Printer URL Column -->
+              <ng-container matColumnDef="Octopi URL">
+                <th mat-header-cell *matHeaderCellDef> Octopi URL </th>
+                <td mat-cell *matCellDef="let element"> {{element.octopiUrl}} </td>
+              </ng-container>
+
+              <!-- Actions -->
+              <ng-container matColumnDef="Delete">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let row" >
+                      <button mat-flat-button color="warn" (click)="deleteDialog(row.name)">Delete</button>
+                  </td>
+            </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          </table>
+
+          <mat-paginator [length]="resultsLength" [pageSize]="5"></mat-paginator>
+      </mat-card>
+
+      <mat-card class="card-width-fit">
+        <mat-card-title>
+            <button mat-raised-button color="accent" style="margin-top: 7px;" (click)="addPrinter()" >Create New Printer</button>
+        </mat-card-title>
+        
+        <form>
+            <mat-form-field class ="form-field-row">
+                <mat-label>Printer Name</mat-label>
+                <input matInput 
+                    name="newPName"
+                    [(ngModel)]="newPrinterName"
+                />
+            </mat-form-field>
+
+            <mat-form-field class ="form-field-row">
+                <mat-label>Printer Type</mat-label>
+                <input matInput 
+                    name="newPType"
+                    [(ngModel)]="newPrinterType"
+                />
+            </mat-form-field>
+
+            <mat-form-field class ="form-field-row">
+                <mat-label>Printer URL</mat-label>
+                <input matInput 
+                    name="newPUrl"
+                    [(ngModel)]="newPrinterURL"
+                />
+            </mat-form-field>
+        </form>
+      </mat-card>
+
+  </div>
+</div>

@@ -23,3 +23,7 @@ Manage news articles, create news articles
 # Manage Users
 
 Lists all users in the db, allows for selection and updating user fields, creating new users.
+
+# Printer Management
+
+Manage the available printers

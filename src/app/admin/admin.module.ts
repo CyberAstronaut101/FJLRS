@@ -35,7 +35,7 @@ import { FullCalendarComponent } from '@fullcalendar/angular';
 import { PanelModule } from 'primeng/panel';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { TreeModule } from 'primeng/tree';
-import { ManageMaterialsComponent } from './manage-materials/manage-materials.component';
+import { PrinterManagementComponent } from './printer-management/printer-management.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +50,7 @@ import { ManageMaterialsComponent } from './manage-materials/manage-materials.co
     EmailhistorytableComponent,
     ManageDeptsComponent,
     EnforceSaneTimeDirective,
-    ManageMaterialsComponent
+    PrinterManagementComponent
   ],
   imports: [
     CommonModule,

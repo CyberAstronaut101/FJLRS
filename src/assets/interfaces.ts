@@ -214,3 +214,10 @@ export interface EmailHistory {
   sendData: string,
   rc: string
 }
+
+//BIG BOY PRINTER TIME
+export interface Printer {
+    name: string,
+    type: string,
+    octopiUrl: string
+}
