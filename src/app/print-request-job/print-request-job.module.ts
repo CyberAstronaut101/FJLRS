@@ -4,15 +4,12 @@ import { CommonModule } from '@angular/common';
 import { PrintRequestJobRoutingModule } from './print-request-job-routing.module';
 import { RequestFormComponent } from './request-form/request-form.component';
 import { JobRequestService } from './job-request.service';
-import { UploadfilesComponent } from './uploadfiles/uploadfiles.component';
+
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material';
-import { SelectMaterialsComponent } from './select-materials/select-materials.component';
-import { ExtraOptionsComponent } from './extra-options/extra-options.component';
-import { QuoteGenerateComponent } from './quote-generate/quote-generate.component';
-import { SubmitJobRequestComponent } from './submit-job-request/submit-job-request.component';
+
 
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -21,7 +18,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
-  declarations: [RequestFormComponent, UploadfilesComponent, SelectMaterialsComponent, ExtraOptionsComponent, QuoteGenerateComponent, SubmitJobRequestComponent],
+  declarations: [RequestFormComponent],
   imports: [
     CommonModule,
     PrintRequestJobRoutingModule,
@@ -34,8 +31,6 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
     FileUploadModule,
     DropdownModule,
     InputTextareaModule
-    
-
   ],
   providers: [
     JobRequestService

@@ -30,19 +30,21 @@ export class RequestFormComponent implements OnInit {
   ]
 
   // EXTRA COMMENTS
-  extraComments: string;
+  extraComments: string = "";
   uid: string;
 
 
   constructor(
     private jobRequestService: JobRequestService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private messageService: MessageService) {
   }
 
   public activeIndex: number = 0;
 
 
   submit() {
+    this.messageService.clear();
     // Data to submit
     console.log('Submit for job request clicked');
 
@@ -50,9 +52,32 @@ export class RequestFormComponent implements OnInit {
     // Make sure material is selected
     // Dont worry about extraComments, set to 'none'
 
-    if(this.extraComments.length == 0) {
-      this.extraComments = ""
+    // Check if file has been selected
+    if(!this.uploadFile) {
+      console.log("No file selected..");
+      this.messageService.add({
+        severity: "error",
+        summary: "Not Submitted",
+        detail: "No job file selected for upload"
+      })
+      return;
     }
+
+    if(!this.selectedMaterial) {
+      console.log("No Material selected..");
+      this.messageService.add({
+        severity: "error",
+        summary: "Not Submitted",
+        detail: "No print material selected"
+      })
+      return;
+    }
+
+    // MongoDB wants item with length, so if no additional commands set to 'none provided'
+    if(this.extraComments.length == 0){
+      this.extraComments = "None Provided";
+    }
+
 
     console.log(this.uploadFile);
     console.log(this.selectedMaterial);
@@ -72,22 +97,7 @@ export class RequestFormComponent implements OnInit {
   onSelect($event) {
     // this.fileToUpload = $event.files[0];
     this.uploadFile = $event.files[0];
-    console.log("Attempting to upload file...")
-
-    // let fileId = this.jobRequestService.uploadFile(this.uploadFile);
-
   }
-
-  onUpload($event) {
-    console.log($event);
-
-    // Take the file and upload it?
-  }
-
-
-
-
-  // SWITCHING TO AN EASIER FORM APPROACH
 
   increaseIndex() {
     this.activeIndex++;
