@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/auth/auth.service';
 import { Material } from 'src/assets/interfaces';
 import { JobRequestService } from '../job-request.service';
 
@@ -30,9 +31,12 @@ export class RequestFormComponent implements OnInit {
 
   // EXTRA COMMENTS
   extraComments: string;
+  uid: string;
 
 
-  constructor(private jobRequestService: JobRequestService) {
+  constructor(
+    private jobRequestService: JobRequestService,
+    private authService: AuthService) {
   }
 
   public activeIndex: number = 0;
@@ -41,22 +45,25 @@ export class RequestFormComponent implements OnInit {
   submit() {
     // Data to submit
     console.log('Submit for job request clicked');
-    // TODO validate file and material selected!
+
+    // Make sure file is selected
+    // Make sure material is selected
+    // Dont worry about extraComments, set to 'none'
+
+    if(this.extraComments.length == 0) {
+      this.extraComments = ""
+    }
 
     console.log(this.uploadFile);
     console.log(this.selectedMaterial);
     console.log(this.extraComments);
 
-    // let uploadData = {
-    //   file: this.uploadFile,
-    //   material: this.selectedMaterial,
-    //   comments: this.extraComments
-    // }
 
     let formData:FormData = new FormData();
     formData.append('file', this.uploadFile, this.uploadFile.name);
-    formData.append('material', this.selectedMaterial.matId);
+    formData.append('material', this.selectedMaterial.name);
     formData.append('comments', this.extraComments);
+    formData.append('uid', this.uid);
 
     this.jobRequestService.submitJobRequest(formData);
   }
@@ -98,22 +105,10 @@ export class RequestFormComponent implements OnInit {
 
   ngOnInit() {
 
-    this.items = [{
-          label: 'Upload Files'
-      },
-      {
-          label: 'Select Material and Color'
-      },
-      {
-          label: 'Additional Comments'
-      },
-      {
-          label: 'Job Quote'
-      },
-      {
-        label: 'Submit Request'
-      }
-    ];
+    if(this.authService.getIsAuth()) {
+      // User logged in
+      this.uid = this.authService.getUserId();
+    }
   }
 
 }

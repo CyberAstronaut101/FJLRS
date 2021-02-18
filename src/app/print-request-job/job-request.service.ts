@@ -4,6 +4,7 @@ import { data } from 'jquery';
 import { Subject } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
+
 const BACKEND_URL = environment.apiUrl + "/printlab";
 
 @Injectable({
@@ -20,7 +21,7 @@ export class JobRequestService {
   hasQuote: boolean;
 
   jobSubmissionInformation = {
-    file: {}, 
+    file: {},  
     material: {},
     comment: '',
     quote: ''
@@ -32,23 +33,10 @@ export class JobRequestService {
 
   constructor(
     private http: HttpClient
-  ) {}
-
-
-  uploadFile(file: File) {
-    let formData:FormData = new FormData();
-        formData.append('file', file, file.name);
-        /** In Angular 5, including the header Content-Type can invalidate your request */
-        // headers.append('Content-Type', 'multipart/form-data');
-        // headers.append('Accept', 'application/json');
-
-        this.http.post(BACKEND_URL+'/file', formData)
-        .subscribe(ret => {
-          console.log("After file upload");
-          console.log(ret);
-        })
+  ) {
 
   }
+
 
   submitJobRequest(uploadData: FormData) {
 
@@ -56,7 +44,7 @@ export class JobRequestService {
     console.log(uploadData);
 
       this.http
-        .post<{message: any}>(BACKEND_URL+'/file', uploadData)
+        .post<{message: any}>(BACKEND_URL, uploadData)
         .subscribe(ret => {
           console.log("Return from API on new queue item request..");
           console.log(ret);
