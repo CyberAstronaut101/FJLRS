@@ -4,14 +4,13 @@ import { CommonModule } from '@angular/common';
 import { PrinterlabRoutingModule } from './printerlab-routing.module';
 import { PrinterlabHomeComponent } from './printerlab-home/printerlab-home.component';
 import { MatCardModule, MatDividerModule, MatTabsModule } from '@angular/material';
-import { PrintJobFormComponent } from './print-job-form/print-job-form.component';
 import { AngularMaterialModule } from '../angular-material.module';
 import { FormsModule } from '@angular/forms';
 import {FileUploadModule} from 'primeng/fileupload';
 import {StepsModule} from 'primeng/steps';
 
 @NgModule({
-  declarations: [PrinterlabHomeComponent, PrintJobFormComponent],
+  declarations: [PrinterlabHomeComponent],
   imports: [
     CommonModule,
     PrinterlabRoutingModule,

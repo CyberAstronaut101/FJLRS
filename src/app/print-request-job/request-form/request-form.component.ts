@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Material } from 'src/assets/interfaces';
 import { JobRequestService } from '../job-request.service';
@@ -16,23 +17,19 @@ import { JobRequestService } from '../job-request.service';
 })
 export class RequestFormComponent implements OnInit {
 
-  items: MenuItem[];
-
   // FILE UPLOAD DATA
   uploadFile: any;
-
-  // MATERIAL SELECTION
   selectedMaterial: Material;
+  // TODO make this programatic
   materials = [
     { name: "White PLA", matId: "TEMP DB ID" },
     { name: "Black PLA", matId: "TEMP DB ID" },
     { name: "Gray PLA", matId: "TEMP DB ID" }
   ]
-
-  // EXTRA COMMENTS
   extraComments: string = "";
   uid: string;
 
+  private jobSubmissionSub: Subscription;
 
   constructor(
     private jobRequestService: JobRequestService,
@@ -40,8 +37,30 @@ export class RequestFormComponent implements OnInit {
     private messageService: MessageService) {
   }
 
-  public activeIndex: number = 0;
+  ngOnInit() {
 
+    if(this.authService.getIsAuth()) {
+      // User logged in
+      this.uid = this.authService.getUserId();
+    }
+
+    // Setup listener for after job is submitted
+    this.jobSubmissionSub = this.jobRequestService.getJobRequestListener()
+      .subscribe(any => {
+        console.log("After successful submission.....");
+
+        console.log(any);
+        this.messageService.clear();
+        this.messageService.add(any.message);
+
+        // Open the dialogref and pass the data to alert user
+        
+        // After dialogref closed, clear the form variables here
+
+      });
+
+
+  }
 
   submit() {
     this.messageService.clear();
@@ -99,26 +118,6 @@ export class RequestFormComponent implements OnInit {
     this.uploadFile = $event.files[0];
   }
 
-  increaseIndex() {
-    this.activeIndex++;
-  }
-
-  decreaseIndex() {
-    this.activeIndex--;
-  }
-
-  setIndex(index: number) {
-    if(index >= 0 && index <=4){
-      this.activeIndex = index;
-    }
-  }
-
-  ngOnInit() {
-
-    if(this.authService.getIsAuth()) {
-      // User logged in
-      this.uid = this.authService.getUserId();
-    }
-  }
+  
 
 }

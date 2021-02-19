@@ -133,11 +133,19 @@ router.post("/", upload.single('file'), (req, res, next) => {
         console.log(createdItem);
         // Send response
         res.status(200).json({
-            message: "Successfuly saved queue item"
+            message: {
+                severity: "success",
+                summary: "Success!",
+                detail: "Job submitted successfully"
+            },
+            queueItem: createdItem
         });
 
     }).catch(error => {
         console.log(error);
+
+        // TODO send error
+        
     })
 
     // Massage the data and add the printQueue Item

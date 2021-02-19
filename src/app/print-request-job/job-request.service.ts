@@ -29,14 +29,9 @@ export class JobRequestService {
 
   private jobSubmissionComplete = new Subject<any>();
 
-  jobSubmissionComplete$ = this.jobSubmissionComplete.asObservable();
-
   constructor(
     private http: HttpClient
-  ) {
-
-  }
-
+  ) {}
 
   submitJobRequest(uploadData: FormData) {
 
@@ -48,16 +43,18 @@ export class JobRequestService {
         .subscribe(ret => {
           console.log("Return from API on new queue item request..");
           console.log(ret);
+
+          // Expecting object with -- message::queueItem{}
+
+          this.jobSubmissionComplete.next(ret);
+
         })
       // Then on the callback upload the queue item with the fileupload ._id
-    
-
   }
 
-
-
-  getJobSubmissionInformation() {
-    return this.jobSubmissionInformation;
+  getJobRequestListener() {
+    return this.jobSubmissionComplete.asObservable();
   }
+
 
 }
