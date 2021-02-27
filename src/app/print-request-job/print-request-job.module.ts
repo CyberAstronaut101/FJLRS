@@ -8,7 +8,7 @@ import { JobRequestService } from './job-request.service';
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule, MatDialogModule } from '@angular/material';
 
 
 import { ButtonModule } from 'primeng/button';
@@ -16,9 +16,10 @@ import { CardModule } from 'primeng/card';
 import { FileUploadModule } from 'primeng/fileupload';
 import {DropdownModule} from 'primeng/dropdown';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import { RequestSubmitSuccessComponent } from '../shared-components/request-submit-success/request-submit-success.component';
 
 @NgModule({
-  declarations: [RequestFormComponent],
+  declarations: [RequestFormComponent, RequestSubmitSuccessComponent],
   imports: [
     CommonModule,
     PrintRequestJobRoutingModule,
@@ -30,10 +31,12 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
     CardModule,
     FileUploadModule,
     DropdownModule,
-    InputTextareaModule
+    InputTextareaModule,
+    MatDialogModule
   ],
   providers: [
     JobRequestService
-  ]
+  ],
+  entryComponents: [ RequestSubmitSuccessComponent ]
 })
 export class PrintRequestJobModule { }

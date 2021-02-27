@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
+import { RequestSubmitSuccessComponent } from 'src/app/shared-components/request-submit-success/request-submit-success.component';
 import { Material } from 'src/assets/interfaces';
 import { JobRequestService } from '../job-request.service';
 
@@ -34,7 +38,9 @@ export class RequestFormComponent implements OnInit {
   constructor(
     private jobRequestService: JobRequestService,
     private authService: AuthService,
-    private messageService: MessageService) {
+    private messageService: MessageService,
+    private router: Router,
+    private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -52,10 +58,21 @@ export class RequestFormComponent implements OnInit {
         console.log(any);
         this.messageService.clear();
         this.messageService.add(any.message);
-
-        // Open the dialogref and pass the data to alert user
         
-        // After dialogref closed, clear the form variables here
+        // Prompt user with confirmation dialog
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+          width: '350px',
+          data: 'Successfully submitted job request, id:'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+
+            // User acknoledged the dialog
+            // Regardless of yes/no, redirect
+            this.router.navigate(['/printerlab']);
+
+        });
+        
+
 
       });
 
