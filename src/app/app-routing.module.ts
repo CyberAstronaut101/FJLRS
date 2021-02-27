@@ -31,6 +31,7 @@ const routes: Routes = [
     { path: 'employee', canActivate: [AuthGuard], loadChildren: './employee/employee.module#EmployeeModule'},
     { path: 'student', canActivate: [AuthGuard], loadChildren: './student/student.module#StudentModule'},
     { path: 'woodshop', canActivate: [AuthGuard], loadChildren: './woodshop/woodshop.module#WoodshopModule'},
+    { path: 'jobrequest', canActivate: [AuthGuard], loadChildren: './print-request-job/print-request-job.module#PrintRequestJobModule'}
 ];
 
 @NgModule({

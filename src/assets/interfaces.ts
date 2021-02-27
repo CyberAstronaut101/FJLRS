@@ -34,6 +34,11 @@ export interface Socket {
 }
 
 
+export interface Material {
+    matId: string,
+    name: string
+}
+
 /*==================================================================================
 
     Interfaces for 3D Printer Print queues
@@ -82,12 +87,11 @@ export interface MachineHistoryAndUsers {
 
 export interface PrintQueueItem {
     id: string;
-    printerId: string;
-    jobName: string;
-    jobOwner: string;
-    timeStarted: Date;
-    printHours: number;
-    printMinutes: number
+    description: string;
+    fileId: string;
+    materialId: string;
+    createdAt: Date;
+    submittedBy: string;
 }
 
 export interface MachineList {

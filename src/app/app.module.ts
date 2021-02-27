@@ -29,6 +29,7 @@ import { AgGridModule } from 'ag-grid-angular';
 
 // Fullcalendar -- potential free user
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { RequestSubmitSuccessComponent } from './shared-components/request-submit-success/request-submit-success.component';
 
 @NgModule({
   declarations: [
