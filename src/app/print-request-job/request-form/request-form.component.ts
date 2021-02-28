@@ -22,7 +22,7 @@ import { JobRequestService } from '../job-request.service';
 export class RequestFormComponent implements OnInit {
 
   // FILE UPLOAD DATA
-  uploadFile: any;
+  uploadFiles: any;
   selectedMaterial: Material;
   // TODO make this programatic
   materials = [
@@ -89,7 +89,7 @@ export class RequestFormComponent implements OnInit {
     // Dont worry about extraComments, set to 'none'
 
     // Check if file has been selected
-    if(!this.uploadFile) {
+    if(!this.uploadFiles) {
       console.log("No file selected..");
       this.messageService.add({
         severity: "error",
@@ -115,13 +115,13 @@ export class RequestFormComponent implements OnInit {
     }
 
 
-    console.log(this.uploadFile);
+    console.log(this.uploadFiles);
     console.log(this.selectedMaterial);
     console.log(this.extraComments);
 
 
     let formData:FormData = new FormData();
-    formData.append('file', this.uploadFile, this.uploadFile.name);
+    formData.append('file', this.uploadFiles, this.uploadFiles.name);
     formData.append('material', this.selectedMaterial.name);
     formData.append('comments', this.extraComments);
     formData.append('uid', this.uid);
@@ -132,7 +132,7 @@ export class RequestFormComponent implements OnInit {
   // For file upload
   onSelect($event) {
     // this.fileToUpload = $event.files[0];
-    this.uploadFile = $event.files[0];
+    this.uploadFiles = $event.files[0];
   }
 
   
