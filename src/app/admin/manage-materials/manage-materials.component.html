@@ -5,11 +5,11 @@
           <h1 style="text-align: center"> Manage Build Labs News </h1>
 
           <mat-form-field>
-                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search News Articles">
+                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Materials">
               </mat-form-field>
   
               
-              <table mat-table [dataSource]="newsDataSource" class="mat-elevation-z8">
+              <table mat-table [dataSource]="MaterialDataSource" class="mat-elevation-z8">
                   
                   <mat-spinner *ngIf="isLoading"></mat-spinner>
                   <!-- Checkbox Column -->
