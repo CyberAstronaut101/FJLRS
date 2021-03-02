@@ -2,7 +2,7 @@
 
   <mat-card class="ui-g-11 centered">
 
-          <h1 style="text-align: center"> Manage Build Labs News </h1>
+          <h1 style="text-align: center"> Manage Print Materials </h1>
 
           <mat-form-field>
                   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Materials">
@@ -29,20 +29,20 @@
   
   
                   <!-- Headline Column -->
-                  <ng-container matColumnDef="Article Headline">
-                      <th mat-header-cell *matHeaderCellDef> Article Headline </th>
+                  <ng-container matColumnDef="Material Name">
+                      <th mat-header-cell *matHeaderCellDef> Material Name </th>
                       <td mat-cell *matCellDef="let element"> {{element.title}} </td>
                   </ng-container>
   
                   <!-- Posted Date Column -->
-                  <ng-container matColumnDef="Posted Date">
-                      <th mat-header-cell *matHeaderCellDef> Posted Date </th>
+                  <ng-container matColumnDef="Material Type">
+                      <th mat-header-cell *matHeaderCellDef> Material Type </th>
                       <td mat-cell *matCellDef="let element"> {{element.postedDate}} </td>
                   </ng-container>   
                   
                   <!-- Content Column -->
-                  <ng-container matColumnDef="Content">
-                          <th mat-header-cell *matHeaderCellDef> Content </th>
+                  <ng-container matColumnDef="Material Price">
+                          <th mat-header-cell *matHeaderCellDef> Material Price </th>
                           <td mat-cell *matCellDef="let element"> {{element.content}} </td>
                       </ng-container>    
   
@@ -56,66 +56,41 @@
               <button (click)="onCreateNewsPrep()"
                   mat-raised-button
                   color="primary">
-                  Create News Article</button>
+                  Create Material</button>
   </mat-card>
 
-  <mat-card class="ui-g-11 centered" *ngIf="showEdit" style="margin-top:10px;">
-      
-          <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <!--
+  <mat-card class="card-width-fit">
+    <mat-card-title>
+        <button mat-raised-button color="accent" style="margin-top: 7px;" (click)="addMaterial()" >Create New Material</button>
+    </mat-card-title>
+    
+    <form>
+        <mat-form-field class ="form-field-row">
+            <mat-label>Material Name</mat-label>
+            <input matInput 
+                name="newMName"
+                [(ngModel)]="newMaterialName"
+            />
+        </mat-form-field>
 
-          <mat-card-title *ngIf="mode == 'create'">
-              Create News Post
-          </mat-card-title>
+        <mat-form-field class ="form-field-row">
+            <mat-label>Material Type</mat-label>
+            <input matInput 
+                name="newMType"
+                [(ngModel)]="newMaterialType"
+            />
+        </mat-form-field>
 
-          <mat-card-title *ngIf="mode == 'edit'">
-              Edit News Post
-          </mat-card-title>
-
-          <form #newsForm="ngForm" *ngIf="!isLoading">
-
-              <mat-form-field>
-                  <mat-label>News Title</mat-label>
-                  <input matInput type="text" name="title" [ngModel]="news?.title" required #title="ngModel">
-                  <mat-error *ngIf="title.invalid">Enter Valid Title</mat-error>
-              </mat-form-field>
-
-              <mat-form-field>
-                  <mat-label>Body of News Article</mat-label>
-                  <textarea matInput rows="6" name="content" [ngModel]="news?.content" required
-                      #content="ngModel"></textarea>
-
-                  <!-- <p-editor name="content" [style]="{'height':'320px'}"></p-editor> -->
-
-                  <mat-error *ngIf="content.invalid">Enter Valid Content</mat-error>
-
-              </mat-form-field>
-
-              <button *ngIf="mode == 'edit'"
-                      mat-raised-button color="accent"
-                      (click)="onSaveNews(newsForm)">Update News Article
-              </button>
-
-              <button *ngIf="mode == 'create'" mat-raised-button color="primary" (click)="onSaveNews(newsForm)">Save
-                  News Article
-              </button>
-
-              
-  
-              <button *ngIf="mode == 'edit'" mat-raised-button color="warn" (click)="onDeleteNews(newsForm)">Delete
-                  News Article
-              </button>
-
-              <button *ngIf="mode == 'edit'" mat-raised-button color="primary"
-                  (click)="onCreateNewsPrep(newsForm)">New
-                  News Article
-              </button>
-
-              <button mat-raised-button color="warn" (click)="clearEditPanel()">Cancel
-                  </button>
-
-          </form>
-
-
+        <mat-form-field class ="form-field-row">
+            <mat-label>Material Price</mat-label>
+            <input matInput 
+                name="newMPrice"
+                [(ngModel)]="newMaterialPrice"
+            />
+        </mat-form-field>
+    </form>
   </mat-card>
+-->
 
 </div>

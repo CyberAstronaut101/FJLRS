@@ -221,3 +221,9 @@ export interface Printer {
     type: string,
     octopiUrl: string
 }
+
+export interface Material {
+    materialName: string,
+    materialType: string,
+    materialPrice: string
+}
