@@ -225,3 +225,4 @@ export interface Printer {
     type: string,
     octopiUrl: string
 }
+

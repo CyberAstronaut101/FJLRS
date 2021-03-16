@@ -7,8 +7,10 @@ const router = express.Router();
 
 // const PrinterFiles = require('../models/printerFiles');
 const PrintQueueItem = require('../models/printQueueItem');
+const User = require('../models/user');
 
 const mongoose = require('mongoose');
+var ObjectId = require('mongodb').ObjectID;
 
 // BASE API ROUTE = /api/printlab/
 
@@ -23,8 +25,9 @@ const crypto = require('crypto');
 const GridFsStorage = require('multer-gridfs-storage');
 const multer = require('multer');
 const path = require('path');
+const { EMLINK } = require("constants");
 
-config_data = require('../config/config.production.json');
+config_data = require('../config/config.development.json');
 mongoURL = config_data.mongoURL;
 
 const storage = new GridFsStorage({
@@ -163,6 +166,48 @@ router.get("/file/:fileName", (req, res) => {
     gfs.find( { filename: fileName})
 
     
+})
+
+//getting the queue table items
+router.get("/items", (req, res) => {
+    console.log('GET @ /api/printerLab/items');
+    console.log('returning list of all items');
+
+    PrintQueueItem.find().then(result => {
+
+        userId = [];
+
+        result.forEach(r => userId.push(ObjectId(r.submittedBy)));
+
+        User.find({_id: {$in: userId}}).then(userResults => {
+
+            finalResult = result.map(elem => {
+
+
+                tempUser = userResults.findIndex(obj => {
+
+                    return obj._id.toString() == elem.submittedBy.toString();
+                })
+
+                newName = userResults[tempUser].firstname + " " + userResults[tempUser].lastname;
+            
+                return elem.toClient(newName); // mongoose schema function to rename _id to id and add username
+            });
+            
+            console.log(finalResult);
+
+            res.status(201).json({
+                message: "All PrintQueueItems fetched successfully",
+                printers: finalResult
+            });
+            
+        });
+
+    })
+
+    function checkUser(userId, user) {
+        return age >= 18;
+      }
 })
 
 

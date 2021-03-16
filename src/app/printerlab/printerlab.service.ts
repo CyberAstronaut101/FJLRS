@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-
-
+import {Subject } from 'rxjs';
 
 
 
@@ -13,12 +12,16 @@ import { Observable } from 'rxjs';
 
 // Environment file used to either point to local or production server, depending on how angular is compiled
 import { environment } from "../../environments/environment";
-const BACKEND_URL = environment.apiUrl + '/printerlab';
+import { PrintQueueItem } from 'src/assets/interfaces';
+const BACKEND_URL = environment.apiUrl + '/printlab';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrinterlabService {
+
+  private items: PrintQueueItem[] = [];
+  private itemsUpdated = new Subject<PrintQueueItem[]>();
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -41,7 +44,7 @@ export class PrinterlabService {
         formData
       )
       .subscribe(response => {
-        console.log("RETURN from post@/api/printerlab/upload");
+        console.log("RETURN from post@/api/printLab/upload");
         console.log(response);
       })
   }
@@ -95,5 +98,21 @@ export class PrinterlabService {
   
   /* =======  End of Upload/Download Files  ======= */
 
+  getItems(){
+    this.http
+        .get<{message: string, printers: PrintQueueItem[]}>(BACKEND_URL+"/items")
+        .subscribe(ret => {
+            console.log("PrintQueueItemService Loaded Items:");
+            console.log(ret);
+            this.items = ret.printers;
+            this.itemsUpdated.next([...this.items]);
+        })
+  }
+
+  getItemsUpdateListener(){
+    return this.itemsUpdated.asObservable();
+  }
 
 }
+
+
