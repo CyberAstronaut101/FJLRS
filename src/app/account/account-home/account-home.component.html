@@ -1,14 +1,3 @@
-<p>
-  account-home works!
-</p>
-
-
-This page will let users change settings on their user account. 
-
-- Password change
-- Contact preferences
-- Show history of jobs?
-
 
 
 <div class="ui-g centered admin-panel-wrapper">
@@ -16,23 +5,18 @@ This page will let users change settings on their user account.
     <h2 style="text-align: center">Account Panel</h2>
 
     <mat-tab-group mat-align-tabs="center" dynamicHeight>
-      <mat-tab label="Account Overview">
 
-        We can put stuff here that will reference the user account - TODO pull in the logged in user data
+      <mat-tab label="Current Active Jobs">
+        <app-account-active-jobs></app-account-active-jobs>
+      </mat-tab>
 
-
+      <mat-tab label="Job History">
+        <app-account-job-history></app-account-job-history>
       </mat-tab>
 
       <mat-tab label="Account Settings">
         <app-account-settings></app-account-settings>
       </mat-tab>
-
-
-      <!-- <mat-tab label="Alert System"><admin-manage-alert-emails></admin-manage-alert-emails></mat-tab> -->
-      <!-- <mat-tab label="Operation Hours"><app-manage-hours></app-manage-hours></mat-tab> -->
-
-      <!-- <mat-tab label="Manage Departments"><app-manage-depts></app-manage-depts></mat-tab> -->
-
 
     </mat-tab-group>
   </div>
