@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/auth/auth.service';
+import { AccountService } from '../account.service';
 
 @Component({
   selector: 'app-account-home',
@@ -7,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountHomeComponent implements OnInit {
 
-  constructor() { }
+  
+
+  constructor(
+    private accountService: AccountService,
+    private authService: AuthService,
+    private messageService: MessageService
+  ) { }
 
   ngOnInit() {
+
+    // On init, get the current user UID
+    // Then pass it to the job 
+    this.accountService.getCurrentOpenJobs(this.authService.getUserId());
   }
 
 }
