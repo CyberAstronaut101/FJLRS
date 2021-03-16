@@ -17,7 +17,7 @@ import { MatDialogConfig, MatDialog, MatTableDataSource } from '@angular/materia
 })
 export class PrinterlabHomeComponent implements OnInit {
 
-  displayedColumns: string[] = ['Description', 'Material ID', 'Created At', 'Submitted By', 'Open'];
+  displayedColumns: string[] = ['Description', 'Material ID', 'Created At', 'Submitted By'];
 
   queueTableData: PrintQueueItem[] = [];
   resultsLength = 0;
@@ -44,6 +44,11 @@ export class PrinterlabHomeComponent implements OnInit {
             this.queueDataSource = new MatTableDataSource(this.queueTableData);
             this.resultsLength = this.queueTableData.length;
     });
+  }
+
+  openTicket(row)
+  {
+    console.log("TICKET ID: " + row.id);
   }
 
 }

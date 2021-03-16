@@ -193,8 +193,6 @@ router.get("/items", (req, res) => {
             
                 return elem.toClient(newName); // mongoose schema function to rename _id to id and add username
             });
-            
-            console.log(finalResult);
 
             res.status(201).json({
                 message: "All PrintQueueItems fetched successfully",

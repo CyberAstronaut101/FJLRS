@@ -92,6 +92,7 @@ export interface PrintQueueItem {
     materialId: string;
     createdAt: Date;
     submittedBy: string;
+    userName: string;
 }
 
 export interface MachineList {

@@ -51,3 +51,8 @@ table {
   .centered {
     margin: 0 auto;
   }
+
+  .mat-row:hover {
+    background-color: aliceblue;
+    cursor: pointer;
+  }
