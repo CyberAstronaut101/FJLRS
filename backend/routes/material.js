@@ -1,4 +1,5 @@
 const express = require("express");
+const Material = require("../models/materials");
 
 const News = require("../models/news");
 const checkAuth = require("../middleware/check-auth");

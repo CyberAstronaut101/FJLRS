@@ -25,11 +25,22 @@ export class ManageMaterialsComponent implements OnInit {
 
   newMaterialName: string;
   newMaterialPrice: string;
+  newMaterialType: string;
   private materialSub: Subscription;
 
+  
 constructor(private materialService: MaterialService) { }
 
   ngOnInit() {
+  }
+
+  addMaterial()
+  {
+    this.materialService.addMaterial(
+      this.newMaterialName,
+      this.newMaterialType,
+      this.newMaterialPrice
+    );
   }
 
 }
