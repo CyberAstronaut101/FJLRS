@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 
 // Environment file used to either point to local or production server, depending on how angular is compiled
 import { environment } from "../../environments/environment";
-const BACKEND_URL = environment.apiUrl + '/printerlab';
+const BACKEND_URL = environment.apiUrl + '/printlab';
 
 @Injectable({
   providedIn: 'root'

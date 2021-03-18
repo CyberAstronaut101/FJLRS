@@ -14,8 +14,7 @@ export class AccountHomeComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private authService: AuthService,
-    private messageService: MessageService
+    private authService: AuthService
   ) { }
 
   ngOnInit() {

@@ -157,14 +157,45 @@ router.post("/", upload.single('file'), (req, res, next) => {
 
 
 router.get("/file/:fileName", (req, res) => {
-    console.log("GET @ /api/printerlab/file/:id");
+    console.log("GET @ /api/printerlab/file/" + req.params.fileName);
     var fileName = req.params.fileName;
 
-    gfs.find( { filename: fileName})
+    upload.
 
     
 })
 
+
+
+
+/**================================================== *
+ * ==========  Get Statistics On User/Jobs  ========== *
+ * ================================================== */
+
+// GET @ /api/printlab/user/:uid
+router.get("/user/:uid", (req, res) => {
+    console.log("GET @ /api/printlab/user/" + req.params.uid);
+
+    PrintQueueItem.find({submittedBy: req.params.uid})
+    .then(results => {
+        console.log("Jobs owned by user...");
+        console.log(results);
+
+        // Build list of file names to send back as well
+        gfs.find( { _id: results[0].fileId})
+            .then(results => {
+                console.log(results);
+            })
+
+        res.status(200).json({
+            message: "Successfully searched owned jobs",
+            jobs: results
+        })
+    })
+})
+
+
+/* =======  End of Get Statistics On User/Jobs  ======= */
 
 
 module.exports = router;
