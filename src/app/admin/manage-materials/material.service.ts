@@ -55,6 +55,19 @@ export class MaterialService {
   getMaterialsUpdateListener(){
     return this.materialsUpdated.asObservable();
 }
+
+
+
+deleteMaterial(name: string) {
+  this.http.delete(BACKEND_URL + '/' + name)
+      .subscribe(() => {
+          console.log('http delete request finished');
+          // keep the elements that are not the same id
+          const updatedMaterials = this.materials.filter(materials => materials.materialName!== name );
+          this.materials = updatedMaterials;
+
+          this.materialsUpdated.next([...this.materials]);
+      })
+
 }
-
-
+}

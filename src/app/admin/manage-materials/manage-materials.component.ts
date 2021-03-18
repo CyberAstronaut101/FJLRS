@@ -15,7 +15,7 @@ import { MaterialService } from './material.service';
 export class ManageMaterialsComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['Material Name', 'Material Type', 'Material Price'];
+  displayedColumns: string[] = ['Material Name', 'Material Type', 'Material Price', 'Delete'];
 
 
   MaterialTableData: Material[] = [];
@@ -29,7 +29,7 @@ export class ManageMaterialsComponent implements OnInit {
   private materialSub: Subscription;
 
   
-constructor(private materialService: MaterialService) { }
+constructor(private materialService: MaterialService, private dialog: MatDialog) { }
 
 ngOnInit() {
 
@@ -56,4 +56,17 @@ ngOnInit() {
     );
   }
 
+  deleteDialog(name: string)
+  {
+    console.log("name of material to delete: "+ name);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: 'Are you sure you want to delete the material: ' + name 
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.materialService.deleteMaterial(name);
+      }
+    });
+  }
 }

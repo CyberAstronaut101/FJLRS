@@ -64,7 +64,7 @@ router.delete("/:id", checkAuth, (req, res, next) => {
     console.log('\nDELETE @ /api/material/:id');
     console.log(req.params.id);
 
-    Material.findOneAndDelete({ _id: req.params.id})
+    Material.findOneAndDelete({ materialName: req.params.id})
         .then(result => {
             console.log("Deleting Material...");
             console.log(result);
