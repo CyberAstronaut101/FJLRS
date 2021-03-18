@@ -31,9 +31,22 @@ export class ManageMaterialsComponent implements OnInit {
   
 constructor(private materialService: MaterialService) { }
 
-  ngOnInit() {
-  }
+ngOnInit() {
 
+  // Setup listener
+  this.materialService.getMaterials();
+  console.log("materials:");
+  this.materialSub = this.materialService.getMaterialsUpdateListener()
+      .subscribe((materials: Material[]) => {
+          console.log('material subscription updated with new values!');
+          //this.isLoading = false;
+
+          // Set the table data
+          this.MaterialTableData = materials;
+          this.MaterialDataSource = new MatTableDataSource(this.MaterialTableData);
+          this.resultsLength = this.MaterialTableData.length;
+  });
+}
   addMaterial()
   {
     this.materialService.addMaterial(

@@ -15,6 +15,7 @@ const router = express.Router();
 router.post("", checkAuth, (req, res, next) => {
     console.log("\nPOST @ /api/material");
 
+    console.log(req.body);
     const newMaterial = new Material({
         materialName: req.body.materialName,
         materialPrice: req.body.materialPrice,

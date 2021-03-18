@@ -52,6 +52,9 @@ export class MaterialService {
     });
   }
 
+  getMaterialsUpdateListener(){
+    return this.materialsUpdated.asObservable();
+}
 }
 
 
