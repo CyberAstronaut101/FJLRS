@@ -31,19 +31,19 @@
                   <!-- Headline Column -->
                   <ng-container matColumnDef="Material Name">
                       <th mat-header-cell *matHeaderCellDef> Material Name </th>
-                      <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                      <td mat-cell *matCellDef="let element"> {{element.materialName}} </td>
                   </ng-container>
   
                   <!-- Posted Date Column -->
                   <ng-container matColumnDef="Material Type">
                       <th mat-header-cell *matHeaderCellDef> Material Type </th>
-                      <td mat-cell *matCellDef="let element"> {{element.postedDate}} </td>
+                      <td mat-cell *matCellDef="let element"> {{element.materialType}} </td>
                   </ng-container>   
                   
                   <!-- Content Column -->
                   <ng-container matColumnDef="Material Price">
                           <th mat-header-cell *matHeaderCellDef> Material Price </th>
-                          <td mat-cell *matCellDef="let element"> {{element.content}} </td>
+                          <td mat-cell *matCellDef="let element"> {{element.materialPrice}} </td>
                       </ng-container>    
   
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

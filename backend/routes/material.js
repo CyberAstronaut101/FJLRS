@@ -48,7 +48,7 @@ router.get("", (req,res, next) => {
 
             res.status(200).json({
                 message: 'All Material Entries fetched successfully',
-                Materials: documents
+                materials: documents
             });
         });
 });
