@@ -5,7 +5,7 @@ const uniqueValidator = require("mongoose-unique-validator");
 const materialSchema = mongoose.Schema({
     materialName: {type: String, required: true, unique: true },
     materialPrice: { type: Number, require: true},
-    inUse: Boolean
+    materialType: { type: String, require: true},
 });
 
 materialSchema.plugin(uniqueValidator);

@@ -182,12 +182,15 @@ const newsRoutes = require("./routes/news");
 const emailRoutes = require("./routes/email");
 const calendarRoutes = require("./routes/calendar");
 const printerRoutes = require("./routes/printer");
+const materialRoutes = require("./routes/material");
+
 
 // The files above are then used here to define which request paths they should handle
 app.use("/api/todos", todosRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/email", emailRoutes);
+app.use("/api/material", materialRoutes);
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/printer", printerRoutes);
 

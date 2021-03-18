@@ -5,6 +5,7 @@ import { Material } from 'src/assets/interfaces';
 //import {  } from './print.service';
 import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogConfig, MatDialog, MatTableDataSource } from '@angular/material';
+import { MaterialService } from './material.service';
 
 @Component({
   selector: 'admin-manage-materials',
@@ -22,7 +23,11 @@ export class ManageMaterialsComponent implements OnInit {
   resultsLength = 0;
 
 
-  constructor() { }
+  newMaterialName: string;
+  newMaterialPrice: string;
+  private materialSub: Subscription;
+
+constructor(private materialService: MaterialService) { }
 
   ngOnInit() {
   }

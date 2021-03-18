@@ -15,9 +15,9 @@ router.post("", checkAuth, (req, res, next) => {
     console.log("\nPOST @ /api/material");
 
     const newMaterial = new Material({
-        title: req.body.title,
-        content: req.body.content,
-        postedDate: req.body.postedDate
+        materialName: req.body.materialName,
+        materialPrice: req.body.materialPrice,
+        materialType: req.body.materialType
     });
 
     newMaterial.save().then(createdMaterial => {
@@ -28,7 +28,6 @@ router.post("", checkAuth, (req, res, next) => {
             newsId: createdMaterial._id
         });
     });
-
 });
 
 /* ^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v
@@ -52,38 +51,6 @@ router.get("", (req,res, next) => {
         });
 });
 
-/* =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-    ?PUT @ /api/news/:id
-        
-    Updates a news article
-=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+*/
-router.put("/:id", checkAuth, (req, res, next) => {
-
-    console.log('\nPUT @ /api/news/:id');
-    console.log(req.params.id);
-    console.log(req.body);
-    // !!TODO make this keep the postedDate and updatedDate seperate
-
-
-
-    const updateNews = new News({
-        _id: req.body.id,
-        title: req.body.title,
-        content: req.body.content,
-        postedDate: req.body.postedDate
-    })
-
-    News.updateOne({ _id: req.params.id}, updateNews).then(result => {
-        console.log(result);
-        if(result.n == 0) {
-            console.log("no UpDaTe occured!");
-            return res.status(401).json({ message: "User not authorized to edit News!"});
-        } else {
-            console.log('update todo successful');
-            return res.status(200).json({ message: "Update Successful!"});
-        }
-    })
-});
 
 
 /* --------------------------------------------
@@ -92,21 +59,14 @@ router.put("/:id", checkAuth, (req, res, next) => {
     req.params.id
 --------------------------------------------*/
 router.delete("/:id", checkAuth, (req, res, next) => {
-    console.log('\nDELETE @ /api/news/:id');
+    console.log('\nDELETE @ /api/material/:id');
     console.log(req.params.id);
 
-    News.findOneAndDelete({ _id: req.params.id})
+    Material.findOneAndDelete({ _id: req.params.id})
         .then(result => {
-            console.log("within delete news ");
+            console.log("Deleting Material...");
             console.log(result);
-            if(!result) {
-                console.log("find and delete failed");
-                return res.status(401).json({message: 'user not owner of todo!'});
-            } else {
-                console.log("todo delete successful");
-                return res.status(200).json({message: 'user not owner of todo!'});
-            }
-        
+            return res.status(200); 
     });
 })
 
