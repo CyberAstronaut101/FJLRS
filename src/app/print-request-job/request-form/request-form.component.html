@@ -1,0 +1,57 @@
+<div class="ui-g">
+
+  <mat-card class="ui-g-10 centered" id="main-form-card">
+
+    <mat-card-title>Submit 3D Job Request</mat-card-title>
+
+    <p-messages></p-messages>
+
+    <!-- File Upload Card -->
+    <mat-card>
+      <mat-card-title>
+        Upload File
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        Currently we have a system that requires one Job Request PER file that needs to be printed.
+      </mat-card-subtitle>
+
+      <!-- <p-fileUpload #fileInput name="jobFile" [showUploadButton]="true" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload> -->
+      <p-fileUpload name="jobFile" [files]="uploadFiles" [showUploadButton]="false" customUpload="true" (onSelect)="onSelect($event)"></p-fileUpload>
+    </mat-card> 
+
+    <!-- Material Select Card -->
+    <mat-card>
+      <mat-card-title>
+        Select Material
+      </mat-card-title>
+  
+      <mat-card-subtitle>
+        Get list of available materials and present user with dropdown menu to select
+      </mat-card-subtitle>
+  
+      <p-dropdown placeholder="Select a Material" [options]="materials" [(ngModel)]="selectedMaterial" optionLabel="name" optionValue="matId" required></p-dropdown>
+    </mat-card>
+
+    <!-- Additional Comments Card -->
+    <mat-card>
+      <mat-card-title>
+        Additional Comments
+      </mat-card-title>
+    
+      <mat-card-subtitle>
+        Please use this page to provide any extra details surrounding this request that you think would be necessary.
+        This is not required, but it is useful for lab technicans to provide as much detail as you can to reduce potential questions and get your job completed in a timely manner. 
+      </mat-card-subtitle>
+  
+      <textarea [(ngModel)]="extraComments" [rows]="5" [cols]="60" pInputTextarea autoResize="autoResize"></textarea>
+    </mat-card>
+
+    <!-- TODO quote generate card -->
+
+    <p-button label="Submit" (onClick)="submit()" icon="pi pi-check" class="p-button-success" iconPos="right"></p-button>
+
+  </mat-card>
+
+</div>
+

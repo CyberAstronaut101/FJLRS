@@ -54,6 +54,10 @@
           <fa-icon [icon]="cube" size="lg"></fa-icon>&ensp;3D Printer Lab
         </a>
 
+        <a *ngIf="userIsAuthenticated" [routerLink]="['/jobrequest']" (click)="sidenavRef.close()" mat-list-item>
+          <fa-icon [icon]="layerGroup" size="lg"></fa-icon>&ensp;Submit Request
+        </a>
+
 
         <!-- STUDENT/USER LEVEL NAV ITEMS -->
         <a *ngIf="userIsAuthenticated" [routerLink]="['/account']" (click)="sidenavRef.close()" mat-list-item>

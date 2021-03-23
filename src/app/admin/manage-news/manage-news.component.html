@@ -60,50 +60,7 @@
     </mat-card>
 
 
-    <!-- List of all the news articles -->
-    <!-- <mat-card class="ui-g-11 centered" style="padding-top:10px;">
-        <h1 style="text-align: center"> Manage Build Labs News </h1>
-        <hr />
-            <mat-card-title>FCrea
-                Build Labs News
-            </mat-card-title>
-
-            <mat-card-subtitle *ngIf="newsList?.length > 1">All News Articles for the FayJones Build Lab</mat-card-subtitle>
-
-            <mat-card-subtitle *ngIf="newsList?.length < 1">No News Articles loaded from server. If this is wrong, then there might be a problem with the DB.</mat-card-subtitle>
-
-            
-
-            <mat-accordion multi="false">
-
-                <mat-expansion-panel *ngFor="let newsPost of newsList">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            {{ newsPost.title }}
-                        </mat-panel-title>
-
-                        <mat-panel-description>
-                            {{ newsPost.postedDate }}
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-
-                    <h3>Posted: {{ newsPost.postedDate.toString() }} </h3>
-
-                    <p>
-                        {{ newsPost.content }}
-                    </p>
-                    <a mat-button color="primary" (click)="loadNewsForEdit(newsPost.id)">Edit Post</a>
-                </mat-expansion-panel>
-
-            </mat-accordion>
-
-            <button (click)="onCreateNewsPrep()"
-                    mat-raised-button
-                    color="primary">
-                    Create News Article</button>
-
-    </mat-card> -->
-
+    
     <mat-card class="ui-g-11 centered" *ngIf="showEdit" style="margin-top:10px;">
         
             <mat-spinner *ngIf="isLoading"></mat-spinner>
