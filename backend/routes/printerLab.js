@@ -24,7 +24,7 @@ const GridFsStorage = require('multer-gridfs-storage');
 const multer = require('multer');
 const path = require('path');
 
-config_data = require('../config/config.production.json');
+config_data = require('../config/config.development.json');
 mongoURL = config_data.mongoURL;
 
 const storage = new GridFsStorage({
