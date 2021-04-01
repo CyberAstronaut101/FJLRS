@@ -27,7 +27,7 @@ router.post("", checkAuth, (req, res, next) => {
         console.log(createdMaterial);
         res.status(200).json({
             message: 'Material Entry added successfully!',
-            newsId: createdMaterial._id
+            materialId: createdMaterial._id
         });
     });
 });
