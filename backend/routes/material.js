@@ -46,6 +46,10 @@ router.get("", (req,res, next) => {
         .then(documents => {
             console.log(documents);
 
+            documents = documents.map(elem => {
+                return elem.toClient(); // rename _id to .id
+            })
+
             res.status(200).json({
                 message: 'All Material Entries fetched successfully',
                 materials: documents

@@ -32,7 +32,8 @@ export class MaterialService {
 
   addMaterial(Name: string, Type: string, Price: string) {
 
-    const newMaterial: Material = {
+    const newMaterial = {
+        id: "",
         materialName: Name,
         materialType: Type,
         materialPrice: Price
@@ -43,11 +44,11 @@ export class MaterialService {
 
     // post @ /api/material
     this.http
-      .post<{message: string}>(BACKEND_URL, newMaterial)
+      .post<{message: string, material: Material}>(BACKEND_URL, newMaterial)
       .subscribe(ret => {
         console.log("PrinterService Added Printers:");
         console.log(ret);
-        this.materials.push(newMaterial);
+        this.materials.push(ret.material);
         this.materialsUpdated.next([...this.materials]);
     });
   }

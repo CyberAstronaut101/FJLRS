@@ -14,7 +14,7 @@ const  swaggerJSDoc = require('swagger-jsdoc');
 // config_data = require('./config/config.development.json');
 
 try {
-    config_data = require('./config/config.example.json');
+    config_data = require('./config/config.development.json');
 } catch (e) {
     console.log("===================================================");
     console.log("Looks like app.js has an error trying to import the");
