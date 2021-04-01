@@ -69,4 +69,11 @@ ngOnInit() {
       }
     });
   }
+
+
+  // Functions for searching table
+
+  applyFilter(filterValue: string) {
+    this.MaterialDataSource.filter = filterValue.trim().toLowerCase();
+  }
 }
