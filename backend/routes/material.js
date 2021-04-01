@@ -72,7 +72,11 @@ router.delete("/:id", checkAuth, (req, res, next) => {
         .then(result => {
             console.log("Deleting Material...");
             console.log(result);
-            return res.status(200); 
+            console.log("returning success!")
+            
+            res.status(200).json({
+                message: 'Deleted requested material successfully!'
+            }); 
     });
 })
 
