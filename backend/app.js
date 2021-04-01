@@ -200,6 +200,7 @@ const userRoutes = require("./routes/user");
 const newsRoutes = require("./routes/news");
 const emailRoutes = require("./routes/email");
 const calendarRoutes = require("./routes/calendar");
+const materialRoutes = require("./routes/material");
 const printQueueRoutes = require("./routes/printerLab");
 const printerMgmnt = require("./routes/printer");
 
@@ -208,6 +209,7 @@ app.use("/api/todos", todosRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/email", emailRoutes);
+app.use("/api/material", materialRoutes);
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/printlab", printQueueRoutes);
 app.use("/api/printer", printerMgmnt);

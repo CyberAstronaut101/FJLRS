@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
+import { MaterialService } from 'src/app/admin/manage-materials/material.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { RequestSubmitSuccessComponent } from 'src/app/shared-components/request-submit-success/request-submit-success.component';
@@ -25,11 +26,9 @@ export class RequestFormComponent implements OnInit {
   uploadFiles: any;
   selectedMaterial: Material;
   // TODO make this programatic
-  materials = [
-    { name: "White PLA", matId: "TEMP DB ID" },
-    { name: "Black PLA", matId: "TEMP DB ID" },
-    { name: "Gray PLA", matId: "TEMP DB ID" }
-  ]
+  materials: Material[];
+  private materialSub: Subscription;
+
   extraComments: string = "";
   uid: string;
 
@@ -37,6 +36,7 @@ export class RequestFormComponent implements OnInit {
 
   constructor(
     private jobRequestService: JobRequestService,
+    private materialService: MaterialService,
     private authService: AuthService,
     private messageService: MessageService,
     private router: Router,
@@ -50,6 +50,17 @@ export class RequestFormComponent implements OnInit {
       this.uid = this.authService.getUserId();
     }
 
+
+    // Get the current available materials from the service
+    this.materialService.getMaterials();
+    this.materialSub = this.materialService.getMaterialsUpdateListener()
+      .subscribe((materials: Material[]) => {
+        console.log("Retrieved current materials from db...");
+        
+        console.log(materials);
+        this.materials = materials;
+      })
+
     // Setup listener for after job is submitted
     this.jobSubmissionSub = this.jobRequestService.getJobRequestListener()
       .subscribe(any => {
@@ -62,7 +73,7 @@ export class RequestFormComponent implements OnInit {
         // Prompt user with confirmation dialog
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
           width: '350px',
-          data: 'Successfully submitted job request, id:'
+          data: 'Successfully submitted job request!'
         });
         dialogRef.afterClosed().subscribe(result => {
 
@@ -122,7 +133,7 @@ export class RequestFormComponent implements OnInit {
 
     let formData:FormData = new FormData();
     formData.append('file', this.uploadFiles, this.uploadFiles.name);
-    formData.append('material', this.selectedMaterial.name);
+    formData.append('material', this.selectedMaterial.id);
     formData.append('comments', this.extraComments);
     formData.append('uid', this.uid);
 

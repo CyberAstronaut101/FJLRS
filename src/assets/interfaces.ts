@@ -34,10 +34,10 @@ export interface Socket {
 }
 
 
-export interface Material {
-    matId: string,
-    name: string
-}
+// export interface Material {
+//     matId: string,
+//     name: string
+// }
 
 /*==================================================================================
 
@@ -224,4 +224,11 @@ export interface Printer {
     name: string,
     type: string,
     octopiUrl: string
+}
+
+export interface Material {
+    id: string,
+    materialName: string,
+    materialType: string,
+    materialPrice: string
 }
