@@ -44,11 +44,12 @@ export class MaterialService {
 
     // post @ /api/material
     this.http
-      .post<{message: string, material: Material}>(BACKEND_URL, newMaterial)
+      .post<{message: string, materialId: string}>(BACKEND_URL, newMaterial)
       .subscribe(ret => {
         console.log("PrinterService Added Printers:");
         console.log(ret);
-        this.materials.push(ret.material);
+        newMaterial.id = ret.materialId;
+        this.materials.push(newMaterial);
         this.materialsUpdated.next([...this.materials]);
     });
   }
@@ -62,7 +63,7 @@ export class MaterialService {
 deleteMaterial(name: string) {
   this.http.delete(BACKEND_URL + '/' + name)
       .subscribe(() => {
-          console.log('http delete request finished');
+          console.log('http delete material finished');
           // keep the elements that are not the same id
           const updatedMaterials = this.materials.filter(materials => materials.materialName!== name );
           this.materials = updatedMaterials;
