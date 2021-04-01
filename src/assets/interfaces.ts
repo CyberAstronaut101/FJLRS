@@ -34,10 +34,10 @@ export interface Socket {
 }
 
 
-export interface Material {
-    matId: string,
-    name: string
-}
+// export interface Material {
+//     matId: string,
+//     name: string
+// }
 
 /*==================================================================================
 
@@ -227,6 +227,7 @@ export interface Printer {
 }
 
 export interface Material {
+    id: string,
     materialName: string,
     materialType: string,
     materialPrice: string
