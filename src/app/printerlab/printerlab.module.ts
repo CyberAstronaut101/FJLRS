@@ -19,7 +19,8 @@ import { PrinterlabDetailComponent } from './printerlab-detail/printerlab-detail
     FormsModule,
     MatDividerModule,
     FileUploadModule,
-    StepsModule
+    StepsModule,
+    
 
   ]
 })
