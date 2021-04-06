@@ -9,6 +9,7 @@ import { PrinterlabService } from '../printerlab.service';
 
 import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogConfig, MatDialog, MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-printerlab-home',
@@ -28,7 +29,9 @@ export class PrinterlabHomeComponent implements OnInit {
   items: PrintQueueItem[];
   
 
-  constructor(private printerlabService: PrinterlabService) { }
+  constructor(
+    private printerlabService: PrinterlabService,
+    private router: Router) { }
 
   ngOnInit() {
     // Setup listener
@@ -49,6 +52,8 @@ export class PrinterlabHomeComponent implements OnInit {
   openTicket(row)
   {
     console.log("TICKET ID: " + row.id);
+    //this.router.navigate(['/products'], { queryParams: { order: 'popular' } });
+    this.router.navigate(['/printerlab/detail'], { queryParams: { jobId: row.id}});
   }
 
   applyFilter(filterValue: string) {
