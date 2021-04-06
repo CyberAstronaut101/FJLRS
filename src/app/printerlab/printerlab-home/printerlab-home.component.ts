@@ -51,4 +51,8 @@ export class PrinterlabHomeComponent implements OnInit {
     console.log("TICKET ID: " + row.id);
   }
 
+  applyFilter(filterValue: string) {
+    console.log("applying filter: "+filterValue);
+    this.queueDataSource.filter = filterValue.trim().toLowerCase();
+  }
 }
