@@ -52,6 +52,7 @@ export class PrinterlabHomeComponent implements OnInit {
   openTicket(row)
   {
     console.log("TICKET ID: " + row.id);
+    console.log(row);
     //this.router.navigate(['/products'], { queryParams: { order: 'popular' } });
     this.router.navigate(['/printerlab/detail'], { queryParams: { jobId: row.id}});
   }

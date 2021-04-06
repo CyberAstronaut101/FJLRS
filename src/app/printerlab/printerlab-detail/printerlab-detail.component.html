@@ -1,3 +1,39 @@
-<p>
-  printerlab-detail works!
-</p>
+
+
+<div class="ui-g">
+
+  <div class="ui-g-10 centered">
+
+    <mat-card class="ui-g-7">
+      TODO show the current job details (submitted by, download files)
+  
+      // IF ADMIN -> Assign to printer dropdown/controls here
+    </mat-card>
+  
+    <mat-card class="ui-g-4">
+      TODO show current status for print (waiting/assigned/done)
+    </mat-card>
+  
+  </div>
+  
+  
+  <!-- <div class="ui-g">
+    <div class="ui-g-12">
+      TODO HAVE TICKET COMMENTS HERE
+    </div>
+  </div> -->
+
+  </div>
+
+
+
+  <mat-card>
+    <mat-card-title>
+      Update Assigned Printer
+    </mat-card-title>
+
+    <p>Current Job Status: {{ job.printStatus }}</p>
+
+    <p-dropdown placeholder="Select a printer" [options]="printers" [(ngModel)]="selectedPrinter" optionLabel="name" optionValue="id" required></p-dropdown>
+
+  </mat-card>

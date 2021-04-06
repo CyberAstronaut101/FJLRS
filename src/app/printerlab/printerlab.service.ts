@@ -72,6 +72,8 @@ export class PrinterlabService {
       .subscribe(ret => {
 
         // TODO continue here
+        this.job = ret.printJob;
+        this.jobUpdated.next(this.job);
 
       })
   }

@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import {FileUploadModule} from 'primeng/fileupload';
 import {StepsModule} from 'primeng/steps';
 import { PrinterlabDetailComponent } from './printerlab-detail/printerlab-detail.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [PrinterlabHomeComponent, PrinterlabDetailComponent],
@@ -20,6 +21,7 @@ import { PrinterlabDetailComponent } from './printerlab-detail/printerlab-detail
     MatDividerModule,
     FileUploadModule,
     StepsModule,
+    DropdownModule
     
 
   ]
