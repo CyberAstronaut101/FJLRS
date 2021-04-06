@@ -19,7 +19,8 @@ const PrintQueueItem = mongoose.Schema({
     },
     materialId: {
         required: true,  // TODO once @afaubion does his part update this as foreign key ref
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Material"
     },
     createdAt: {
         default: Date.now(),
