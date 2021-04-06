@@ -33,4 +33,23 @@ const PrintQueueItem = mongoose.Schema({
 });
 
 PrintQueueItem.plugin(uniqueValidator);
+
+PrintQueueItem.method('toClient', function(name) {
+    var obj = this.toObject();
+    console.log('Renaming UID of db entry...');
+    // console.log('Before: ');
+    // console.log(obj);
+    // Rename the Fields
+  
+    // Rename the DeptInfo id
+    obj.id = obj._id;
+    delete obj._id;
+
+    //add user name
+    obj.userName = name;
+  
+    return obj;
+  })
+
+  
 module.exports = mongoose.model('PrintQueueItem', PrintQueueItem);
