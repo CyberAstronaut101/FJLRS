@@ -1,3 +1,3 @@
 {
-    "mongoURL": "mongoDB_Connection_string_here"
+    "mongoURL": "mongodb+srv://fjlrs_db_user:NmSWE5Pua2ETYmM@fjlrsddb01.6s7cw.gcp.mongodb.net/fjlrsddb01?retryWrites=true&w=majority"
 }
