@@ -29,6 +29,13 @@ const PrintQueueItem = mongoose.Schema({
         required: true,
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
+    },
+    printStatus: {
+        type: String            // Default 'Submitted' -> 'Assigned' || 'Need Info' -> 'Printing' -> 'Completed'
+    },
+    assignedPrinter: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Printer"
     }
 });
 

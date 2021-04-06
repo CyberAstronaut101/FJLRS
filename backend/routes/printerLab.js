@@ -126,7 +126,8 @@ router.post("/", upload.single('file'), (req, res, next) => {
         description: req.body.comments,
         fileId: req.file.id,
         materialId: req.body.material,
-        submittedBy: req.body.uid
+        submittedBy: req.body.uid,
+        printStatus: "Submitted"
     });
 
     console.log(newQueueItem);
