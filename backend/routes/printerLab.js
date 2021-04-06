@@ -201,13 +201,43 @@ router.get("/items", (req, res) => {
             });
             
         });
-
+    
     })
 
     function checkUser(userId, user) {
         return age >= 18;
       }
 })
+
+router.get("/item/:jobId/", (req, res) => {
+    console.log("GET @ /api/printLab/item/:jobId")
+    console.log(req.params.jobId);
+
+    PrintQueueItem.find({_id: req.params.jobId}).then(result => {
+        console.log("Result from specific job lookup:");
+        console.log(result)
+
+        // TODO might have to clean up the print job return?
+
+        result = result.map(elem => {
+            return elem.toClientNoName();
+        })
+
+        res.status(200).json({
+            message: "Found Matching Print Request!",
+            printJob: result
+        })
+
+    })
+    .catch(err => {
+        console.log("Error on job lookup...");
+        console.log(err);
+    })
+
+
+    
+
+});
 
 
 

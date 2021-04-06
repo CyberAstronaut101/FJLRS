@@ -42,9 +42,17 @@ const PrintQueueItem = mongoose.Schema({
 
 PrintQueueItem.plugin(uniqueValidator);
 
+PrintQueueItem.method('toClientNoName', function() {
+    var obj = this.toObject();
+
+    obj.id = obj._id;
+    delete obj._id;
+
+    return obj;
+})
+
 PrintQueueItem.method('toClient', function(name) {
     var obj = this.toObject();
-    console.log('Renaming UID of db entry...');
     // console.log('Before: ');
     // console.log(obj);
     // Rename the Fields
@@ -58,6 +66,9 @@ PrintQueueItem.method('toClient', function(name) {
   
     return obj;
   })
+
+
+
 
   
 module.exports = mongoose.model('PrintQueueItem', PrintQueueItem);

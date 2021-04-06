@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 // Environment file used to either point to local or production server, depending on how angular is compiled
 import { environment } from "../../environments/environment";
 import { PrintQueueItem } from 'src/assets/interfaces';
+import { stringify } from '@angular/compiler/src/util';
 const BACKEND_URL = environment.apiUrl + '/printlab';
 
 @Injectable({
@@ -22,6 +23,9 @@ export class PrinterlabService {
 
   private items: PrintQueueItem[] = [];
   private itemsUpdated = new Subject<PrintQueueItem[]>();
+
+  private job: PrintQueueItem;
+  private jobUpdated = new Subject<PrintQueueItem>();
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -49,53 +53,6 @@ export class PrinterlabService {
       })
   }
   
-  
-  /**================================================== *
-   * ==========  Upload/Download Files  ========== *
-   * ================================================== */
-  // http://howtonode.org/really-simple-file-uploads
-
-  // uploadFile(file: any) {
-  //   console.log("PrinterLabService::uploadFile()");
-  //   console.log(file);
-
-  //   this.http
-  //     .post<{message: any}>(
-  //       BACKEND_URL + '/upload',
-  //       file
-  //     )
-  //     .subscribe(response => {
-  //       console.log("RETURN from post@/api/printerlab/upload");
-  //       console.log(response);
-  //     })
-
-    
-  // }
-//https://medium.com/coding-in-depth/customizing-angular-primeng-upload-control-87ea6aac0e63
-  // uploadFile(filesToUpload: any): Observable<any> {
-  //   let url = BACKEND_URL + '/upload';
-  //   // url += id_alteracion + '/documentos';
-  //   console.log("printerlab service files to upload:");
-  //   console.log(filesToUpload);
-
-  //   const formData: FormData = new FormData();
-
-  //   // formData.append('json', JSON.stringify(catalogacion));
-
-  //   // for (let file of filesToUpload) {
-  //     formData.append('documento', filesToUpload, filesToUpload.name);
-  //   // }
-
-  //   console.log(formData);
-
-  //   // let headers = new HttpHeaders();
-
-  //   // return this.http.post(url, formData, { headers: headers });
-  //   return this.http.post(url, formData);
-
-  // }
-  
-  
   /* =======  End of Upload/Download Files  ======= */
 
   getItems(){
@@ -109,8 +66,22 @@ export class PrinterlabService {
         })
   }
 
+  getJob(jobId) {
+    this.http
+      .get<{message: string, printJob: PrintQueueItem}>(BACKEND_URL+"/item/" + jobId)
+      .subscribe(ret => {
+
+        // TODO continue here
+
+      })
+  }
+
   getItemsUpdateListener(){
     return this.itemsUpdated.asObservable();
+  }
+
+  getJobUpdateListener() {
+    return this.jobUpdated.asObservable();
   }
 
 }
