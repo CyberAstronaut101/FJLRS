@@ -45,6 +45,7 @@ export class PrinterService {
   addPrinter(Name: string, Type: string, URL: string) {
 
     const newPrinter: Printer = {
+        id: '',
         name: Name,
         type: Type,
         octopiUrl: URL

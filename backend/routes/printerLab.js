@@ -217,14 +217,13 @@ router.get("/item/:jobId/", (req, res) => {
         console.log("Result from specific job lookup:");
         console.log(result)
 
-        // TODO might have to clean up the print job return?
-
-        // result = result.map(elem => {
-        //     return elem.toClientNoName();
-        // })
+        User.findById(result.submittedBy).then(userResult => {
+            userName = userResult.firstname + " " + userResult.lastname;
+        })
 
         res.status(200).json({
             message: "Found Matching Print Request!",
+            user: userName,
             printJob: result.toClientNoName()
         })
 
@@ -243,11 +242,40 @@ router.get("/item/:jobId/", (req, res) => {
 // Assign Printer 
 router.post("/assignPrinter", (req, res, next) => {
     console.log("POST @ /api/printLab/assignPrinter")
-    console.log(req.body.printerName);
 
-    /*
-    PrintQueueItem.update()...
-    */
+    var printerIdObj = mongoose.Types.ObjectId(req.body.printerId);
+
+    //update assignedPrinter and printStatus fields
+    PrintQueueItem.update({_id: req.body.job}, {$set:{"assignedPrinter":printerIdObj, "printStatus":req.body.printStatus}}).then(result => {
+
+        res.status(200).json({
+            message: "Assigned Printer",
+            resultJob: result
+        })
+    })
+    .catch(err => {
+        console.log("Error on assign printer...");
+        console.log(err);
+    })
+
+})
+
+// Assign Printer 
+router.post("/changeStatus", (req, res, next) => {
+    console.log("POST @ /api/printLab/changeStatus")
+
+    //update assignedPrinter and printStatus fields
+    PrintQueueItem.update({_id: req.body.job}, {$set:{"printStatus":req.body.printStatus}}).then(result => {
+
+        res.status(200).json({
+            message: "Changed Status",
+            resultJob: result
+        })
+    })
+    .catch(err => {
+        console.log("Error on change status...");
+        console.log(err);
+    })
 
 })
 

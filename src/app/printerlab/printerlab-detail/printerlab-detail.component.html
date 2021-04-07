@@ -1,17 +1,21 @@
-
-
 <div class="ui-g">
 
-  <div class="ui-g-10 centered">
+  <div class="ui-g-12 centered">
 
     <mat-card class="ui-g-7">
-      TODO show the current job details (submitted by, download files)
-  
-      // IF ADMIN -> Assign to printer dropdown/controls here
+      <mat-card-title> Job Details </mat-card-title>
+      <div>Submitted By: {{job.userName}}</div>
+      <div>Created At: {{job.createdAt}}</div>
+      <div>Description: {{job.description}}</div>
+      <div>Material ID: {{job.materialId}}</div>
+      <div>File ID: {{job.fileId}}</div>
+      <!--replace material ID and file ID with more usefull stuff?-->
     </mat-card>
   
     <mat-card class="ui-g-4">
-      TODO show current status for print (waiting/assigned/done)
+      <mat-card-title> Current Job Status </mat-card-title>
+      <h1 class = "print-status-text">{{job.printStatus}}</h1>
+      <!--TODO update the job.printStatus after manual update-->
     </mat-card>
   
   </div>
@@ -28,14 +32,21 @@
 
 
   <mat-card>
-    <mat-card-title>
-      Update Assigned Printer
-    </mat-card-title>
+    <mat-card-title> Assign Printer </mat-card-title>
 
-    <p>Current Job Status: {{ job.printStatus }}</p>
+    <!--<p>Current Job Status: {{ job.printStatus }}</p>-->
 
     <p-dropdown placeholder="Select a printer" [options]="printers" [(ngModel)]="selectedPrinter" optionLabel="name" optionValue="id" required></p-dropdown>
 
     <button mat-raised-button color="accent" style="margin-left: 7px;" (click)="assignPrinter()" >Assign Printer</button>
+
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title> Change Print Status </mat-card-title>
+
+    <p-dropdown placeholder="Select a status" [options]="statuses" [(ngModel)]="selectedStatus" required></p-dropdown>
+
+    <button mat-raised-button color="accent" style="margin-left: 7px;" (click)="changePrintStatus()" >Change Status</button>
 
   </mat-card>

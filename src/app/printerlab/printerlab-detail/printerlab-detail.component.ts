@@ -26,6 +26,11 @@ export class PrinterlabDetailComponent implements OnInit {
   selectedPrinter: Printer;
   printerSub: Subscription;
 
+  printStatus = "";
+  statuses;
+  selectedStatus: String;
+  
+
   ngOnInit() {
     console.log("PrinterLab-Detail OnInit");
     
@@ -42,7 +47,11 @@ export class PrinterlabDetailComponent implements OnInit {
       })
 
 
-    
+    //set statuses
+     var stats = [{label:"Submitted", value:"Submitted"}, {label:"Assigned", value:"Assigned"}, {label:"Need Info",value:"Need Info"}, 
+        {label:"Printing", value:"Printing"}, {label:"Completed", value:"Completed"}];
+     this.statuses = stats;
+
     /**================================================== *
      * ==========  GET AVAILABLE PRINTERS  ========== *
      * ================================================== */
@@ -56,7 +65,7 @@ export class PrinterlabDetailComponent implements OnInit {
         this.printers = printers;
 
         //default to first printer
-        this.selectedPrinter = this.printers[0];
+        //this.selectedPrinter = this.printers[0];
       })
     
     
@@ -90,7 +99,16 @@ export class PrinterlabDetailComponent implements OnInit {
   {
     this.printerLabService.assignPrinter(
       this.job.id,
-      this.selectedPrinter.name
+      this.selectedPrinter.id,
+      "Assigned"
+    );
+  }
+
+  changePrintStatus()
+  {
+    this.printerLabService.changePrintStatus(
+      this.job.id,
+      this.selectedStatus
     );
   }
 

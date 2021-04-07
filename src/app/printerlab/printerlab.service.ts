@@ -68,27 +68,38 @@ export class PrinterlabService {
 
   getJob(jobId) {
     this.http
-      .get<{message: string, printJob: PrintQueueItem}>(BACKEND_URL+"/item/" + jobId)
+      .get<{message: string, user: string, printJob: PrintQueueItem}>(BACKEND_URL+"/item/" + jobId)
       .subscribe(ret => {
 
         // TODO continue here
         this.job = ret.printJob;
+        this.job.userName = ret.user
         this.jobUpdated.next(this.job);
 
       })
   }
 
-  assignPrinter(jobId, selectedPrinter) {
+  assignPrinter(jobId, selectedPrinter, newPrintStatus) {
     console.log("assign printer " + selectedPrinter + " to job " + jobId);
     let url = BACKEND_URL + '/assignPrinter';
-    let postBody = {job: jobId, printerName: selectedPrinter} 
+    let postBody = {job: jobId, printerId: selectedPrinter, printStatus: newPrintStatus} 
 
     this.http.post(url, postBody)
       .subscribe(response => {
         console.log("RETURN from post@/api/printLab/assignPrinter");
         console.log(response);
       })
+  }
 
+  changePrintStatus(jobId, newPrintStatus) {
+    let url = BACKEND_URL + '/changeStatus';
+    let postBody = {job: jobId, printStatus: newPrintStatus} 
+
+    this.http.post(url, postBody)
+      .subscribe(response => {
+        console.log("RETURN from post@/api/printLab/changeStatus");
+        console.log(response);
+      })
   }
 
   getItemsUpdateListener(){

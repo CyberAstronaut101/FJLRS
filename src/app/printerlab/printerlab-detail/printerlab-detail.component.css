@@ -5,3 +5,8 @@
  #main-form-card {
      margin-top: 20px
  }
+
+ .print-status-text {
+     font-size: large;
+     color: blue;
+ }
