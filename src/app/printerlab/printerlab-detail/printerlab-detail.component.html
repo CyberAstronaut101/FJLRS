@@ -36,4 +36,6 @@
 
     <p-dropdown placeholder="Select a printer" [options]="printers" [(ngModel)]="selectedPrinter" optionLabel="name" optionValue="id" required></p-dropdown>
 
+    <button mat-raised-button color="accent" style="margin-left: 7px;" (click)="assignPrinter()" >Assign Printer</button>
+
   </mat-card>

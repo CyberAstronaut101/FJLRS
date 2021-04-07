@@ -240,5 +240,18 @@ router.get("/item/:jobId/", (req, res) => {
 });
 
 
+// Assign Printer 
+router.post("/assignPrinter", (req, res, next) => {
+    console.log("POST @ /api/printLab/assignPrinter")
+    console.log(req.body.printerName);
+
+    /*
+    PrintQueueItem.update()...
+    */
+
+})
+
+
+
 
 module.exports = router;

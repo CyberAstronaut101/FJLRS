@@ -23,7 +23,7 @@ export class PrinterlabDetailComponent implements OnInit {
   jobSub: Subscription;
 
   printers: Printer[];
-  selectedPrinter;
+  selectedPrinter: Printer;
   printerSub: Subscription;
 
   ngOnInit() {
@@ -54,7 +54,12 @@ export class PrinterlabDetailComponent implements OnInit {
         console.log("Got list of printers...");
         console.log(printers);
         this.printers = printers;
+
+        //default to first printer
+        this.selectedPrinter = this.printers[0];
       })
+    
+    
     /* =======  End of GET AVAILABLE PRINTERS  ======= */
 
 
@@ -79,6 +84,14 @@ export class PrinterlabDetailComponent implements OnInit {
     /* =======  End of PRINTER JOB DETAIL GET  ======= */
     
 
+  }
+
+  assignPrinter()
+  {
+    this.printerLabService.assignPrinter(
+      this.job.id,
+      this.selectedPrinter.name
+    );
   }
 
 }

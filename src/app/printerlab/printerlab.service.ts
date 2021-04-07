@@ -78,6 +78,19 @@ export class PrinterlabService {
       })
   }
 
+  assignPrinter(jobId, selectedPrinter) {
+    console.log("assign printer " + selectedPrinter + " to job " + jobId);
+    let url = BACKEND_URL + '/assignPrinter';
+    let postBody = {job: jobId, printerName: selectedPrinter} 
+
+    this.http.post(url, postBody)
+      .subscribe(response => {
+        console.log("RETURN from post@/api/printLab/assignPrinter");
+        console.log(response);
+      })
+
+  }
+
   getItemsUpdateListener(){
     return this.itemsUpdated.asObservable();
   }
