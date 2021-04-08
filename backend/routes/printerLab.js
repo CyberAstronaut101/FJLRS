@@ -8,6 +8,8 @@ const router = express.Router();
 // const PrinterFiles = require('../models/printerFiles');
 const PrintQueueItem = require('../models/printQueueItem');
 const User = require('../models/user');
+const Materials = require('../models/materials');
+const Printer = require('../models/printer');
 
 const mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectID;
@@ -217,13 +219,27 @@ router.get("/item/:jobId/", (req, res) => {
         console.log("Result from specific job lookup:");
         console.log(result)
 
+        //get username
         User.findById(result.submittedBy).then(userResult => {
             userName = userResult.firstname + " " + userResult.lastname;
         })
 
+        //get material name
+        Materials.findById(result.materialId).then(matResult => {
+            materialNameType = matResult.materialName + " " + matResult.materialType;
+        })
+
+        //get printer name
+        Printer.findById(result.assignedPrinter).then(printerResult => {
+            printerName = printerResult.name;
+        })
+
+
         res.status(200).json({
             message: "Found Matching Print Request!",
             user: userName,
+            material: materialNameType,
+            printer: printerName,
             printJob: result.toClientNoName()
         })
 
@@ -250,6 +266,7 @@ router.post("/assignPrinter", (req, res, next) => {
 
         res.status(200).json({
             message: "Assigned Printer",
+            ok: true,
             resultJob: result
         })
     })
@@ -269,6 +286,7 @@ router.post("/changeStatus", (req, res, next) => {
 
         res.status(200).json({
             message: "Changed Status",
+            ok: true,
             resultJob: result
         })
     })

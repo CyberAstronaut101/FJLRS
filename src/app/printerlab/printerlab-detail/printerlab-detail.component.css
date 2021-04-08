@@ -8,5 +8,10 @@
 
  .print-status-text {
      font-size: large;
-     color: blue;
+     font-style: italic;
+ }
+
+ .job-details {
+     font-size: medium;
+     padding-top: 7px;
  }

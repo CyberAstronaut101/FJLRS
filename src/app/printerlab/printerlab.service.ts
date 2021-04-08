@@ -68,26 +68,35 @@ export class PrinterlabService {
 
   getJob(jobId) {
     this.http
-      .get<{message: string, user: string, printJob: PrintQueueItem}>(BACKEND_URL+"/item/" + jobId)
+      .get<{message: string, user: string, material: string, printer: string, printJob: PrintQueueItem}>(BACKEND_URL+"/item/" + jobId)
       .subscribe(ret => {
 
         // TODO continue here
         this.job = ret.printJob;
-        this.job.userName = ret.user
+        this.job.userName = ret.user;
+        this.job.material = ret.material;
+        this.job.assignedPrinterName = ret.printer;
+        this.job.createdAtString = this.formatTime(ret.printJob.createdAt);
+
         this.jobUpdated.next(this.job);
+        
 
       })
   }
 
-  assignPrinter(jobId, selectedPrinter, newPrintStatus) {
+  assignPrinter(jobId, selectedPrinter, selectedPrinterName, newPrintStatus) {
     console.log("assign printer " + selectedPrinter + " to job " + jobId);
     let url = BACKEND_URL + '/assignPrinter';
     let postBody = {job: jobId, printerId: selectedPrinter, printStatus: newPrintStatus} 
 
-    this.http.post(url, postBody)
+    this.http.post<{message: string, ok: boolean}>(url, postBody)
       .subscribe(response => {
-        console.log("RETURN from post@/api/printLab/assignPrinter");
-        console.log(response);
+        if(response.ok)
+        {
+          this.job.assignedPrinterName = selectedPrinterName;
+          this.job.printStatus = newPrintStatus;
+          this.jobUpdated.next(this.job);
+        }
       })
   }
 
@@ -95,10 +104,13 @@ export class PrinterlabService {
     let url = BACKEND_URL + '/changeStatus';
     let postBody = {job: jobId, printStatus: newPrintStatus} 
 
-    this.http.post(url, postBody)
+    this.http.post<{message: string, ok: boolean}>(url, postBody)
       .subscribe(response => {
-        console.log("RETURN from post@/api/printLab/changeStatus");
-        console.log(response);
+        if(response.ok)
+        {
+          this.job.printStatus = newPrintStatus;
+          this.jobUpdated.next(this.job);
+        }
       })
   }
 
@@ -109,6 +121,19 @@ export class PrinterlabService {
   getJobUpdateListener() {
     return this.jobUpdated.asObservable();
   }
+
+  //helper function
+  formatTime(time) {
+    var year = time.substring(0, 4);
+    var month = time.substring(5, 7);
+    var day = time.substring(8, 10);
+    var clock = time.substring(11, 16);
+
+    var newTime = month+"/"+day+"/"+year + " " + clock;
+    return newTime;
+  }
+
+  
 
 }
 

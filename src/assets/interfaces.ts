@@ -95,6 +95,9 @@ export interface PrintQueueItem {
     userName: string;
     assignedPrinter: string;
     printStatus: string;
+    material: string;
+    assignedPrinterName: string;
+    createdAtString: string;
 }
 
 export interface MachineList {

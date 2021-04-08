@@ -29,6 +29,8 @@ export class PrinterlabDetailComponent implements OnInit {
   printStatus = "";
   statuses;
   selectedStatus: String;
+
+  comments;
   
 
   ngOnInit() {
@@ -51,6 +53,13 @@ export class PrinterlabDetailComponent implements OnInit {
      var stats = [{label:"Submitted", value:"Submitted"}, {label:"Assigned", value:"Assigned"}, {label:"Need Info",value:"Need Info"}, 
         {label:"Printing", value:"Printing"}, {label:"Completed", value:"Completed"}];
      this.statuses = stats;
+
+     var c = [{user:"Student", text:"test comment 1"},{user:"ADMIN",text:"test comment 2"},{user:"Student",text:"test comment 3"},
+        {user:"ADMIN",text:"test comment 4"},{user:"Student",text:"test comment 5"},{user:"Bartholomew Longname", text:"test comment 6"}, 
+        {user:"Student Jones", text:"test comment 7"},{user:"Student Jones", text:"test comment 8"},{user:"Student Jones", text:"test comment 9"},
+        {user:"Student Jones", text:"test comment 10"}
+      ];
+     this.comments = c;
 
     /**================================================== *
      * ==========  GET AVAILABLE PRINTERS  ========== *
@@ -100,6 +109,7 @@ export class PrinterlabDetailComponent implements OnInit {
     this.printerLabService.assignPrinter(
       this.job.id,
       this.selectedPrinter.id,
+      this.selectedPrinter.name,
       "Assigned"
     );
   }
@@ -110,6 +120,10 @@ export class PrinterlabDetailComponent implements OnInit {
       this.job.id,
       this.selectedStatus
     );
+  }
+  downloadFile()
+  {
+    console.log("download file temp");
   }
 
 }
