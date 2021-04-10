@@ -100,6 +100,16 @@ export interface PrintQueueItem {
     createdAtString: string;
 }
 
+export interface Comment {
+    id: string;
+    jobId: string;
+    text: string;
+    createdAt: Date;
+    createdAtString: string;
+    submittedBy: string;
+    userName: string;
+}
+
 export interface MachineList {
     id: string;
     machineName: string;

@@ -3,8 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/admin/manage-users/user.service';
 import { PrinterService } from 'src/app/admin/printer-management/printer.service';
-import { Printer, PrintQueueItem } from 'src/assets/interfaces';
+import { Printer, PrintQueueItem, Comment } from 'src/assets/interfaces';
 import { PrinterlabService } from '../printerlab.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-printerlab-detail',
@@ -17,7 +18,13 @@ export class PrinterlabDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private printerLabService: PrinterlabService,
     private printerService: PrinterService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private authService: AuthService,) { }
+
+  userIsAuthenticated: boolean;
+  userLevel = "default";
+  userName = "default";
+  userId;
 
   job: PrintQueueItem;
   jobSub: Subscription;
@@ -30,7 +37,9 @@ export class PrinterlabDetailComponent implements OnInit {
   statuses;
   selectedStatus: String;
 
-  comments;
+  comments: Comment[];
+  commentSub: Subscription;
+  currentComment: String;
   
 
   ngOnInit() {
@@ -38,7 +47,15 @@ export class PrinterlabDetailComponent implements OnInit {
     
 
     // Get admin/employee/student status
+    // to get initial auth value
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.userLevel = this.authService.getUserLevel();
+    this.userId = this.authService.getUserId();
+    this.userName = this.authService.getUserFullName();
+    // if need a subscription to userAuth status, example in navigation.component.ts
+    
 
+    //get job on load
     this.route.queryParams
       .subscribe(params => {
         console.log(params);
@@ -54,12 +71,27 @@ export class PrinterlabDetailComponent implements OnInit {
         {label:"Printing", value:"Printing"}, {label:"Completed", value:"Completed"}];
      this.statuses = stats;
 
+     //set comments
+     /*
      var c = [{user:"Student", text:"test comment 1"},{user:"ADMIN",text:"test comment 2"},{user:"Student",text:"test comment 3"},
         {user:"ADMIN",text:"test comment 4"},{user:"Student",text:"test comment 5"},{user:"Bartholomew Longname", text:"test comment 6"}, 
         {user:"Student Jones", text:"test comment 7"},{user:"Student Jones", text:"test comment 8"},{user:"Student Jones", text:"test comment 9"},
         {user:"Student Jones", text:"test comment 10"}
       ];
-     this.comments = c;
+      */
+      var c = [{user:"Student", text:"test comment 1", createdAtString:"3/14/9999"},{user:"ADMIN",text:"test comment 2", createdAtString:"3/14/9999"},{user:"Student",text:"test comment 3", createdAtString:"3/14/9999"},
+      {user:"Student",text:"test comment 5", createdAtString:"3/14/9999"},{user:"Bartholomew Longname", text:"test comment 6", createdAtString:"3/14/9999"}, 
+      {user:"Student Jones", text:"test comment 7", createdAtString:"3/14/9999"}
+    ];
+     //this.comments = c;
+
+     this.printerLabService.getComments();
+     this.commentSub = this.printerLabService.getCommentsUpdateListener()
+      .subscribe(comments => {
+        console.log("Got list of comments...");
+        console.log(comments);
+        this.comments = comments;
+      })
 
     /**================================================== *
      * ==========  GET AVAILABLE PRINTERS  ========== *
@@ -121,9 +153,24 @@ export class PrinterlabDetailComponent implements OnInit {
       this.selectedStatus
     );
   }
+
   downloadFile()
   {
     console.log("download file temp");
+    console.log("User Name: " + this.userName);
+    console.log("User ID: " + this.userId);
+    console.log("User Level: " + this.userLevel);
+  }
+
+  sendComment()
+  {
+    if(this.currentComment != undefined)
+    {
+      console.log("Sending Comment: " + this.currentComment);
+      this.printerLabService.sendComment(this.job.id, this.userId, this.currentComment, this.userName);
+
+      this.currentComment = undefined;
+    }
   }
 
 }

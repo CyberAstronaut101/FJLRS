@@ -14,6 +14,8 @@ import { Observable } from 'rxjs';
 import { environment } from "../../environments/environment";
 import { PrintQueueItem } from 'src/assets/interfaces';
 import { stringify } from '@angular/compiler/src/util';
+import { Comment } from 'src/assets/interfaces';
+
 const BACKEND_URL = environment.apiUrl + '/printlab';
 
 @Injectable({
@@ -26,6 +28,9 @@ export class PrinterlabService {
 
   private job: PrintQueueItem;
   private jobUpdated = new Subject<PrintQueueItem>();
+
+  private comments: Comment[] = [];
+  private commentsUpdated = new Subject<Comment[]>();
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -122,6 +127,10 @@ export class PrinterlabService {
     return this.jobUpdated.asObservable();
   }
 
+  getCommentsUpdateListener() {
+    return this.commentsUpdated.asObservable();
+  }
+
   //helper function
   formatTime(time) {
     var year = time.substring(0, 4);
@@ -133,7 +142,41 @@ export class PrinterlabService {
     return newTime;
   }
 
-  
+
+  //TODO MOVE THIS TO SEPARATE SERVICE???
+  getComments(){
+    this.http
+        .get<{message: string, comments: Comment[]}>(environment.apiUrl + '/comment')
+        .subscribe(ret => {
+            console.log("Comment Service Loaded Comments:");
+            console.log(ret);
+
+            ret.comments.forEach(element => {
+              element.createdAtString = this.formatTime(element.createdAt);
+            });
+
+            this.comments = ret.comments;
+            this.commentsUpdated.next([...this.comments]);
+        })
+  }
+
+  sendComment(job, subBy, commentText, user) {
+    console.log("send Comment " + commentText);
+    let url = environment.apiUrl + '/comment';
+    let postBody = {jobId: job, submittedBy: subBy, text: commentText, userName: user} 
+
+    this.http.post<{message: string, ok: boolean, comment: Comment}>(url, postBody)
+      .subscribe(response => {
+        if(response.ok)
+        {
+          console.log("Response after PUSH: " + response.comment);
+          response.comment.createdAtString = this.formatTime(response.comment.createdAt);
+          this.comments.push(response.comment);
+          this.commentsUpdated.next([...this.comments]);
+        }
+      })
+  }
+
 
 }
 

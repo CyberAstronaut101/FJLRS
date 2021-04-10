@@ -37,14 +37,21 @@
     <mat-card-title>Comments</mat-card-title>
     <ul style="height: 150px; overflow: auto">
       <li *ngFor="let comment of comments">
-        <div style="padding-top: 4px">{{comment.user}}: <i>{{ comment.text }}</i></div>
+        <div><span class="comment-name">{{comment.userName}}     </span> <span class="comment-date">{{comment.createdAtString}}</span></div>
+        <div class = "comment-text">{{ comment.text }}</div>
       </li>
     </ul>
   </mat-card>
+
+  <!--<mat-divider></mat-divider>-->
+  
+  <mat-form-field class="comment-box">
+    <input matInput placeholder="comment" [(ngModel)]="currentComment" (keyup.enter)="sendComment()">
+  </mat-form-field>
 </div>
 
 
-<div class="ui-g" style="padding: 8px;">
+<div class="ui-g" style="padding: 8px;" *ngIf="userLevel == 'admin'">
   <div class="ui-g-6">
     <mat-card>
       <mat-card-title> Assign Printer </mat-card-title>

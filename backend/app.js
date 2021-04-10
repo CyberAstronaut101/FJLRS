@@ -203,6 +203,7 @@ const calendarRoutes = require("./routes/calendar");
 const materialRoutes = require("./routes/material");
 const printQueueRoutes = require("./routes/printerLab");
 const printerMgmnt = require("./routes/printer");
+const commentRoutes = require("./routes/comment");
 
 // The files above are then used here to define which request paths they should handle
 app.use("/api/todos", todosRoutes);
@@ -213,6 +214,7 @@ app.use("/api/material", materialRoutes);
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/printlab", printQueueRoutes);
 app.use("/api/printer", printerMgmnt);
+app.use("/api/comment", commentRoutes);
 
 
 // var swaggerFrontEndOptions = {explorer: true}

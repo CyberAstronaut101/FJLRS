@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 
 import {PrintQueueItem} from 'src/assets/interfaces';
 import { PrinterlabService } from '../printerlab.service';
+import { AuthService } from '../../auth/auth.service';
 
 import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogConfig, MatDialog, MatTableDataSource } from '@angular/material';
@@ -27,13 +28,24 @@ export class PrinterlabHomeComponent implements OnInit {
   private printerSub: Subscription;
 
   items: PrintQueueItem[];
+
+  userIsAuthenticated: boolean;
+  userLevel = "default";
+  userId;
+  userName = "default";
   
 
   constructor(
     private printerlabService: PrinterlabService,
-    private router: Router) { }
+    private router: Router,
+    private authService: AuthService) { }
 
   ngOnInit() {
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.userLevel = this.authService.getUserLevel();
+    this.userId = this.authService.getUserId();
+    this.userName = this.authService.getUserFullName();
+  
     // Setup listener
     this.printerlabService.getItems();
     console.log("items:");
@@ -51,10 +63,15 @@ export class PrinterlabHomeComponent implements OnInit {
 
   openTicket(row)
   {
-    console.log("TICKET ID: " + row.id);
-    console.log(row);
-    //this.router.navigate(['/products'], { queryParams: { order: 'popular' } });
-    this.router.navigate(['/printerlab/detail'], { queryParams: { jobId: row.id}});
+    console.log("Submitted By: " + row.submittedBy);
+    console.log("Current User: " + this.userId);
+    console.log("User Level: " + this.userLevel);
+
+    if(this.userId == row.submittedBy || this.userLevel == 'admin')
+    {
+      this.router.navigate(['/printerlab/detail'], { queryParams: { jobId: row.id}});
+    }
+    
   }
 
   applyFilter(filterValue: string) {
