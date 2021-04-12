@@ -10,10 +10,10 @@ import {FileUploadModule} from 'primeng/fileupload';
 import {StepsModule} from 'primeng/steps';
 import { PrinterlabDetailComponent } from './printerlab-detail/printerlab-detail.component';
 import { DropdownModule } from 'primeng/dropdown';
-import { PrinterlabHistoryComponent } from './printerlab-history/printerlab-history.component';
+
 
 @NgModule({
-  declarations: [PrinterlabHomeComponent, PrinterlabDetailComponent, PrinterlabHistoryComponent],
+  declarations: [PrinterlabHomeComponent, PrinterlabDetailComponent],
   imports: [
     CommonModule,
     PrinterlabRoutingModule,
@@ -23,8 +23,6 @@ import { PrinterlabHistoryComponent } from './printerlab-history/printerlab-hist
     FileUploadModule,
     StepsModule,
     DropdownModule
-    
-
   ]
 })
 export class PrinterlabModule { }
