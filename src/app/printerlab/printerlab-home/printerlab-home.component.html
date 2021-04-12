@@ -52,6 +52,12 @@
                   <th mat-header-cell *matHeaderCellDef> Submitted By </th>
                   <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
                 </ng-container>
+
+                <ng-container matColumnDef="Submitted ID">
+                  <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+                </ng-container>
+
+                <!--UserID used in function-->
   
                 <!-- Actions -->
                 <!--

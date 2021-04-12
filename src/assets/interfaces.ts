@@ -93,6 +93,21 @@ export interface PrintQueueItem {
     createdAt: Date;
     submittedBy: string;
     userName: string;
+    assignedPrinter: string;
+    printStatus: string;
+    material: string;
+    assignedPrinterName: string;
+    createdAtString: string;
+}
+
+export interface Comment {
+    id: string;
+    jobId: string;
+    text: string;
+    createdAt: Date;
+    createdAtString: string;
+    submittedBy: string;
+    userName: string;
 }
 
 export interface MachineList {
@@ -222,6 +237,7 @@ export interface EmailHistory {
 
 //BIG BOY PRINTER TIME
 export interface Printer {
+    id: string,
     name: string,
     type: string,
     octopiUrl: string

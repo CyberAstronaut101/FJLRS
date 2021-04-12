@@ -13,6 +13,9 @@ import { Observable } from 'rxjs';
 // Environment file used to either point to local or production server, depending on how angular is compiled
 import { environment } from "../../environments/environment";
 import { PrintQueueItem } from 'src/assets/interfaces';
+import { stringify } from '@angular/compiler/src/util';
+import { Comment } from 'src/assets/interfaces';
+
 const BACKEND_URL = environment.apiUrl + '/printlab';
 
 @Injectable({
@@ -22,6 +25,12 @@ export class PrinterlabService {
 
   private items: PrintQueueItem[] = [];
   private itemsUpdated = new Subject<PrintQueueItem[]>();
+
+  private job: PrintQueueItem;
+  private jobUpdated = new Subject<PrintQueueItem>();
+
+  private comments: Comment[] = [];
+  private commentsUpdated = new Subject<Comment[]>();
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -49,53 +58,6 @@ export class PrinterlabService {
       })
   }
   
-  
-  /**================================================== *
-   * ==========  Upload/Download Files  ========== *
-   * ================================================== */
-  // http://howtonode.org/really-simple-file-uploads
-
-  // uploadFile(file: any) {
-  //   console.log("PrinterLabService::uploadFile()");
-  //   console.log(file);
-
-  //   this.http
-  //     .post<{message: any}>(
-  //       BACKEND_URL + '/upload',
-  //       file
-  //     )
-  //     .subscribe(response => {
-  //       console.log("RETURN from post@/api/printerlab/upload");
-  //       console.log(response);
-  //     })
-
-    
-  // }
-//https://medium.com/coding-in-depth/customizing-angular-primeng-upload-control-87ea6aac0e63
-  // uploadFile(filesToUpload: any): Observable<any> {
-  //   let url = BACKEND_URL + '/upload';
-  //   // url += id_alteracion + '/documentos';
-  //   console.log("printerlab service files to upload:");
-  //   console.log(filesToUpload);
-
-  //   const formData: FormData = new FormData();
-
-  //   // formData.append('json', JSON.stringify(catalogacion));
-
-  //   // for (let file of filesToUpload) {
-  //     formData.append('documento', filesToUpload, filesToUpload.name);
-  //   // }
-
-  //   console.log(formData);
-
-  //   // let headers = new HttpHeaders();
-
-  //   // return this.http.post(url, formData, { headers: headers });
-  //   return this.http.post(url, formData);
-
-  // }
-  
-  
   /* =======  End of Upload/Download Files  ======= */
 
   getItems(){
@@ -109,9 +71,112 @@ export class PrinterlabService {
         })
   }
 
+  getJob(jobId) {
+    this.http
+      .get<{message: string, user: string, material: string, printer: string, printJob: PrintQueueItem}>(BACKEND_URL+"/item/" + jobId)
+      .subscribe(ret => {
+
+        // TODO continue here
+        this.job = ret.printJob;
+        this.job.userName = ret.user;
+        this.job.material = ret.material;
+        this.job.assignedPrinterName = ret.printer;
+        this.job.createdAtString = this.formatTime(ret.printJob.createdAt);
+
+        this.jobUpdated.next(this.job);
+        
+
+      })
+  }
+
+  assignPrinter(jobId, selectedPrinter, selectedPrinterName, newPrintStatus) {
+    console.log("assign printer " + selectedPrinter + " to job " + jobId);
+    let url = BACKEND_URL + '/assignPrinter';
+    let postBody = {job: jobId, printerId: selectedPrinter, printStatus: newPrintStatus} 
+
+    this.http.post<{message: string, ok: boolean}>(url, postBody)
+      .subscribe(response => {
+        if(response.ok)
+        {
+          this.job.assignedPrinterName = selectedPrinterName;
+          this.job.printStatus = newPrintStatus;
+          this.jobUpdated.next(this.job);
+        }
+      })
+  }
+
+  changePrintStatus(jobId, newPrintStatus) {
+    let url = BACKEND_URL + '/changeStatus';
+    let postBody = {job: jobId, printStatus: newPrintStatus} 
+
+    this.http.post<{message: string, ok: boolean}>(url, postBody)
+      .subscribe(response => {
+        if(response.ok)
+        {
+          this.job.printStatus = newPrintStatus;
+          this.jobUpdated.next(this.job);
+        }
+      })
+  }
+
   getItemsUpdateListener(){
     return this.itemsUpdated.asObservable();
   }
+
+  getJobUpdateListener() {
+    return this.jobUpdated.asObservable();
+  }
+
+  getCommentsUpdateListener() {
+    return this.commentsUpdated.asObservable();
+  }
+
+  //helper function
+  formatTime(time) {
+    var year = time.substring(0, 4);
+    var month = time.substring(5, 7);
+    var day = time.substring(8, 10);
+    var clock = time.substring(11, 16);
+
+    var newTime = month+"/"+day+"/"+year + " " + clock;
+    return newTime;
+  }
+
+
+  //TODO MOVE THIS TO SEPARATE SERVICE???
+  getComments(){
+    this.http
+        .get<{message: string, comments: Comment[]}>(environment.apiUrl + '/comment')
+        .subscribe(ret => {
+            console.log("Comment Service Loaded Comments:");
+            console.log(ret);
+
+            ret.comments.forEach(element => {
+              element.createdAtString = this.formatTime(element.createdAt);
+            });
+
+            this.comments = ret.comments;
+            this.commentsUpdated.next([...this.comments]);
+        })
+  }
+
+  sendComment(job, subBy, commentText, user) {
+    console.log("send Comment " + commentText);
+    let url = environment.apiUrl + '/comment';
+    let postBody = {jobId: job, submittedBy: subBy, text: commentText, userName: user} 
+
+    this.http.post<{message: string, ok: boolean, comment: Comment}>(url, postBody)
+      .subscribe(response => {
+        if(response.ok)
+        {
+          console.log("Response after PUSH: " + response.comment);
+          response.comment.createdAtString = this.formatTime(response.comment.createdAt);
+          this.comments.push(response.comment);
+          this.commentsUpdated.next([...this.comments]);
+        }
+      })
+  }
+
 
 }
 

@@ -1,0 +1,77 @@
+<div class="ui-g" style="padding: 8px;">
+
+    <div class="ui-g-7">
+      <mat-card> <!--<mat-card class="ui-g-7">-->
+
+        <mat-card-content>
+          <mat-card-title> Job Details </mat-card-title>
+          <div class = "job-details">Submitted By: <i>{{job.userName}}</i></div>
+          <div class = "job-details">Created At: <i>{{job.createdAtString}}</i></div>
+          <div class = "job-details">Description: <i>{{job.description}}</i></div>
+          <div class = "job-details">Material: <i>{{job.material}}</i></div>
+          <button mat-raised-button color="accent" style="margin-top: 14px;" (click)="downloadFile()">Download File</button>
+        </mat-card-content>
+        
+      </mat-card>
+    </div>
+  
+    <div class="ui-g-4">
+      <mat-card>
+        <mat-card-title> Current Job Status </mat-card-title>
+        <span class = "print-status-text">{{job.printStatus}}</span>
+        <!--TODO update the job.printStatus after manual update-->
+      </mat-card>
+
+      <mat-card>
+        <mat-card-title>Assigned Printer</mat-card-title>
+        <span class = "print-status-text">{{job.assignedPrinterName}}</span>
+        <!--TODO update the job.printStatus after manual update-->
+      </mat-card>
+    </div>
+</div>
+
+
+<!--COMMENTS-->
+<div style="padding-left: 16px; padding-right: 16px">
+  <mat-card>
+    <mat-card-title>Comments</mat-card-title>
+    <ul style="height: 150px; overflow: auto">
+      <li *ngFor="let comment of comments">
+        <div><span class="comment-name">{{comment.userName}}     </span> <span class="comment-date">{{comment.createdAtString}}</span></div>
+        <div class = "comment-text">{{ comment.text }}</div>
+      </li>
+    </ul>
+  </mat-card>
+
+  <!--<mat-divider></mat-divider>-->
+  
+  <mat-form-field class="comment-box">
+    <input matInput placeholder="comment" [(ngModel)]="currentComment" (keyup.enter)="sendComment()">
+  </mat-form-field>
+</div>
+
+
+<div class="ui-g" style="padding: 8px;" *ngIf="userLevel == 'admin'">
+  <div class="ui-g-6">
+    <mat-card>
+      <mat-card-title> Assign Printer </mat-card-title>
+      <mat-card-subtitle>Sets status to 'Assigned'</mat-card-subtitle>
+      <p-dropdown placeholder="Select a printer" [options]="printers" [(ngModel)]="selectedPrinter" optionLabel="name" optionValue="id" required></p-dropdown>
+      <button mat-raised-button color="accent" style="margin-left: 7px;" (click)="assignPrinter()">Assign
+        Printer</button>
+    </mat-card>
+  </div>
+
+  <div class="ui-g-6">
+    <mat-card>
+      <mat-card-title> Change Job Status </mat-card-title>
+      <p-dropdown placeholder="Select a status" [options]="statuses" [(ngModel)]="selectedStatus" required></p-dropdown>
+      <button mat-raised-button color="accent" style="margin-left: 7px;" (click)="changePrintStatus()">Change
+        Status</button>
+    </mat-card>
+  </div>
+</div>
+
+
+  
+  

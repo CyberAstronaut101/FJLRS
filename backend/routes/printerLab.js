@@ -8,6 +8,8 @@ const router = express.Router();
 // const PrinterFiles = require('../models/printerFiles');
 const PrintQueueItem = require('../models/printQueueItem');
 const User = require('../models/user');
+const Materials = require('../models/materials');
+const Printer = require('../models/printer');
 
 const mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectID;
@@ -126,7 +128,8 @@ router.post("/", upload.single('file'), (req, res, next) => {
         description: req.body.comments,
         fileId: req.file.id,
         materialId: req.body.material,
-        submittedBy: req.body.uid
+        submittedBy: req.body.uid,
+        printStatus: "Submitted"
     });
 
     console.log(newQueueItem);
@@ -200,13 +203,100 @@ router.get("/items", (req, res) => {
             });
             
         });
-
+    
     })
 
     function checkUser(userId, user) {
         return age >= 18;
       }
 })
+
+router.get("/item/:jobId/", (req, res) => {
+    console.log("GET @ /api/printLab/item/:jobId")
+    console.log(req.params.jobId);
+
+    PrintQueueItem.findById(req.params.jobId).then(result => {
+        console.log("Result from specific job lookup:");
+        console.log(result)
+
+        //get username
+        User.findById(result.submittedBy).then(userResult => {
+            userName = userResult.firstname + " " + userResult.lastname;
+        })
+
+        //get material name
+        Materials.findById(result.materialId).then(matResult => {
+            materialNameType = matResult.materialName + " " + matResult.materialType;
+        })
+
+        //get printer name
+        Printer.findById(result.assignedPrinter).then(printerResult => {
+            printerName = printerResult.name;
+        })
+
+
+        res.status(200).json({
+            message: "Found Matching Print Request!",
+            user: userName,
+            material: materialNameType,
+            printer: printerName,
+            printJob: result.toClientNoName()
+        })
+
+    })
+    .catch(err => {
+        console.log("Error on job lookup...");
+        console.log(err);
+    })
+
+
+    
+
+});
+
+
+// Assign Printer 
+router.post("/assignPrinter", (req, res, next) => {
+    console.log("POST @ /api/printLab/assignPrinter")
+
+    var printerIdObj = mongoose.Types.ObjectId(req.body.printerId);
+
+    //update assignedPrinter and printStatus fields
+    PrintQueueItem.update({_id: req.body.job}, {$set:{"assignedPrinter":printerIdObj, "printStatus":req.body.printStatus}}).then(result => {
+
+        res.status(200).json({
+            message: "Assigned Printer",
+            ok: true,
+            resultJob: result
+        })
+    })
+    .catch(err => {
+        console.log("Error on assign printer...");
+        console.log(err);
+    })
+
+})
+
+// Assign Printer 
+router.post("/changeStatus", (req, res, next) => {
+    console.log("POST @ /api/printLab/changeStatus")
+
+    //update assignedPrinter and printStatus fields
+    PrintQueueItem.update({_id: req.body.job}, {$set:{"printStatus":req.body.printStatus}}).then(result => {
+
+        res.status(200).json({
+            message: "Changed Status",
+            ok: true,
+            resultJob: result
+        })
+    })
+    .catch(err => {
+        console.log("Error on change status...");
+        console.log(err);
+    })
+
+})
+
 
 
 

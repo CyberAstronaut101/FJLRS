@@ -1,0 +1,41 @@
+.centered {
+    margin: 0 auto;
+ }
+ 
+ #main-form-card {
+     margin-top: 20px
+ }
+
+ .print-status-text {
+     font-size: large;
+     font-style: italic;
+ }
+
+ .job-details {
+     font-size: medium;
+     padding-top: 7px;
+ }
+
+ .comment-date {
+     font-size:small;
+     font-style: italic;
+     color: gray;
+ }
+
+ .comment-name {
+     font-size: large;
+     font-weight: 500;
+ }
+
+ .comment-text {
+     padding-top:2px;
+     font-size: medium;
+     padding-bottom:10px;
+ }
+
+ .comment-box {
+     padding-left:8px;
+     background-color:white;
+     width:100%;
+     border: 1px solid whitesmoke;
+ }
