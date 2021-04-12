@@ -14,7 +14,7 @@
     <!-- <button mat-button *ngIf="!userIsAuthenticated" [routerLink]="['/auth/kioskLogin/wood']">WoodShop Kiosk Login</button>
     <button mat-button *ngIf="!userIsAuthenticated" [routerLink]="['/auth/kioskLogin/digital']">DigitalShop Kiosk Login</button> -->
     <button mat-button *ngIf="!userIsAuthenticated" [routerLink]="['/auth/login']">Login</button>
-    <button mat-button *ngIf="userIsAuthenticated" (click)="onLogout()">Logout</button>
+    <button mat-button *ngIf="userIsAuthenticated" (click)="onLogout()">{{ userName}} - Logout</button>
 
   </mat-toolbar>
 

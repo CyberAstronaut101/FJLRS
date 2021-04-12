@@ -23,6 +23,7 @@ import { faBars,
 
        } from '@fortawesome/free-solid-svg-icons';
 import { MatSidenavModule } from '@angular/material';
+import { _ } from 'ag-grid-community';
 
 
 @Component({
@@ -37,6 +38,8 @@ export class NavigationComponent implements OnInit, OnDestroy{
   private authListenerSubs: Subscription;
   userIsAuthenticated = false;
   userLevel = 'default';
+
+  userName = 'default';
 
   // Icon Variables
   faBars = faBars;
@@ -68,6 +71,7 @@ export class NavigationComponent implements OnInit, OnDestroy{
     // to get initial auth value
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.userLevel = this.authService.getUserLevel();
+    this.userName = this.authService.getUserFullName();
     // setup subscription to userAuth status
     this.authListenerSubs = this.authService
       .getAuthStatusListener()
