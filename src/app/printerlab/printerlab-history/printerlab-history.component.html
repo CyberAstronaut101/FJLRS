@@ -1,0 +1,69 @@
+<mat-card>
+  <!-- search -->
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Print Jobs">
+    </mat-form-field>
+
+    <table mat-table [dataSource]="completedQueueDataSource" class="mat-elevation-z8">
+      
+      <!--
+        <ng-container matColumnDef="Id">
+          <th mat-header-cell *matHeaderCellDef> Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+      -->
+
+        <!-- Ticket Description Column -->
+        <ng-container matColumnDef="Description">
+          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        </ng-container>
+
+        <!--
+        <ng-container matColumnDef="File ID">
+          <th mat-header-cell *matHeaderCellDef> File ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.fileId}} </td>
+        </ng-container>
+        -->
+
+        <!-- Ticket Material Column -->
+        <ng-container matColumnDef="Material ID">
+          <th mat-header-cell *matHeaderCellDef> Material ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.materialId}} </td>
+        </ng-container>
+
+        <!-- Ticket Date Column -->
+        <ng-container matColumnDef="Created At">
+            <th mat-header-cell *matHeaderCellDef> Created At </th>
+            <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
+        </ng-container>
+
+        <!-- Ticket Created By Column -->
+        <ng-container matColumnDef="Submitted By">
+          <th mat-header-cell *matHeaderCellDef> Submitted By </th>
+          <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Submitted ID">
+          <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+        </ng-container>
+
+        <!--UserID used in function-->
+
+        <!-- Actions -->
+        <!--
+        <ng-container matColumnDef="Open">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row" >
+                <button mat-flat-button color="warn" (click)="deleteDialog(row.name)">OPEN</button>
+            </td>
+      </ng-container>-->
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!--<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openTicket(row)"></tr>
+
+    </table>
+
+    <mat-paginator [length]="resultsLength" [pageSize]="5"></mat-paginator>
+</mat-card>

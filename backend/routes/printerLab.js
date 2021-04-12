@@ -160,8 +160,6 @@ router.post("/", upload.single('file'), (req, res, next) => {
     // a PrinterJob entry that will encapsulate the entire job request submission.
 })
 
-
-
 router.get("/file/:fileName", (req, res) => {
     console.log("GET @ /api/printerlab/file/:id");
     var fileName = req.params.fileName;
@@ -171,7 +169,7 @@ router.get("/file/:fileName", (req, res) => {
     
 })
 
-//getting the queue table items
+//getting all queue items, regardless of print status
 router.get("/items", (req, res) => {
     console.log('GET @ /api/printerLab/items');
     console.log('returning list of all items');
@@ -209,6 +207,81 @@ router.get("/items", (req, res) => {
     function checkUser(userId, user) {
         return age >= 18;
       }
+})
+
+// getting all queue items that are not of printStatus: completed
+router.get("/items/current", (req, res) => {
+    console.log('GET @ /api/printerLab/items');
+    console.log('returning list of all items');
+
+    PrintQueueItem.find( { printStatus: { $ne: "Completed" }}).then(result => {
+
+        userId = [];
+
+        result.forEach(r => userId.push(ObjectId(r.submittedBy)));
+
+        User.find({_id: {$in: userId}}).then(userResults => {
+
+            finalResult = result.map(elem => {
+
+
+                tempUser = userResults.findIndex(obj => {
+
+                    return obj._id.toString() == elem.submittedBy.toString();
+                })
+
+                newName = userResults[tempUser].firstname + " " + userResults[tempUser].lastname;
+            
+                return elem.toClient(newName); // mongoose schema function to rename _id to id and add username
+            });
+
+            res.status(201).json({
+                message: "All PrintQueueItems fetched successfully",
+                printers: finalResult
+            });
+            
+        });
+    
+    })
+
+    function checkUser(userId, user) {
+        return age >= 18;
+      }
+})
+
+// Getting the queue items that are marked as 'completed'
+router.get("/items/completed", (req, res) => {
+    console.log("GET @ /api/printerLab/items/completed");
+
+    PrintQueueItem.find( { printStatus: "Completed" })
+        .then(result => {
+            // Return the list of completed items
+            userId = [];
+
+            result.forEach(r => userId.push(ObjectId(r.submittedBy)));
+
+            User.find({_id: {$in: userId}}).then(userResults => {
+
+                finalResult = result.map(elem => {
+
+
+                    tempUser = userResults.findIndex(obj => {
+
+                        return obj._id.toString() == elem.submittedBy.toString();
+                    })
+
+                    newName = userResults[tempUser].firstname + " " + userResults[tempUser].lastname;
+                
+                    return elem.toClient(newName); // mongoose schema function to rename _id to id and add username
+                });
+
+                res.status(201).json({
+                    message: "All completed printqueuitems fetched successfully",
+                    printers: finalResult
+                });
+                
+            });
+        })
 })
 
 router.get("/item/:jobId/", (req, res) => {

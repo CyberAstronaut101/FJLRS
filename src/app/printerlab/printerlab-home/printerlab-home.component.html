@@ -5,12 +5,10 @@
     <mat-tab-group mat-align-tabs="center" dynamicHeight>
       <mat-tab label="Current Print Queue">
 
-        This will give users a quick view at the current queue for print jobs
-
         <mat-card>
           <!-- search -->
             <mat-form-field>
-                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Printers">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Print Jobs">
             </mat-form-field>
   
             <table mat-table [dataSource]="queueDataSource" class="mat-elevation-z8">
@@ -79,9 +77,17 @@
 
       </mat-tab>
 
+
+      <mat-tab label="Completed Print Jobs" *ngIf="userLevel == 'admin'">
+        <!-- Created new component to keep this page smaller -->
+        <app-printerlab-history></app-printerlab-history>
+
+      </mat-tab>
+
     
       <mat-tab label="Account Settings">
         Not sure really yet what will go here, maybe like alert settings on your job movement?
+        Making this a stretch goal
         <!-- <app-account-settings></app-account-settings> -->
       </mat-tab>
 

@@ -47,7 +47,7 @@ export class PrinterlabHomeComponent implements OnInit {
     this.userName = this.authService.getUserFullName();
   
     // Setup listener
-    this.printerlabService.getItems();
+    this.printerlabService.getCurrentQueueItems();
     console.log("items:");
     this.printerSub = this.printerlabService.getItemsUpdateListener()
         .subscribe((items: PrintQueueItem[]) => {
