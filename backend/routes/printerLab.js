@@ -25,6 +25,8 @@ var ObjectId = require('mongodb').ObjectID;
 
 const crypto = require('crypto');
 const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+Grid.mongo = mongoose.mongo;
 const multer = require('multer');
 const path = require('path');
 const { EMLINK } = require("constants");
@@ -32,7 +34,12 @@ const { EMLINK } = require("constants");
 config_data = require('../config/config.development.json');
 mongoURL = config_data.mongoURL;
 
+const connect = mongoose.createConnection(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true});
+
+var gfs = Grid(connect, mongoose);
+
 const storage = new GridFsStorage({
+    gfs: gfs,
     url: mongoURL,
     file: (req, file) => {
         return new Promise((resolve, reject) => {
@@ -51,19 +58,19 @@ const storage = new GridFsStorage({
                 console.log("file uploaded...");
             });
         });
-    }
+    },
+    root: "uploads"
 });
 
 const upload = multer({ storage });
 
-const connect = mongoose.createConnection(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true});
-let gfs;
 
-connect.once('open', () => {
-    gfs = new mongoose.mongo.GridFSBucket(connect.db, {
-        bucketName: "uploads"
-    });
-});
+
+// connect.once('open', () => {
+//     gfs = new mongoose.mongo.GridFSBucket(connect.db, {
+//         bucketName: "uploads"
+//     });
+// });
 
 //#endregion
 /* =======  End of Multer Fileupload Storage Setup  ======= */
@@ -160,13 +167,16 @@ router.post("/", upload.single('file'), (req, res, next) => {
     // a PrinterJob entry that will encapsulate the entire job request submission.
 })
 
-router.get("/file/:fileName", (req, res) => {
-    console.log("GET @ /api/printerlab/file/:id");
-    var fileName = req.params.fileName;
+router.get("/file/:fileId", (req, res) => {
+    console.log("GET @ /api/printerlab/file/:fileId");
+    var fileName = req.params.fileId;
+    // where the filename is 
 
-    gfs.find( { filename: fileName})
-
-    
+    gfs.collection("uploads");
+    gfs.files.find( { _id: ObjectId("603d94694f03091848287a7f")}).toArray(function(err, files) {
+        console.log(files);
+    })
+  
 })
 
 //getting all queue items, regardless of print status
