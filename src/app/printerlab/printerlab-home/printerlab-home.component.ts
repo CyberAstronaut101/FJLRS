@@ -100,6 +100,10 @@ export class PrinterlabHomeComponent implements OnInit {
           detail: 'You do not own this queue item'
         }
       )
+      // Wait 5 Seconds and then clear the pMessage
+      setTimeout(() => {
+        this.messageService.clear();
+      }, 3000)
     }
 
   }

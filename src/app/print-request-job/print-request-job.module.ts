@@ -16,10 +16,9 @@ import { CardModule } from 'primeng/card';
 import { FileUploadModule } from 'primeng/fileupload';
 import {DropdownModule} from 'primeng/dropdown';
 import {InputTextareaModule} from 'primeng/inputtextarea';
-import { RequestSubmitSuccessComponent } from '../shared-components/request-submit-success/request-submit-success.component';
 
 @NgModule({
-  declarations: [RequestFormComponent, RequestSubmitSuccessComponent],
+  declarations: [RequestFormComponent],
   imports: [
     CommonModule,
     PrintRequestJobRoutingModule,
@@ -36,7 +35,6 @@ import { RequestSubmitSuccessComponent } from '../shared-components/request-subm
   ],
   providers: [
     JobRequestService
-  ],
-  entryComponents: [ RequestSubmitSuccessComponent ]
+  ]
 })
 export class PrintRequestJobModule { }

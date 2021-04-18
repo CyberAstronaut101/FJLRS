@@ -6,8 +6,6 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { MaterialService } from 'src/app/admin/manage-materials/material.service';
 import { AuthService } from 'src/app/auth/auth.service';
-import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
-import { RequestSubmitSuccessComponent } from 'src/app/shared-components/request-submit-success/request-submit-success.component';
 import { Material } from 'src/assets/interfaces';
 import { JobRequestService } from '../job-request.service';
 
@@ -25,7 +23,8 @@ export class RequestFormComponent implements OnInit {
   // FILE UPLOAD DATA
   uploadFiles: any;
   selectedMaterial: Material;
-  // TODO make this programatic
+
+  // For the material selection
   materials: Material[];
   private materialSub: Subscription;
 
@@ -70,18 +69,22 @@ export class RequestFormComponent implements OnInit {
         this.messageService.clear();
         this.messageService.add(any.message);
         
-        // Prompt user with confirmation dialog
-        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-          width: '350px',
-          data: 'Successfully submitted job request!'
-        });
-        dialogRef.afterClosed().subscribe(result => {
+        // // Prompt user with confirmation dialog
+        // const dialogRef = this.dialog.open(NotificationDialogComponent, {
+        //   width: '350px',
+        //   data: 'Successfully submitted job request!'
+        // });
+        // dialogRef.afterClosed().subscribe(result => {
 
-            // User acknoledged the dialog
-            // Regardless of yes/no, redirect
-            this.router.navigate(['/printerlab']);
+        //     // User acknoledged the dialog
+        //     // Regardless of yes/no, redirect
+        //     this.router.navigate(['/printerlab']);
 
-        });
+        // });
+
+        setTimeout(() => {
+          this.router.navigate(['/printerlab']);
+        }, 1000)
         
 
 
