@@ -15,6 +15,7 @@ const mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectID;
 
 // BASE API ROUTE = /api/printlab/
+const fs = require('fs');
 
 // #region Multer setup 
 /**================================================== *
@@ -30,6 +31,7 @@ Grid.mongo = mongoose.mongo;
 const multer = require('multer');
 const path = require('path');
 const { EMLINK } = require("constants");
+const { fstat } = require("fs");
 
 // config_data = require('../config/config.development.json');
 // mongoURL = config_data.mongoURL;
@@ -180,35 +182,37 @@ router.post("/", upload.single('file'), (req, res, next) => {
     // a PrinterJob entry that will encapsulate the entire job request submission.
 })
 
-router.get("/file/:fileId", (req, res) => {
-    console.log("GET @ /api/printerlab/file/:fileId");
-    var fileName = req.params.fileId;
+router.get("/file/:jobId", (req, res) => {
+    console.log("GET @ /api/printlab/file/:jobId");
+    var fileName = req.params.jobId;
     // where the filename is 
 
-    gfs.collection("uploads");
-    gfs.files.find( { _id: ObjectId("603d94694f03091848287a7f") }).toArray(function(err, files) {
-        console.log(files);
+    // First lookup the job
+    PrintQueueItem.findById(req.params.jobId)
+        .then(jobResult => {
+            console.log(jobResult);
 
-        if(err) return console.log(err);
+            // get file and download to client
+            var file = jobResult.fileId;
+            var file_path = path.join(__dirname, "../../", "/filestore/", file);
+            console.log(file_path);
 
-        res.useChunkedEncodingByDefault(files.file)
+            try {
+                if(fs.existsSync(file_path)) {
+                    console.log("File exists");
+                    return res.download(path.resolve(file_path));
+                } else {
+                    console.log("File does not exist.");
+                    return res.status(200).json({ message: "Requested File Does Not Exist"});
 
-        // var readStream = gfs.createReadStream({
-        //     filename: files[0].filename,
-        //     root: "uploads"
-        // });
+                }
 
-        // res.download(files[0]);
-        // Set proper content type for response..
-        // return readStream.pipe(res);
-
-        // res.status(200).json({
-        //     files: files
-        // })
-
-        res.send(files)
-
-    })
+            } catch (err) {
+                console.log("ERROR ON FILE DOWNLOAD");
+                console.log(err);
+            }
+        })
+    
   
 })
 
@@ -342,21 +346,20 @@ router.get("/item/:jobId/", (req, res) => {
 
         //get material name
         Materials.findById(result.materialId).then(matResult => {
+            console.log(matResult);
             materialNameType = matResult.materialName + " " + matResult.materialType;
+            console.log(materialNameType);
         })
 
         //get printer name
         if(!result.assignedPrinter) {
-            console.log("QUEUE ITEM NOT ASSIGNED TO PRINTER YET!!!");
-            printerName = "Not Assigned Yet"
+            printerName = "Unassigned"
         } else {
             Printer.findById(result.assignedPrinter).then(printerResult => {
                 printerName = printerResult.name;
             })
         }
         
-
-
         res.status(200).json({
             message: "Found Matching Print Request!",
             user: userName,

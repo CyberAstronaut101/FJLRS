@@ -42,10 +42,12 @@
 
           <mat-paginator [length]="resultsLength" [pageSize]="5"></mat-paginator>
       </mat-card>
+  </div>
 
-      <mat-card class="card-width-fit">
+  <div class="ui-g centered">
+    <mat-card class="card-width-fit">
         <mat-card-title>
-            <button mat-raised-button color="accent" style="margin-top: 7px;" (click)="addPrinter()" >Create New Printer</button>
+            Create New Printer
         </mat-card-title>
         
         <form>
@@ -72,8 +74,13 @@
                     [(ngModel)]="newPrinterURL"
                 />
             </mat-form-field>
+
+            <mat-card-actions>
+                <button mat-raised-button color="accent" style="margin-top: 7px;" (click)="addPrinter()" >Create New Printer</button>
+            </mat-card-actions>
+            
         </form>
       </mat-card>
-
   </div>
+
 </div>

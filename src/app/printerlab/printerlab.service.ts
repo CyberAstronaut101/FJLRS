@@ -118,6 +118,18 @@ export class PrinterlabService {
       })
   }
 
+  // Download all the file assets associated with the jobId
+  downloadAssets(jobId) {
+    console.log("Request to download files associated with jobID: " + jobId);
+
+    this.http.get<{}>(BACKEND_URL+"/file/"+jobId)
+      .subscribe(ret => {
+        console.log("FILE DOWNLOAD REQUEST RETURN");
+        console.log(ret);
+      })
+
+  }
+
   // Assign a queue item to a printer
   assignPrinter(jobId, selectedPrinter, selectedPrinterName, newPrintStatus) {
     console.log("assign printer " + selectedPrinter + " to job " + jobId);

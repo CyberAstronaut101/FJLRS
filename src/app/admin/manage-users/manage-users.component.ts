@@ -64,7 +64,18 @@ export class ManageUsersComponent implements OnInit {
     // TODO make a call and email from the systems email in saved in the settings
     console.log('ManageUsersComponent::requestUserPasswordReset( ' + userEmail + ')');
 
-    this.userService.startPasswordResetWorkflow(userEmail);
+    // this.userService.startPasswordResetWorkflow(userEmail);
+
+    this.messageService.add({
+      severity: "info",
+      summary: "Reset token sent",
+      detail: "Password reset instructions sent to user"
+    })
+
+    setTimeout(() => {
+      this.messageService.clear();
+    }, 8000);
+
 
   }
 

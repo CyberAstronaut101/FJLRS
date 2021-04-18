@@ -157,9 +157,12 @@ export class PrinterlabDetailComponent implements OnInit {
   downloadFile()
   {
     console.log("download file temp");
-    console.log("User Name: " + this.userName);
-    console.log("User ID: " + this.userId);
-    console.log("User Level: " + this.userLevel);
+    
+    // Make request to download file that was passed as the job.filqeId?
+    // OR make request to download assets associated with the printQueueItem??
+    // Going with printqueue item just for ease of expanding if more than 1 file at a time is allowed at download.
+
+    this.printerLabService.downloadAssets(this.job.id);
   }
 
   sendComment()

@@ -15,7 +15,7 @@
             </mat-form-field>
   
             <p-messages></p-messages>
-            
+
             <table mat-table [dataSource]="currentQueueDataSource" class="mat-elevation-z8">
               
               <!--
@@ -132,12 +132,45 @@
       </mat-tab>
 
     
-      <mat-tab label="Account Settings">
-        Not sure really yet what will go here, maybe like alert settings on your job movement?
-        Making this a stretch goal
-        <!-- <app-account-settings></app-account-settings> -->
+      <mat-tab label="Table View Settings">
+        <div class="ui-g">
+          <div class="ui-g-6 centered">
+            <mat-card>
+              <mat-card-title>
+                Change table headers
+              </mat-card-title>
+        
+              <mat-card-subtitle>
+                These options are provided allow for changing what data the table is displayed.
+                The items displayed in this table are considered a Queue, ordered by when the job request was submitted.
+              </mat-card-subtitle>
+        
+              <mat-card-content>
+                <b>View 1</b>
+                <p>Display Description, material ID, created at time, submitted by, status</p>
+        
+                <b>View 2</b>
+                <p>Display Description, status, printer ID</p>
+              </mat-card-content>
+        
+              <mat-card-actions style="text-align: center">
+                <button mat-raised-button color="accent">View 1</button>
+                <button mat-raised-button color="accent">View 2</button>
+                <button mat-raised-button color="accent">View 3</button>
+              </mat-card-actions>
+              
+            </mat-card>
+          </div>
+        </div>
+        
       </mat-tab>
 
     </mat-tab-group>
   </div>
+
+
+  
+
+
+
 </div>

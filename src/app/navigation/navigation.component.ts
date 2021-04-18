@@ -78,6 +78,8 @@ export class NavigationComponent implements OnInit, OnDestroy{
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
         this.userLevel = this.authService.getUserLevel();
+        this.userName = this.authService.getUserFullName();
+
       });
 
 
