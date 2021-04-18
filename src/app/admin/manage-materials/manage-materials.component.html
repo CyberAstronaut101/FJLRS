@@ -1,5 +1,8 @@
 <div class="ui-g">
 
+    <div class="ui-g-6 centered"><p-messages [(value)]="msgs"></p-messages></div>
+
+
     <div class="ui-g-11 centered">
         <mat-card>
 
@@ -50,7 +53,7 @@
                     
                     <!-- Content Column -->
                     <ng-container matColumnDef="Material Price">
-                            <th mat-header-cell *matHeaderCellDef> Material Price </th>
+                            <th mat-header-cell *matHeaderCellDef> Material Price/kg </th>
                             <td mat-cell *matCellDef="let element"> {{element.materialPrice}} </td>
                         </ng-container>    
     
@@ -90,7 +93,7 @@
                 </mat-form-field>
         
                 <mat-form-field class ="form-field-row">
-                    <mat-label>Material Price</mat-label>
+                    <mat-label>Material Price/kg</mat-label>
                     <input matInput 
                         name="newMPrice"
                         [(ngModel)]="newMaterialPrice"
