@@ -82,5 +82,41 @@ router.get("", (req, res, next) => {
     })
 })
 
+//get comment by jobId
+router.get("/jobId/:jobId", (req, res, next) => {
+    console.log('GET @ /api/comment/:jobId');
+    console.log('returning list comments with jobId ' + req.params.jobId);
+    var jobIdObj = mongoose.Types.ObjectId(req.params.jobId);
+    console.log(jobIdObj);
+
+    Comment.find({ jobId: jobIdObj }).then(result => {
+        console.log('Comment.find() results');
+        //console.log(result);
+
+        //returning the user names
+        userId = [];
+        result.forEach(r => userId.push(ObjectId(r.submittedBy)));
+
+        User.find({_id: {$in: userId}}).then(userResults => {
+
+            finalResult = result.map(elem => {
+                //find the user from the User.find query search that matches the comment "submittedBy"
+                tempUser = userResults.findIndex(obj => { return obj._id.toString() == elem.submittedBy.toString();})
+                newName = userResults[tempUser].firstname + " " + userResults[tempUser].lastname;
+            
+                return elem.toClient(newName); // mongoose schema function to rename _id to id and add username
+            });
+
+            res.status(201).json({
+                message: "All PrintQueueItems fetched successfully",
+                comments: finalResult,
+                ok: true
+            });
+        });
+
+        console.log(result);
+    })
+})
+
 
 module.exports = router;

@@ -24,10 +24,10 @@ const fs = require('fs');
 //https://code.tutsplus.com/tutorials/file-upload-with-multer-in-node--cms-32088
 
 
-const crypto = require('crypto');
-const GridFsStorage = require('multer-gridfs-storage');
-const Grid = require('gridfs-stream');
-Grid.mongo = mongoose.mongo;
+//const crypto = require('crypto');
+//const GridFsStorage = require('multer-gridfs-storage');
+//const Grid = require('gridfs-stream');
+//Grid.mongo = mongoose.mongo;
 const multer = require('multer');
 const path = require('path');
 const { EMLINK } = require("constants");

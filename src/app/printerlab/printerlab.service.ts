@@ -190,9 +190,9 @@ export class PrinterlabService {
 
 
   //TODO MOVE THIS TO SEPARATE SERVICE???
-  getComments(){
+  getComments(jobId){
     this.http
-        .get<{message: string, comments: Comment[]}>(environment.apiUrl + '/comment')
+        .get<{message: string, comments: Comment[]}>(environment.apiUrl + '/comment/jobId/'+jobId)
         .subscribe(ret => {
             console.log("Comment Service Loaded Comments:");
             console.log(ret);
