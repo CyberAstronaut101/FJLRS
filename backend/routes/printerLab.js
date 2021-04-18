@@ -346,9 +346,15 @@ router.get("/item/:jobId/", (req, res) => {
         })
 
         //get printer name
-        Printer.findById(result.assignedPrinter).then(printerResult => {
-            printerName = printerResult.name;
-        })
+        if(!result.assignedPrinter) {
+            console.log("QUEUE ITEM NOT ASSIGNED TO PRINTER YET!!!");
+            printerName = "Not Assigned Yet"
+        } else {
+            Printer.findById(result.assignedPrinter).then(printerResult => {
+                printerName = printerResult.name;
+            })
+        }
+        
 
 
         res.status(200).json({
