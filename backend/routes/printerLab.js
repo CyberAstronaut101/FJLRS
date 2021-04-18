@@ -31,40 +31,52 @@ const multer = require('multer');
 const path = require('path');
 const { EMLINK } = require("constants");
 
-config_data = require('../config/config.development.json');
-mongoURL = config_data.mongoURL;
+// config_data = require('../config/config.development.json');
+// mongoURL = config_data.mongoURL;
 
-const connect = mongoose.createConnection(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true});
+// const connect = mongoose.createConnection(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true});
 
-var gfs = Grid(connect, mongoose);
+// var gfs = Grid(connect, mongoose);
 
-const storage = new GridFsStorage({
-    gfs: gfs,
-    url: mongoURL,
-    file: (req, file) => {
-        return new Promise((resolve, reject) => {
-            crypto.randomBytes(16, (err, buf) => {
-                if(err) {
-                    return reject(err);
-                }
+// const storage = new GridFsStorage({
+//     gfs: gfs,
+//     url: mongoURL,
+//     file: (req, file) => {
+//         return new Promise((resolve, reject) => {
+//             crypto.randomBytes(16, (err, buf) => {
+//                 if(err) {
+//                     return reject(err);
+//                 }
 
-                const filename = buf.toString('hex') + path.extname(file.originalname);
-                const fileInfo = {
-                    filename: filename,
-                    bucketName: 'uploads'
-                };
+//                 const filename = buf.toString('hex') + path.extname(file.originalname);
+//                 const fileInfo = {
+//                     filename: filename,
+//                     bucketName: 'uploads'
+//                 };
 
-                resolve(fileInfo);
-                console.log("file uploaded...");
-            });
-        });
+//                 resolve(fileInfo);
+//                 console.log("file uploaded...");
+//             });
+//         });
+//     },
+//     root: "uploads"
+// });
+
+// const upload = multer({ storage });
+
+// SWITCHING TO LOCAL FILE STORAGE
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'filestore');
     },
-    root: "uploads"
-});
+    filename: function(req, file, cb) {
+        console.log(file);
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+})
 
-const upload = multer({ storage });
-
-
+var upload = multer({ storage: storage });
 
 // connect.once('open', () => {
 //     gfs = new mongoose.mongo.GridFSBucket(connect.db, {
@@ -129,11 +141,12 @@ router.post("/", upload.single('file'), (req, res, next) => {
     // That middleware uploads the file to MongoDB, and then appends the id to the file object
     // Then we can create an entry in the PrinterFiles DB with the pointer to the file id
     console.log(req.body);
-    console.log("Uploaded file _id: " + req.file.id);
+    console.log("Uploaded file: ");
+    console.log(req.file);
 
     const newQueueItem = new PrintQueueItem({
         description: req.body.comments,
-        fileId: req.file.id,
+        fileId: req.file.filename,
         materialId: req.body.material,
         submittedBy: req.body.uid,
         printStatus: "Submitted"
@@ -173,8 +186,28 @@ router.get("/file/:fileId", (req, res) => {
     // where the filename is 
 
     gfs.collection("uploads");
-    gfs.files.find( { _id: ObjectId("603d94694f03091848287a7f")}).toArray(function(err, files) {
+    gfs.files.find( { _id: ObjectId("603d94694f03091848287a7f") }).toArray(function(err, files) {
         console.log(files);
+
+        if(err) return console.log(err);
+
+        res.useChunkedEncodingByDefault(files.file)
+
+        // var readStream = gfs.createReadStream({
+        //     filename: files[0].filename,
+        //     root: "uploads"
+        // });
+
+        // res.download(files[0]);
+        // Set proper content type for response..
+        // return readStream.pipe(res);
+
+        // res.status(200).json({
+        //     files: files
+        // })
+
+        res.send(files)
+
     })
   
 })
