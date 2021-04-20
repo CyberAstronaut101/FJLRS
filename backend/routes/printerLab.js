@@ -15,6 +15,7 @@ const mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectID;
 
 // BASE API ROUTE = /api/printlab/
+const fs = require('fs');
 
 // #region Multer setup 
 /**================================================== *
@@ -23,47 +24,67 @@ var ObjectId = require('mongodb').ObjectID;
 //https://code.tutsplus.com/tutorials/file-upload-with-multer-in-node--cms-32088
 
 
-const crypto = require('crypto');
-const GridFsStorage = require('multer-gridfs-storage');
+//const crypto = require('crypto');
+//const GridFsStorage = require('multer-gridfs-storage');
+//const Grid = require('gridfs-stream');
+//Grid.mongo = mongoose.mongo;
 const multer = require('multer');
 const path = require('path');
 const { EMLINK } = require("constants");
+const { fstat } = require("fs");
 
-config_data = require('../config/config.development.json');
-mongoURL = config_data.mongoURL;
+// config_data = require('../config/config.development.json');
+// mongoURL = config_data.mongoURL;
 
-const storage = new GridFsStorage({
-    url: mongoURL,
-    file: (req, file) => {
-        return new Promise((resolve, reject) => {
-            crypto.randomBytes(16, (err, buf) => {
-                if(err) {
-                    return reject(err);
-                }
+// const connect = mongoose.createConnection(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true});
 
-                const filename = buf.toString('hex') + path.extname(file.originalname);
-                const fileInfo = {
-                    filename: filename,
-                    bucketName: 'uploads'
-                };
+// var gfs = Grid(connect, mongoose);
 
-                resolve(fileInfo);
-                console.log("file uploaded...");
-            });
-        });
+// const storage = new GridFsStorage({
+//     gfs: gfs,
+//     url: mongoURL,
+//     file: (req, file) => {
+//         return new Promise((resolve, reject) => {
+//             crypto.randomBytes(16, (err, buf) => {
+//                 if(err) {
+//                     return reject(err);
+//                 }
+
+//                 const filename = buf.toString('hex') + path.extname(file.originalname);
+//                 const fileInfo = {
+//                     filename: filename,
+//                     bucketName: 'uploads'
+//                 };
+
+//                 resolve(fileInfo);
+//                 console.log("file uploaded...");
+//             });
+//         });
+//     },
+//     root: "uploads"
+// });
+
+// const upload = multer({ storage });
+
+// SWITCHING TO LOCAL FILE STORAGE
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'filestore');
+    },
+    filename: function(req, file, cb) {
+        console.log(file);
+        cb(null, Date.now() + '-' + file.originalname);
     }
-});
+})
 
-const upload = multer({ storage });
+var upload = multer({ storage: storage });
 
-const connect = mongoose.createConnection(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true});
-let gfs;
-
-connect.once('open', () => {
-    gfs = new mongoose.mongo.GridFSBucket(connect.db, {
-        bucketName: "uploads"
-    });
-});
+// connect.once('open', () => {
+//     gfs = new mongoose.mongo.GridFSBucket(connect.db, {
+//         bucketName: "uploads"
+//     });
+// });
 
 //#endregion
 /* =======  End of Multer Fileupload Storage Setup  ======= */
@@ -122,11 +143,12 @@ router.post("/", upload.single('file'), (req, res, next) => {
     // That middleware uploads the file to MongoDB, and then appends the id to the file object
     // Then we can create an entry in the PrinterFiles DB with the pointer to the file id
     console.log(req.body);
-    console.log("Uploaded file _id: " + req.file.id);
+    console.log("Uploaded file: ");
+    console.log(req.file);
 
     const newQueueItem = new PrintQueueItem({
         description: req.body.comments,
-        fileId: req.file.id,
+        fileId: req.file.filename,
         materialId: req.body.material,
         submittedBy: req.body.uid,
         printStatus: "Submitted"
@@ -160,18 +182,41 @@ router.post("/", upload.single('file'), (req, res, next) => {
     // a PrinterJob entry that will encapsulate the entire job request submission.
 })
 
+router.get("/file/:jobId", (req, res) => {
+    console.log("GET @ /api/printlab/file/:jobId");
+    var fileName = req.params.jobId;
+    // where the filename is 
 
+    // First lookup the job
+    PrintQueueItem.findById(req.params.jobId)
+        .then(jobResult => {
+            console.log(jobResult);
 
-router.get("/file/:fileName", (req, res) => {
-    console.log("GET @ /api/printerlab/file/:id");
-    var fileName = req.params.fileName;
+            // get file and download to client
+            var file = jobResult.fileId;
+            var file_path = path.join(__dirname, "../../", "/filestore/", file);
+            console.log(file_path);
 
-    gfs.find( { filename: fileName})
+            try {
+                if(fs.existsSync(file_path)) {
+                    console.log("File exists");
+                    return res.download(path.resolve(file_path));
+                } else {
+                    console.log("File does not exist.");
+                    return res.status(200).json({ message: "Requested File Does Not Exist"});
 
+                }
+
+            } catch (err) {
+                console.log("ERROR ON FILE DOWNLOAD");
+                console.log(err);
+            }
+        })
     
+  
 })
 
-//getting the queue table items
+//getting all queue items, regardless of print status
 router.get("/items", (req, res) => {
     console.log('GET @ /api/printerLab/items');
     console.log('returning list of all items');
@@ -211,6 +256,81 @@ router.get("/items", (req, res) => {
       }
 })
 
+// getting all queue items that are not of printStatus: completed
+router.get("/items/current", (req, res) => {
+    console.log('GET @ /api/printerLab/items');
+    console.log('returning list of all items');
+
+    PrintQueueItem.find( { printStatus: { $ne: "Completed" }}).then(result => {
+
+        userId = [];
+
+        result.forEach(r => userId.push(ObjectId(r.submittedBy)));
+
+        User.find({_id: {$in: userId}}).then(userResults => {
+
+            finalResult = result.map(elem => {
+
+
+                tempUser = userResults.findIndex(obj => {
+
+                    return obj._id.toString() == elem.submittedBy.toString();
+                })
+
+                newName = userResults[tempUser].firstname + " " + userResults[tempUser].lastname;
+            
+                return elem.toClient(newName); // mongoose schema function to rename _id to id and add username
+            });
+
+            res.status(201).json({
+                message: "All PrintQueueItems fetched successfully",
+                printers: finalResult
+            });
+            
+        });
+    
+    })
+
+    function checkUser(userId, user) {
+        return age >= 18;
+      }
+})
+
+// Getting the queue items that are marked as 'completed'
+router.get("/items/completed", (req, res) => {
+    console.log("GET @ /api/printerLab/items/completed");
+
+    PrintQueueItem.find( { printStatus: "Completed" })
+        .then(result => {
+            // Return the list of completed items
+            userId = [];
+
+            result.forEach(r => userId.push(ObjectId(r.submittedBy)));
+
+            User.find({_id: {$in: userId}}).then(userResults => {
+
+                finalResult = result.map(elem => {
+
+
+                    tempUser = userResults.findIndex(obj => {
+
+                        return obj._id.toString() == elem.submittedBy.toString();
+                    })
+
+                    newName = userResults[tempUser].firstname + " " + userResults[tempUser].lastname;
+                
+                    return elem.toClient(newName); // mongoose schema function to rename _id to id and add username
+                });
+
+                res.status(201).json({
+                    message: "All completed printqueuitems fetched successfully",
+                    printers: finalResult
+                });
+                
+            });
+        })
+})
+
 router.get("/item/:jobId/", (req, res) => {
     console.log("GET @ /api/printLab/item/:jobId")
     console.log(req.params.jobId);
@@ -226,15 +346,20 @@ router.get("/item/:jobId/", (req, res) => {
 
         //get material name
         Materials.findById(result.materialId).then(matResult => {
+            console.log(matResult);
             materialNameType = matResult.materialName + " " + matResult.materialType;
+            console.log(materialNameType);
         })
 
         //get printer name
-        Printer.findById(result.assignedPrinter).then(printerResult => {
-            printerName = printerResult.name;
-        })
-
-
+        if(!result.assignedPrinter) {
+            printerName = "Unassigned"
+        } else {
+            Printer.findById(result.assignedPrinter).then(printerResult => {
+                printerName = printerResult.name;
+            })
+        }
+        
         res.status(200).json({
             message: "Found Matching Print Request!",
             user: userName,

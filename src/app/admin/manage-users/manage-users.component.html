@@ -79,11 +79,10 @@
         </mat-card>
     </div>
 
-    <div class="ui-g centered" *ngFor="let user of selection.selected">
-        <div class="ui-g-12"><p-messages [(value)]="msgs"></p-messages></div>
+    <div class="ui-g-6 centered"><p-messages [(value)]="msgs"></p-messages></div>
 
-        
-        <div class="ui-g-6 ui-sm-12 ">
+    <div class="ui-g centered" *ngFor="let user of selection.selected">
+        <div class="ui-g-8 ui-sm-12 centered ">
             <mat-card style="margin-top: 7px">
                 Name: {{ user.firstname}} {{ user.lastname}}
 
@@ -117,10 +116,11 @@
 
                 <button mat-raised-button color="accent" (click)="requestUserPasswordReset(user.email)">Reset Password</button>
 
+                <button mat-raised-button color="primary" >Update User Details</button>
             </mat-card>
         </div>
 
-        <div class="ui-g-6 ui-sm-12">
+        <!-- <div class="ui-g-6 ui-sm-12">
             <mat-card>
                 Training Levels
 
@@ -149,40 +149,33 @@
                 </ul>
 
                 <!-- TODO only show when there has been a change to the states of the training levels -->
-                <button mat-raised-button color="accent" (click)="updateTrainingLevels(user)">Update Training
-                    Levels</button>
+                <!-- <button mat-raised-button color="accent" (click)="updateTrainingLevels(user)">Update Training -->
+                    <!-- Levels</button> -->
+
+                
 
 
-            </mat-card>
-        </div>
-
+            <!-- </mat-card> -->
+        <!-- </div> -->
         <div class="ui-g-12">
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     {{ user.firstname}}'s History
                 </mat-expansion-panel-header>
 
-                Render a ngFor for all the history items after making a call
+                History of job submissions
             </mat-expansion-panel>
         </div>
-        <div class="ui-g-12">
+        <!-- <div class="ui-g-12">
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     {{ user.firstname}}'s Notes
                 </mat-expansion-panel-header>
 
-                <!-- <div class="p-grid">
-                    <div class="p-col-12 p-lg-8">
-                        Show list of notes here
-                    </div>
-
-                    <div class="p-col-12 p-lg-4">
-                        Show the create/edit/delete panel here
-                    </div>
-                </div> -->
+                Notes on this users account
 
             </mat-expansion-panel>
-        </div>
+        </div> -->
 
 
 

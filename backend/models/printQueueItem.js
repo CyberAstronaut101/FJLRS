@@ -14,8 +14,7 @@ const PrintQueueItem = mongoose.Schema({
     },
     fileId: { 
         required: true,
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Uploads.files"
+        type: String,
     },
     materialId: {
         required: true,  // TODO once @afaubion does his part update this as foreign key ref

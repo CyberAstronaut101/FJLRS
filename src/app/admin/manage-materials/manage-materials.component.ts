@@ -6,11 +6,13 @@ import { Material } from 'src/assets/interfaces';
 import { ConfirmationDialogComponent } from 'src/app/shared-components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialogConfig, MatDialog, MatTableDataSource } from '@angular/material';
 import { MaterialService } from './material.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'admin-manage-materials',
   templateUrl: './manage-materials.component.html',
-  styleUrls: ['./manage-materials.component.css']
+  styleUrls: ['./manage-materials.component.css'],
+  providers: [MessageService]
 })
 export class ManageMaterialsComponent implements OnInit {
 
@@ -29,7 +31,7 @@ export class ManageMaterialsComponent implements OnInit {
   private materialSub: Subscription;
 
   
-constructor(private materialService: MaterialService, private dialog: MatDialog) { }
+constructor(private materialService: MaterialService, private dialog: MatDialog, private messageService: MessageService) { }
 
 ngOnInit() {
 
@@ -49,11 +51,25 @@ ngOnInit() {
 }
   addMaterial()
   {
+    this.messageService.clear();
+    
     this.materialService.addMaterial(
       this.newMaterialName,
       this.newMaterialType,
       this.newMaterialPrice
     );
+
+    let addedColor = this.newMaterialName + "/" + this.newMaterialType;
+
+    this.messageService.add({
+      severity: "success",
+      summary: "Material Added",
+      detail: addedColor + " was added to the color selection DB"
+    })
+
+    this.newMaterialName = "";
+    this.newMaterialPrice = "";
+    this.newMaterialType = "";
   }
 
   deleteDialog(name: string)

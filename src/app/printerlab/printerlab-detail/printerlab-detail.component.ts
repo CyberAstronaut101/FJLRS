@@ -71,27 +71,7 @@ export class PrinterlabDetailComponent implements OnInit {
         {label:"Printing", value:"Printing"}, {label:"Completed", value:"Completed"}];
      this.statuses = stats;
 
-     //set comments
-     /*
-     var c = [{user:"Student", text:"test comment 1"},{user:"ADMIN",text:"test comment 2"},{user:"Student",text:"test comment 3"},
-        {user:"ADMIN",text:"test comment 4"},{user:"Student",text:"test comment 5"},{user:"Bartholomew Longname", text:"test comment 6"}, 
-        {user:"Student Jones", text:"test comment 7"},{user:"Student Jones", text:"test comment 8"},{user:"Student Jones", text:"test comment 9"},
-        {user:"Student Jones", text:"test comment 10"}
-      ];
-      */
-      var c = [{user:"Student", text:"test comment 1", createdAtString:"3/14/9999"},{user:"ADMIN",text:"test comment 2", createdAtString:"3/14/9999"},{user:"Student",text:"test comment 3", createdAtString:"3/14/9999"},
-      {user:"Student",text:"test comment 5", createdAtString:"3/14/9999"},{user:"Bartholomew Longname", text:"test comment 6", createdAtString:"3/14/9999"}, 
-      {user:"Student Jones", text:"test comment 7", createdAtString:"3/14/9999"}
-    ];
-     //this.comments = c;
-
-     this.printerLabService.getComments();
-     this.commentSub = this.printerLabService.getCommentsUpdateListener()
-      .subscribe(comments => {
-        console.log("Got list of comments...");
-        console.log(comments);
-        this.comments = comments;
-      })
+     
 
     /**================================================== *
      * ==========  GET AVAILABLE PRINTERS  ========== *
@@ -125,13 +105,19 @@ export class PrinterlabDetailComponent implements OnInit {
         console.log("JOB FROM DB");
         console.log(this.job);
 
-
-        // render data as needed
-
-        // Lookup USER ID
-        // 
+        //set comments
+        this.printerLabService.getComments(this.job.id);
       })
     /* =======  End of PRINTER JOB DETAIL GET  ======= */
+
+    
+    //set comments
+    this.commentSub = this.printerLabService.getCommentsUpdateListener()
+     .subscribe(comments => {
+       console.log("Got list of comments...");
+       console.log(comments);
+       this.comments = comments;
+     })
     
 
   }
@@ -157,9 +143,12 @@ export class PrinterlabDetailComponent implements OnInit {
   downloadFile()
   {
     console.log("download file temp");
-    console.log("User Name: " + this.userName);
-    console.log("User ID: " + this.userId);
-    console.log("User Level: " + this.userLevel);
+    
+    // Make request to download file that was passed as the job.filqeId?
+    // OR make request to download assets associated with the printQueueItem??
+    // Going with printqueue item just for ease of expanding if more than 1 file at a time is allowed at download.
+
+    this.printerLabService.downloadAssets(this.job.id);
   }
 
   sendComment()

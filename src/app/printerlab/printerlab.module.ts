@@ -11,6 +11,7 @@ import {StepsModule} from 'primeng/steps';
 import { PrinterlabDetailComponent } from './printerlab-detail/printerlab-detail.component';
 import { DropdownModule } from 'primeng/dropdown';
 
+
 @NgModule({
   declarations: [PrinterlabHomeComponent, PrinterlabDetailComponent],
   imports: [
@@ -22,8 +23,6 @@ import { DropdownModule } from 'primeng/dropdown';
     FileUploadModule,
     StepsModule,
     DropdownModule
-    
-
   ]
 })
 export class PrinterlabModule { }

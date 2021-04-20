@@ -17,7 +17,9 @@
       </mat-card-subtitle>
 
       <!-- <p-fileUpload #fileInput name="jobFile" [showUploadButton]="true" customUpload="true" (uploadHandler)="onUpload($event)"></p-fileUpload> -->
-      <p-fileUpload name="jobFile" [files]="uploadFiles" [showUploadButton]="false" customUpload="true" (onSelect)="onSelect($event)"></p-fileUpload>
+      <!-- <p-fileUpload name="job
+        File" [files]="uploadFiles" [showUploadButton]="false" customUpload="true" (onSelect)="onSelect($event)"></p-fileUpload> -->
+      <p-fileUpload name="jobFile" [showUploadButton]="false" (onSelect)="onSelect($event)"></p-fileUpload>
     </mat-card> 
 
     <!-- Material Select Card -->

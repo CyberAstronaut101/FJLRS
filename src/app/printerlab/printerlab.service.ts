@@ -26,6 +26,9 @@ export class PrinterlabService {
   private items: PrintQueueItem[] = [];
   private itemsUpdated = new Subject<PrintQueueItem[]>();
 
+  private completedItems: PrintQueueItem[] = []
+  private completedItemsUpdated = new Subject<PrintQueueItem[]>();
+
   private job: PrintQueueItem;
   private jobUpdated = new Subject<PrintQueueItem>();
 
@@ -60,6 +63,7 @@ export class PrinterlabService {
   
   /* =======  End of Upload/Download Files  ======= */
 
+  // RETURNS ALL ITEMS REGARDLESS OF PRINTSTATUS STATE
   getItems(){
     this.http
         .get<{message: string, printers: PrintQueueItem[]}>(BACKEND_URL+"/items")
@@ -71,6 +75,31 @@ export class PrinterlabService {
         })
   }
 
+  // RETURN ALL ITEMS WITH printStatus: != Completed
+  getCurrentQueueItems() {
+    this.http
+    .get<{message: string, printers: PrintQueueItem[]}>(BACKEND_URL+"/items/current")
+    .subscribe(ret => {
+        console.log("Current Print Queue Loaded Items:");
+        console.log(ret);
+        this.items = ret.printers;
+        this.itemsUpdated.next([...this.items]);
+    })
+  }
+
+  // RETURN ALL ITEMS with printStatus: "Completed"
+  getCompletedItems() {
+    this.http
+      .get<{message: string, printers: PrintQueueItem[]}>(BACKEND_URL+"/items/completed")
+      .subscribe(ret => {
+        console.log("Completed Print Queue Loaded Items:")
+        console.log(ret);
+        this.completedItems = ret.printers;
+        this.completedItemsUpdated.next([...this.completedItems]);
+      })
+  }
+
+  // Get specific job?
   getJob(jobId) {
     this.http
       .get<{message: string, user: string, material: string, printer: string, printJob: PrintQueueItem}>(BACKEND_URL+"/item/" + jobId)
@@ -89,6 +118,19 @@ export class PrinterlabService {
       })
   }
 
+  // Download all the file assets associated with the jobId
+  downloadAssets(jobId) {
+    console.log("Request to download files associated with jobID: " + jobId);
+
+    this.http.get<{}>(BACKEND_URL+"/file/"+jobId)
+      .subscribe(ret => {
+        console.log("FILE DOWNLOAD REQUEST RETURN");
+        console.log(ret);
+      })
+
+  }
+
+  // Assign a queue item to a printer
   assignPrinter(jobId, selectedPrinter, selectedPrinterName, newPrintStatus) {
     console.log("assign printer " + selectedPrinter + " to job " + jobId);
     let url = BACKEND_URL + '/assignPrinter';
@@ -123,6 +165,10 @@ export class PrinterlabService {
     return this.itemsUpdated.asObservable();
   }
 
+  getCompletedItemsUpdatedListener() {
+    return this.completedItemsUpdated.asObservable();
+  }
+
   getJobUpdateListener() {
     return this.jobUpdated.asObservable();
   }
@@ -144,9 +190,9 @@ export class PrinterlabService {
 
 
   //TODO MOVE THIS TO SEPARATE SERVICE???
-  getComments(){
+  getComments(jobId){
     this.http
-        .get<{message: string, comments: Comment[]}>(environment.apiUrl + '/comment')
+        .get<{message: string, comments: Comment[]}>(environment.apiUrl + '/comment/jobId/'+jobId)
         .subscribe(ret => {
             console.log("Comment Service Loaded Comments:");
             console.log(ret);
